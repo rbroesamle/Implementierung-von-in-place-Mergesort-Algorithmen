@@ -1,2 +1,2 @@
 # Projekt-INF--Uni-Stuttgart
-Der Code für das Projekt-INF von uns an der Universität Stuttgart.
+Projekt-INF an der Universität Stuttgart von Raphael Brösamle, Jonas Kittelberger, Patrick Spaney und Kai Ziegler.
