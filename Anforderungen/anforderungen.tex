@@ -3,38 +3,51 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{bbm}
+\usepackage{url}
+\usepackage{todonotes}
 \newcommand{\bbN}{\mathbbm{N}}
 \newcommand{\bbR}{\mathbbm{R}}
 \newcommand{\bbZ}{\mathbbm{Z}}
 \newcommand{\bbI}{\mathbbm{I}}
-\usepackage[pdftex]{graphicx}
+%\usepackage[pdftex]{graphicx}
 \usepackage{listings}
 \lstset{language=Python,basicstyle=\footnotesize}
 \setlength{\parindent}{0em}
 \begin{document}
-\title{Projekt-INF Anforderungen}
+\title{Projekt-INF:\\
+Implementierung von In-place Mergesort Algorithmen}
 \author{Patrick Spaney, Kai Ziegler, Jonas Kittelberger, \\ Raphael Br"osamle}
-\date{Institut f"ur Formale Methoden der Informatik \\ Universit"at Stuttgart}
+\date{Institut f"ur Formale Methoden der Informatik \\ Universit"at Stuttgart\\
+\normalsize Betreuer: Dr. Armin Weiß\\
+Prüfer: Prof. Dr. Volker Diekert}
 \pagenumbering{gobble}
 \maketitle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Im Rahmen des Projekt-INF's sollen verschiedene Varianten von in-place Mergesort Algorithmen implementiert und mit anderen Sortieralgorithmen verglichen werden. \\
+\todo[inline]{Hier noch ein bisschen den Hintergrund erl"autern: was ist Mergesort -- warum will man das in-place machen}
+Im Rahmen des Projekt-INF's sollen verschiedene Varianten von in-place Mergesort Algorithmen implementiert und mit anderen Sortieralgorithmen verglichen werden.
 Dabei soll folgendes implementiert werden:
 \begin{itemize}
-\item Algorithmus von Chen
-\item Algorithmus von Reinhardt (ohne zus"atzlichen Platz)
+\item Algorithmus von Chen zum In-place Mergen \cite{Chen06}. Erweiterung zu einem Sortierverfahren. 
+\item Algorithmus von Reinhardt \cite{Reinhardt92} (ohne zus"atzlichen Platz)
 \item Algorithmus von Reinhardt (mit konstantem zus"atzlichen Platz)
-\item Eigene Optimierungsans"atze
+\item Implementierung eines weiteren In-place Mergesort Algorithmus nach Wahl
+\item Eigene Optimierungsans"atze. Insbesondere gilt es die praktische Effizienz zu optimieren und Laufzeiten zu erreichen, die mit einer normalen Mergesort Implementierung vergleichbar sind. 
+\item geeignete Testumgebung
+\item Optional: Parallele Implementierung eines der oben genannten Algorithmen.
 \end{itemize}
-F"ur die Implementierung wird die Programmiersprache C++ verwendet. Es wird ein gemeinsames Interface zum Ausf"uhren der Sortieralgorithmen erstellt. Um die Funktionalit"at und die Performanz der Implementierungen festzustellen, werden Tests geschrieben und die Anzahl der Vergleiche, sowie die Anzahl der Vertauschungen ausgegeben.\\
-Die Ergebnisse sollen in einem, bis zu 10 Seiten umfassenden, Dokument festgehalten werden. Es soll in englischer Sprache verfasst werden.  \\
-Das Dokument beinhaltet: 
+F"ur die Implementierung wird die Programmiersprache C++ verwendet. Es wird ein gemeinsames Interface zum Ausf"uhren der Sortieralgorithmen erstellt, das kompatibel mit der C++ Standard Template Library ist. Um die Funktionalit"at und die Performanz der Implementierungen festzustellen, werden Tests geschrieben und die Anzahl der Vergleiche, die Anzahl der Vertauschungen und die Laufzeiten (mit verschiedenen Datentypen) gemessen und analysiert.
+%Die Ergebnisse sollen in einem, bis zu 10 Seiten umfassenden, Dokument festgehalten werden. Es soll in englischer Sprache verfasst werden.  \\
+Die Ausarbeitung beinhaltet: 
 \begin{itemize}
 \item Literaturrecherche "uber in-place Mergesort Algorithmen
 \item Eine Beschreibung der Implementierungen
-\item Vergleiche der Implementierungen mit bestehenden in-place Mergesort Algorithmen
+\item Detaillierte Vergleiche der Implementierungen mit bestehenden in-place Mergesort Algorithmen
 \end{itemize}
-Das Projekt-INF muss bis zum $<Datum>$ fertiggestellt und am Institut f"ur Formale Methoden der Informatik eingereicht werden. Es m"ussen das oben beschriebene Dokument sowie alle Implementierungen in lesbarer, digitaler Form abgegeben werden.
+%Das Projekt-INF muss bis zum $<Datum>$ fertiggestellt und am Institut f"ur Formale Methoden der Informatik eingereicht werden. Es m"ussen das oben beschriebene Dokument sowie alle Implementierungen in lesbarer, digitaler Form abgegeben werden.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{plain}	
+%	\section*{Literaturhinweise}
+\bibliography{sort}
+
 \end{document}
 
