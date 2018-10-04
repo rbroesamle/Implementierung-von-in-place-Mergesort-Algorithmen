@@ -1,0 +1,9 @@
+Mergesort ist ein Sortieralgorithmus, der nach dem Prinzip "Teile-und-Herrsche" arbeitet. Beim "Teile"-Schritt wird die zu
+sortierende Liste in zwei kleinere Listen zerlegt. Beim "Herrsche"-Schritt werden zwei kleinere, bereits sortierte Listen,
+mittels paarweisen Vergleichen der Elemente zu einer sortierten Liste zusammengesetzt.
+Der gewöhnliche Algorithmus erreicht dabei die asymptotisch optimale Worst-Case-Laufzeit von O(nlogn) und
+lässt sich mit externem Speicher auf verschiedenen Kernen gut parallelisieren und weiter beschleunigen.
+Will man die Liste ohne zusätzlichen Speicher (in-place) sortieren, hat neben der Anzahl der Vergleiche
+auch die Anzahl der Vertauschungen innerhalb der Liste einen sehr großen Einfluss auf die Laufzeit.
+Daher benötigt der "klassiche" Algorithmus diverse Änderungen und Optimierungen, um ohne
+zusätzlichen Speicher und trotzdem weiterhin effizient zu sortieren.
