@@ -1,9 +1,8 @@
 \documentclass[12pt,pdftex,a4paper]{article}
 \usepackage[ngerman]{babel}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{bbm}
+\usepackage[utf8]{inputenc}
 \usepackage{url}
+\setlength {\marginparwidth }{2cm}
 \usepackage{todonotes}
 \newcommand{\bbN}{\mathbbm{N}}
 \newcommand{\bbR}{\mathbbm{R}}
@@ -16,30 +15,39 @@
 \begin{document}
 \title{Projekt-INF:\\
 Implementierung von In-place Mergesort Algorithmen}
-\author{Patrick Spaney, Kai Ziegler, Jonas Kittelberger, \\ Raphael Br"osamle}
-\date{Institut f"ur Formale Methoden der Informatik \\ Universit"at Stuttgart\\
+\author{Patrick Spaney, Kai Ziegler, Jonas Kittelberger, \\ Raphael Brösamle}
+\date{Institut für Formale Methoden der Informatik \\ Universität Stuttgart\\
 \normalsize Betreuer: Dr. Armin Weiß\\
 Prüfer: Prof. Dr. Volker Diekert}
 \pagenumbering{gobble}
 \maketitle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo[inline]{Hier noch ein bisschen den Hintergrund erl"autern: was ist Mergesort -- warum will man das in-place machen}
+Mergesort ist ein Sortieralgorithmus, der nach dem Prinzip ''Teile - und - Herrsche'' arbeitet. Beim ''Teile'' - Schritt wird die zu
+sortierende Liste in zwei kleinere Listen zerlegt. Beim ''Herrsche'' - Schritt werden zwei kleinere, bereits sortierte Listen,
+mittels paarweisen Vergleichen der Elemente zu einer sortierten Liste zusammengesetzt.
+Der gewöhnliche Algorithmus erreicht dabei die asymptotisch optimale Worst-Case-Laufzeit von $O(n*logn)$ und
+lässt sich mit externem Speicher auf verschiedenen Kernen gut parallelisieren und weiter beschleunigen.
+Will man die Liste ohne zusätzlichen Speicher (in-place) sortieren, hat neben der Anzahl der Vergleiche
+auch die Anzahl der Vertauschungen innerhalb der Liste einen sehr großen Einfluss auf die Laufzeit.
+Daher benötigt der ''klassiche'' Algorithmus diverse Änderungen und Optimierungen, um ohne
+zusätzlichen Speicher und trotzdem weiterhin effizient zu sortieren. \vspace*{5mm} \\
+%%%%%%%
 Im Rahmen des Projekt-INF's sollen verschiedene Varianten von in-place Mergesort Algorithmen implementiert und mit anderen Sortieralgorithmen verglichen werden.
 Dabei soll folgendes implementiert werden:
 \begin{itemize}
 \item Algorithmus von Chen zum In-place Mergen \cite{Chen06}. Erweiterung zu einem Sortierverfahren. 
-\item Algorithmus von Reinhardt \cite{Reinhardt92} (ohne zus"atzlichen Platz)
-\item Algorithmus von Reinhardt (mit konstantem zus"atzlichen Platz)
+\item Algorithmus von Reinhardt \cite{Reinhardt92} (ohne zusätzlichen Platz)
+\item Algorithmus von Reinhardt (mit konstantem zusätzlichen Platz)
 \item Implementierung eines weiteren In-place Mergesort Algorithmus nach Wahl
-\item Eigene Optimierungsans"atze. Insbesondere gilt es die praktische Effizienz zu optimieren und Laufzeiten zu erreichen, die mit einer normalen Mergesort Implementierung vergleichbar sind. 
+\item Eigene Optimierungsansätze. Insbesondere gilt es die praktische Effizienz zu optimieren und Laufzeiten zu erreichen, die mit einer normalen Mergesort Implementierung vergleichbar sind. 
 \item geeignete Testumgebung
 \item Optional: Parallele Implementierung eines der oben genannten Algorithmen.
 \end{itemize}
-F"ur die Implementierung wird die Programmiersprache C++ verwendet. Es wird ein gemeinsames Interface zum Ausf"uhren der Sortieralgorithmen erstellt, das kompatibel mit der C++ Standard Template Library ist. Um die Funktionalit"at und die Performanz der Implementierungen festzustellen, werden Tests geschrieben und die Anzahl der Vergleiche, die Anzahl der Vertauschungen und die Laufzeiten (mit verschiedenen Datentypen) gemessen und analysiert.
+Für die Implementierung wird die Programmiersprache C++ verwendet. Es wird ein gemeinsames Interface zum Ausführen der Sortieralgorithmen erstellt, das kompatibel mit der C++ Standard Template Library ist. Um die Funktionalität und die Performanz der Implementierungen festzustellen, werden Tests geschrieben und die Anzahl der Vergleiche, die Anzahl der Vertauschungen und die Laufzeiten (mit verschiedenen Datentypen) gemessen und analysiert.
 %Die Ergebnisse sollen in einem, bis zu 10 Seiten umfassenden, Dokument festgehalten werden. Es soll in englischer Sprache verfasst werden.  \\
 Die Ausarbeitung beinhaltet: 
 \begin{itemize}
-\item Literaturrecherche "uber in-place Mergesort Algorithmen
+\item Literaturrecherche über in-place Mergesort Algorithmen
 \item Eine Beschreibung der Implementierungen
 \item Detaillierte Vergleiche der Implementierungen mit bestehenden in-place Mergesort Algorithmen
 \end{itemize}
