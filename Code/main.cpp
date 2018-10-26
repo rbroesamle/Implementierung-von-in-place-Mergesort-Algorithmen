@@ -1,8 +1,6 @@
-//
-// Created by jonas on 26.10.2018.
-//
+#include <iostream>
 
-template<Iter start, Iter stop, compare>
-int main(){
-
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
 }
