@@ -1,4 +1,6 @@
-.aux
-.log
-.synctex.hz
-.synctex.gz
+.idea
+Anforderungen/*.aux
+Anforderungen/*.bbl
+Anforderungen/*.blg
+Anforderungen/*.log
+Anforderungen/*.synctex.*
