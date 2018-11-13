@@ -5,68 +5,76 @@
 #include<vector>
 #include <iostream>
 
-template<class Iterator,class Compare>
-int merge(Iterator startfirst, Iterator endfirst, Iterator startsec, Iterator endsec, Iterator startgoal,Compare compare){
-    auto ifir = startfirst;
-    auto isec = startsec;
-    int act = 0;
-    while(true){
-        if(ifir == endfirst) {
-            while (isec != endsec) {
-                *(startgoal + act) = *isec;
-                isec++;
-                act++;
+template<class Iterator, class Compare>
+void merge(Iterator startFirst, Iterator endFirst, Iterator startSecond, Iterator endSecond, Compare compare) {
+    auto iFirst = startFirst;
+    auto iSecond = startSecond;
+
+    int *startExtra = (int *) malloc(endSecond - startSecond + 1);
+    auto iExtra = startExtra;
+
+    while (true) {
+        if (iFirst > endFirst) {
+            while (iSecond <= endSecond) {
+                *iExtra = *iSecond;
+                iExtra++;
+                iSecond++;
             }
             break;
         }
-        if(isec == endsec) {
-            while (ifir != endfirst) {
-                *(startgoal + act) = *ifir;
-                ifir++;
-                act++;
+        if (iSecond > endSecond) {
+            while (iFirst <= endFirst) {
+                *iExtra = *iFirst;
+                iExtra++;
+                iFirst++;
             }
             break;
         }
-        if(compare(*ifir,*isec)){
-            *(startgoal + act) = *ifir;
-            ifir ++;
-            act ++;
-        }
-        else{
-            *(startgoal + act) = *isec;
-            isec ++;
-            act ++;
+        if (compare(*iFirst, *iSecond)) {
+            *iExtra = *iFirst;
+            iExtra++;
+            iFirst++;
+        } else {
+            *iExtra = *iSecond;
+            iExtra++;
+            iSecond++;
         }
     }
-    return 0;
+
+    //Copy merged array to original positions
+    int *iOrig = startFirst;
+    iExtra = startExtra;
+    while (iOrig <= endSecond) {
+        *iOrig = *iExtra;
+        iExtra++;
+        iOrig++;
+    }
+    free(startExtra);
 }
 
-//Annahme: Anzahl Elemente ist Zweierpotenz
 template<class Iterator, class Compare>
-int mergesort(Iterator first, Iterator last, Compare compare){
-    std::vector<int> goal(first,last);
-    int block = 1;
-    while(first + block != last){
-        int* erste = first;
-        int* zweite = first + block;
-        int* ziel = &goal[0];
-        while(true){
-            merge(erste, zweite, zweite, zweite+block, ziel, compare);
-            erste = zweite + block;
-            if(erste == last){
+void mergesort(Iterator startIndex, Iterator endIndex, Compare compare) {
+    int blockSize = 1;
+    while (startIndex + blockSize <= endIndex) {
+        //merge all blocks with size blockSize
+        int *startIndexBlock1 = startIndex;
+        int *endIndexBlock1 = startIndexBlock1 + blockSize - 1;
+        int *startIndexBlock2 = endIndexBlock1 + 1;
+        int *endIndexBlock2 = (startIndexBlock2 + blockSize) > endIndex
+                              ? endIndex
+                              : (startIndexBlock2 + blockSize - 1);
+        while (true) {
+            merge(startIndexBlock1, endIndexBlock1, startIndexBlock2, endIndexBlock2, compare);
+            if (endIndexBlock2 + blockSize >= endIndex) {
                 break;
             }
-            zweite = erste + block;
-            ziel = ziel + 2*block;
+            startIndexBlock1 = endIndexBlock2 + 1;
+            endIndexBlock1 = startIndexBlock1 + blockSize - 1;
+            startIndexBlock2 = endIndexBlock1 + 1;
+            endIndexBlock2 = (startIndexBlock2 + blockSize) > endIndex
+                             ? endIndex
+                             : (startIndexBlock2 + blockSize - 1);
         }
-
-        block = block * 2;
-        auto g = goal.begin();
-        for(auto i= first; i!=last; i++){
-            *i = *g;
-            g ++;
-        }
+        blockSize *= 2;
     }
-    return 0;
 }
-
