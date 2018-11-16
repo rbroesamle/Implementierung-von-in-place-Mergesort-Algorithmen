@@ -38,17 +38,6 @@ void merge(Iterator startFirst, Iterator endFirst, Iterator startSecond, Iterato
             iSecond++;
         }
     }
-
-    //Copy merged array to original positions
-    /*
-    int *iOrig = startFirst;
-    iExtra = startExtra;
-    while (iOrig != endSecond) {
-        *iOrig = *iExtra;
-        iExtra++;
-        iOrig++;
-    }
-     */
 }
 
 template<class Iterator, class Compare>
