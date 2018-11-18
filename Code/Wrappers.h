@@ -9,6 +9,9 @@ template<typename T>
 class ArrayWrapper
 {
 public:
+	//TODO: im Basetypewrapper fehlt noch eine Möglichkeit, den eigentlichen Wert zurückzugeben
+	// Zum Sortieren sollte das nicht nötig sein, aber für die Ausgabe später.
+	// Vorschläge dazu: entweder Wert public setzen, oder get() methode implementieren.
 	template<typename T>
 	class BasetypeWrapper
 	{
@@ -77,7 +80,7 @@ public:
 	};
 	// default constructor
 	ArrayWrapper() {
-		v = new std::vector;
+		v = new std::vector<BasetypeWrapper<T>>;
 		c = 0;
 	}
 
@@ -89,18 +92,18 @@ public:
 	}
 	//some other constructors
 	//TODO: eventuell weitere implementieren, für arrays etc.
-	ArrayWrapper(std::vector<T> orig) : v(orig) {}
+	ArrayWrapper(std::vector<BasetypeWrapper<T>> orig) : v(orig) {}
 
 	//default destructor
 	~ArrayWrapper() {
 		delete v;
 	}
 	
-	std::vector<T>::Iterator end() {
+	std::vector<BasetypeWrapper<T>>::Iterator end() {
 		return v.end();
 	}
 
-	std::vector<T>::Iterator begin() {
+	std::vector<BasetypeWrapper<T>>::Iterator begin() {
 		return v.begin();
 	}
 
