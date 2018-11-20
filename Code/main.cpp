@@ -1,17 +1,20 @@
+#pragma once
 //
 // Created by jonas on 02.11.2018.
 //
 #include<array>
 #include <iostream>
-#import "naivmerge.cpp"
+#include "naivmerge.cpp"
+
 
 static int z = 0;
 bool comp (int i,int j) { z++; return (i<j); }
 
 
 int main(){
+	/*
     std::array<int,18> myarr = { 80, 16, 77, 34, 65, 345, 2, 15, 4, 47, 64, 117, 11, 14, 96, 33, 109, 42 };
-    mergesort(myarr.begin(),myarr.end(),comp);
+    mergesort(myarr.begin(),myarr.end());
     std::cout << "Vergleiche: ";
     std::cout << z;
     std::cout << "   ";
@@ -21,5 +24,6 @@ int main(){
         std::cout << *it;
         std::cout << " ";
     }
+	*/
     return 0;
 }

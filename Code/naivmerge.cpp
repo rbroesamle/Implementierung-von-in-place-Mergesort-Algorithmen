@@ -1,12 +1,10 @@
 //
 // Created by jonas on 02.11.2018.
 //
-#include<array>
-#include<vector>
-#include <iostream>
+#include "naivmerge.h"
 
-template<class Iterator, class Compare>
-void merge(Iterator startFirst, Iterator endFirst, Iterator startSecond, Iterator endSecond, Iterator startExtra, Compare compare) {
+template<typename Iterator>
+void merge(Iterator startFirst, Iterator endFirst, Iterator startSecond, Iterator endSecond, Iterator startExtra) {
     auto iFirst = startFirst;
     auto iSecond = startSecond;
     auto iExtra = startExtra;
@@ -28,7 +26,7 @@ void merge(Iterator startFirst, Iterator endFirst, Iterator startSecond, Iterato
             }
             break;
         }
-        if (compare(*iFirst, *iSecond)) {
+        if (*iFirst < *iSecond) {
             *iExtra = *iFirst;
             iExtra++;
             iFirst++;
@@ -40,8 +38,8 @@ void merge(Iterator startFirst, Iterator endFirst, Iterator startSecond, Iterato
     }
 }
 
-template<class Iterator, class Compare>
-void mergesort(Iterator start, Iterator end, Compare compare) {
+template<typename Iterator>
+void mergesort(Iterator start, Iterator end) {
     Iterator startIndex = start;
     Iterator endIndex = end;
     int blockSize = 1;
@@ -58,7 +56,7 @@ void mergesort(Iterator start, Iterator end, Compare compare) {
                               ? endIndex
                               : (startIndexBlock2 + blockSize);
         while (true) {
-            merge(startIndexBlock1, endIndexBlock1, startIndexBlock2, endIndexBlock2, iExtra, compare);
+            merge(startIndexBlock1, endIndexBlock1, startIndexBlock2, endIndexBlock2, iExtra);
             if (endIndexBlock2 + blockSize >= endIndex) {
                 for(auto addEnd = endIndexBlock2; addEnd != endIndex; addEnd ++){
                     *(startExtra + (addEnd - startIndex)) = *addEnd;

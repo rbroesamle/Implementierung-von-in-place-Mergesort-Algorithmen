@@ -9,10 +9,7 @@ template<typename T>
 class ArrayWrapper
 {
 public:
-	//TODO: im Basetypewrapper fehlt noch eine Möglichkeit, den eigentlichen Wert zurückzugeben
-	// Zum Sortieren sollte das nicht nötig sein, aber für die Ausgabe später.
-	// Vorschläge dazu: entweder Wert public setzen, oder get() methode implementieren.
-	template<typename T>
+	template<typename B>
 	class BasetypeWrapper
 	{
 	public:
@@ -30,7 +27,7 @@ public:
 		// copy operator 
 		BasetypeWrapper& operator= (BasetypeWrapper const& other) {
 			if (this != &other) {
-				Vec3 tmp(other);
+				BasetypeWrapper tmp(other);
 				std::swap(x, tmp.x);
 			}
 			return *this;
@@ -44,48 +41,88 @@ public:
 			return *this;
 		}
 
-		//compare operators
-		bool operator== (const int y) {
+		//compare operators for Type B
+		bool operator== (const B y) {
 			c++;
 			return (x == y);
 		}
 
-		bool operator!= (const int y) {
+		bool operator!= (const B y) {
 			c++;
 			return (x != y);
 		}
 
-		bool operator<= (const int y) {
+		bool operator<= (const B y) {
 			c++;
 			return (x <= y);
 		}
 
-		bool operator>= (const int y) {
+		bool operator>= (const B y) {
 			c++;
 			return (x >= y);
 		}
 
-		bool operator< (const int y) {
+		bool operator< (const B y) {
 			c++;
 			return (x < y);
 		}
 
-		bool operator> (const int y) {
+		bool operator> (const B y) {
 			c++;
 			return (x > y);
 		}
 
+		//compare operators for other Wrapper
+
+		bool operator== (const BasetypeWrapper<B> y) {
+			c++;
+			return (x == y.x);
+		}
+
+		bool operator!= (const BasetypeWrapper<B> y) {
+			c++;
+			return (x != y.x);
+		}
+
+		bool operator<= (const BasetypeWrapper<B> y) {
+			c++;
+			return (x <= y.x);
+		}
+
+		bool operator>= (const BasetypeWrapper<B> y) {
+			c++;
+			return (x >= y.x);
+		}
+
+		bool operator< (const BasetypeWrapper<B> y) {
+			c++;
+			return (x < y.x);
+		}
+
+		bool operator> (const BasetypeWrapper<B> y) {
+			c++;
+			return (x > y.x);
+		}
+
+		//gibt Wert zurück
+		B get_value() {
+			return x;
+		}
+
 	private:
-		T x;
+		//Value
+
+		B x;
+
 	};
 	// default constructor
-	ArrayWrapper() {
-		v = new std::vector<BasetypeWrapper<T>>;
-		c = 0;
-	}
+	ArrayWrapper() {}
 
 	//copy constructor
-	ArrayWrapper(const ArrayWrapper& orig) : v(orig.v) {}
+	ArrayWrapper(const ArrayWrapper& orig) : v(orig.v) {
+		std::vector<BasetypeWrapper<T>> temp = orig.v;
+		std::swap(v, temp);
+	}
 	//move constructor
 	ArrayWrapper(ArrayWrapper&& orig) {
 		std::swap(v, orig.v);
@@ -94,16 +131,38 @@ public:
 	//TODO: eventuell weitere implementieren, für arrays etc.
 	ArrayWrapper(std::vector<BasetypeWrapper<T>> orig) : v(orig) {}
 
-	//default destructor
-	~ArrayWrapper() {
-		delete v;
+	ArrayWrapper(std::vector<T> orig) {
+		v = std::vector<BasetypeWrapper<T>>
+		for (int i = 0; i < orig.size(); i++) {
+			v.push_back(orig[i]);
+		}
+	}
+
+	//destructor
+	~ArrayWrapper() {}
+
+	// copy operator 
+	ArrayWrapper<T>& operator= (ArrayWrapper<T> const& other) {
+		if (this != &other) {
+			ArrayWrapper<T> tmp(other);
+			std::swap(x, tmp.x);
+		}
+		return *this;
+	}
+
+	// move operator
+	ArrayWrapper<T>& operator= (ArrayWrapper<T>&& other) {
+		if (this != &other) {
+			std::swap(x, other.x);
+		}
+		return *this;
 	}
 	
-	std::vector<BasetypeWrapper<T>>::Iterator end() {
+	typename std::vector<BasetypeWrapper<T>>::iterator end() {
 		return v.end();
 	}
 
-	std::vector<BasetypeWrapper<T>>::Iterator begin() {
+	typename std::vector<BasetypeWrapper<T>>::iterator begin() {
 		return v.begin();
 	}
 
@@ -126,6 +185,12 @@ public:
 	static void reset_c() {
 		c = 0;
 	}
+
+	//push operation
+	void push_back(T value) {
+		v.push_back(BasetypeWrapper<T>(value));
+	}
+
 private:
 	std::vector<BasetypeWrapper<T>> v;
 	static int c;
