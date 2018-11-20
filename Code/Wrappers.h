@@ -12,7 +12,11 @@ public:
 	template<typename B>
 	class BasetypeWrapper
 	{
-	public:
+	private:
+		//Value
+		B x;
+
+    public:
 		//constructors
 		BasetypeWrapper() {}
 		BasetypeWrapper(T xx) : x(xx) {}
@@ -109,12 +113,12 @@ public:
 			return x;
 		}
 
-	private:
-		//Value
-
-		B x;
-
 	};
+private:
+	std::vector<BasetypeWrapper<T>> v;
+	static int c;
+
+public:
 	// default constructor
 	ArrayWrapper() {}
 
@@ -132,7 +136,6 @@ public:
 	ArrayWrapper(std::vector<BasetypeWrapper<T>> orig) : v(orig) {}
 
 	ArrayWrapper(std::vector<T> orig) {
-		v = std::vector<BasetypeWrapper<T>>
 		for (int i = 0; i < orig.size(); i++) {
 			v.push_back(orig[i]);
 		}
@@ -145,7 +148,7 @@ public:
 	ArrayWrapper<T>& operator= (ArrayWrapper<T> const& other) {
 		if (this != &other) {
 			ArrayWrapper<T> tmp(other);
-			std::swap(x, tmp.x);
+			std::swap(v, tmp.x);
 		}
 		return *this;
 	}
@@ -153,7 +156,7 @@ public:
 	// move operator
 	ArrayWrapper<T>& operator= (ArrayWrapper<T>&& other) {
 		if (this != &other) {
-			std::swap(x, other.x);
+			std::swap(v, other.x);
 		}
 		return *this;
 	}
@@ -167,7 +170,7 @@ public:
 	}
 
 	//subscript operator
-	T& operator[] (const int index) {
+	BasetypeWrapper<T>& operator[] (const int index) {
 		return v[index];
 	}
 
@@ -190,8 +193,7 @@ public:
 	void push_back(T value) {
 		v.push_back(BasetypeWrapper<T>(value));
 	}
-
-private:
-	std::vector<BasetypeWrapper<T>> v;
-	static int c;
 };
+
+template<typename T>
+int ArrayWrapper<T>::c = 0;
