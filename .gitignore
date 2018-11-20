@@ -4,3 +4,5 @@ Anforderungen/*.bbl
 Anforderungen/*.blg
 Anforderungen/*.log
 Anforderungen/*.synctex.*
+Code/cmake-build-debug
+Papers/
