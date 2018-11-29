@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/vectormain.cpp
+vectormerge.cpp
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/vectormerge.cpp
+iostream
+-
+wrapper.h
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/wrapper.h
+
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/vectormerge.cpp
+vectormerge.h
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/vectormerge.h
+
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/vectormerge.h
+vector
+-
+iostream
+-
+
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/wrapper.h
+algorithm
+-
+utility
+-
+

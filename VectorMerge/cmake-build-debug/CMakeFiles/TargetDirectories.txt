@@ -1,0 +1,3 @@
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/cmake-build-debug/CMakeFiles/VectorMerge.dir
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Git/Projekt-INF-Uni-Stuttgart/VectorMerge/cmake-build-debug/CMakeFiles/rebuild_cache.dir
