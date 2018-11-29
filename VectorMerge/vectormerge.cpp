@@ -3,7 +3,7 @@
 //
 
 #include "vectormerge.h"
-
+// Initialisiere sort mit kopie des vektors zum mergen
 template<typename T>
 void mergesort(std::vector<T> &v) {
     unsigned int size = v.size();
@@ -11,6 +11,10 @@ void mergesort(std::vector<T> &v) {
     recsort(merge_vector, v, 0, v.size() - 1);
 }
 
+/*rufe diese Methode rekursiv mit vertauschtem m und v auf bis
+ * Untergrenze = Obergrenze, dann merge die sortierten Teillisten
+ * Erster Aufruf (also letzer merge) merget immer vom Hilfsvektor m in den zu sortierenden vektor v
+*/
 template<typename T>
 void recsort(std::vector<T> &v, std::vector<T> &m, int u, int o){
     int pivot = (o-u)/2;
@@ -21,6 +25,7 @@ void recsort(std::vector<T> &v, std::vector<T> &m, int u, int o){
     }
 }
 
+//merge die Teillisten sortiert vom ersten Vektor in den zweiten
 template<typename T>
 void merge (std::vector<T> &v, std::vector<T> &m, int u_1, int o_2, int o_1) {
     int u_2 = o_1 + 1;
