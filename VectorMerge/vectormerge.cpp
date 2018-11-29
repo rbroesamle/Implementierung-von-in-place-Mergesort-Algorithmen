@@ -7,7 +7,7 @@
 template<typename T>
 void mergesort(std::vector<T> &v) {
     unsigned int size = v.size();
-    std::vector<T> merge_vector = std::vector<T>(v);
+    std::vector<T> merge_vector = v;
     recsort(merge_vector, v, 0, v.size() - 1);
 }
 

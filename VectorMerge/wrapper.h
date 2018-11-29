@@ -19,12 +19,14 @@ public:
     BasetypeWrapper(T xx) : x(xx) {}
     //copy constructor
     BasetypeWrapper(const BasetypeWrapper& orig) : x(orig.x) {
-        //m++;
+        m++;
     }
     //move constructor
     BasetypeWrapper(BasetypeWrapper&& orig) {
         std::swap(x, orig.x);
+        m++;
     }
+    //destructor
     ~BasetypeWrapper() {}
 
     // copy operator
@@ -33,7 +35,6 @@ public:
             BasetypeWrapper tmp(other);
             std::swap(x, tmp.x);
         }
-        m++;
         return *this;
     }
 
@@ -81,31 +82,37 @@ public:
 
     bool operator== (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x == y.x);
     }
 
     bool operator!= (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x != y.x);
     }
 
     bool operator<= (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x <= y.x);
     }
 
     bool operator>= (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x >= y.x);
     }
 
     bool operator< (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x < y.x);
     }
 
     bool operator> (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x > y.x);
     }
 
