@@ -19,7 +19,7 @@ public:
     BasetypeWrapper(T xx) : x(xx) {}
     //copy constructor
     BasetypeWrapper(const BasetypeWrapper& orig) : x(orig.x) {
-        //m++;
+        m++;
     }
     //move constructor
     BasetypeWrapper(BasetypeWrapper&& orig) {
@@ -33,7 +33,6 @@ public:
             BasetypeWrapper tmp(other);
             std::swap(x, tmp.x);
         }
-        m++;
         return *this;
     }
 

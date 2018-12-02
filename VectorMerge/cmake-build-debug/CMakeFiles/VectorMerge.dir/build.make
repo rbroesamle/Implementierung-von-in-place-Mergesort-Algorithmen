@@ -33,19 +33,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "D:\Program Files\JetBrains\CLion 2018.2.6\bin\cmake\win\bin\cmake.exe"
+CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2018.2.5\bin\cmake\win\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "D:\Program Files\JetBrains\CLion 2018.2.6\bin\cmake\win\bin\cmake.exe" -E remove -f
+RM = "C:\Program Files\JetBrains\CLion 2018.2.5\bin\cmake\win\bin\cmake.exe" -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge
+CMAKE_SOURCE_DIR = C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/VectorMerge.dir/depend.make
@@ -58,29 +58,29 @@ include CMakeFiles/VectorMerge.dir/flags.make
 
 CMakeFiles/VectorMerge.dir/vectormain.cpp.obj: CMakeFiles/VectorMerge.dir/flags.make
 CMakeFiles/VectorMerge.dir/vectormain.cpp.obj: ../vectormain.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/VectorMerge.dir/vectormain.cpp.obj"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\VectorMerge.dir\vectormain.cpp.obj -c D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\vectormain.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/VectorMerge.dir/vectormain.cpp.obj"
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\VectorMerge.dir\vectormain.cpp.obj -c C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\vectormain.cpp
 
 CMakeFiles/VectorMerge.dir/vectormain.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VectorMerge.dir/vectormain.cpp.i"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\vectormain.cpp > CMakeFiles\VectorMerge.dir\vectormain.cpp.i
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\vectormain.cpp > CMakeFiles\VectorMerge.dir\vectormain.cpp.i
 
 CMakeFiles/VectorMerge.dir/vectormain.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VectorMerge.dir/vectormain.cpp.s"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\vectormain.cpp -o CMakeFiles\VectorMerge.dir\vectormain.cpp.s
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\vectormain.cpp -o CMakeFiles\VectorMerge.dir\vectormain.cpp.s
 
 CMakeFiles/VectorMerge.dir/vectormerge.cpp.obj: CMakeFiles/VectorMerge.dir/flags.make
 CMakeFiles/VectorMerge.dir/vectormerge.cpp.obj: ../vectormerge.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/VectorMerge.dir/vectormerge.cpp.obj"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\VectorMerge.dir\vectormerge.cpp.obj -c D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\vectormerge.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/VectorMerge.dir/vectormerge.cpp.obj"
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\VectorMerge.dir\vectormerge.cpp.obj -c C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\vectormerge.cpp
 
 CMakeFiles/VectorMerge.dir/vectormerge.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VectorMerge.dir/vectormerge.cpp.i"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\vectormerge.cpp > CMakeFiles\VectorMerge.dir\vectormerge.cpp.i
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\vectormerge.cpp > CMakeFiles\VectorMerge.dir\vectormerge.cpp.i
 
 CMakeFiles/VectorMerge.dir/vectormerge.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VectorMerge.dir/vectormerge.cpp.s"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\vectormerge.cpp -o CMakeFiles\VectorMerge.dir\vectormerge.cpp.s
+	C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\vectormerge.cpp -o CMakeFiles\VectorMerge.dir\vectormerge.cpp.s
 
 # Object files for target VectorMerge
 VectorMerge_OBJECTS = \
@@ -96,7 +96,7 @@ VectorMerge.exe: CMakeFiles/VectorMerge.dir/build.make
 VectorMerge.exe: CMakeFiles/VectorMerge.dir/linklibs.rsp
 VectorMerge.exe: CMakeFiles/VectorMerge.dir/objects1.rsp
 VectorMerge.exe: CMakeFiles/VectorMerge.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable VectorMerge.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable VectorMerge.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\VectorMerge.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -109,6 +109,6 @@ CMakeFiles/VectorMerge.dir/clean:
 .PHONY : CMakeFiles/VectorMerge.dir/clean
 
 CMakeFiles/VectorMerge.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\cmake-build-debug D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\cmake-build-debug D:\Git\Projekt-INF-Uni-Stuttgart\VectorMerge\cmake-build-debug\CMakeFiles\VectorMerge.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\cmake-build-debug C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\cmake-build-debug C:\Users\jonas\Desktop\Projekt-Share\Projekt-INF--Uni-Stuttgart\VectorMerge\cmake-build-debug\CMakeFiles\VectorMerge.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/VectorMerge.dir/depend
 
