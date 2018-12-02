@@ -24,7 +24,9 @@ public:
     //move constructor
     BasetypeWrapper(BasetypeWrapper&& orig) {
         std::swap(x, orig.x);
+        m++;
     }
+    //destructor
     ~BasetypeWrapper() {}
 
     // copy operator
@@ -80,31 +82,37 @@ public:
 
     bool operator== (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x == y.x);
     }
 
     bool operator!= (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x != y.x);
     }
 
     bool operator<= (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x <= y.x);
     }
 
     bool operator>= (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x >= y.x);
     }
 
     bool operator< (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x < y.x);
     }
 
     bool operator> (const BasetypeWrapper<T> y) {
         c++;
+        m--;
         return (x > y.x);
     }
 
