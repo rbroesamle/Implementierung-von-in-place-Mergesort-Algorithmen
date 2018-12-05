@@ -1,11 +1,11 @@
 .DS_Store
-.idea
+**/.idea
 Anforderungen/*.aux
 Anforderungen/*.bbl
 Anforderungen/*.blg
 Anforderungen/*.log
 Anforderungen/*.synctex.*
-Code/cmake-build-debug
+**/cmake-build-debug
 Code/.vs
 Code/Debug
 Code/merge_test/Debug
