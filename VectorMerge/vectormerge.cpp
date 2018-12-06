@@ -7,8 +7,9 @@
 template<typename T>
 void mergesort(std::vector<T> &v) {
     unsigned int size = v.size();
-    std::vector<T> merge_vector = v;
-    recsort(merge_vector, v, 0, v.size() - 1);
+    std::vector<T> merge_vector;
+    merge_vector.reserve(size);
+    recsort(merge_vector, v, 0, v.size() - 1, true);
 }
 
 /*rufe diese Methode rekursiv mit vertauschtem m und v auf bis
@@ -16,12 +17,18 @@ void mergesort(std::vector<T> &v) {
  * Erster Aufruf (also letzer merge) merget immer vom Hilfsvektor m in den zu sortierenden vektor v
 */
 template<typename T>
-void recsort(std::vector<T> &v, std::vector<T> &m, int u, int o){
+void recsort(std::vector<T> &v, std::vector<T> &m, int u, int o, bool i){
     int pivot = (o-u)/2;
-    if (u != o) {
-        recsort(m, v, u, u + pivot);
-        recsort(m, v, u + pivot + 1, o);
-        merge(v, m, u, o, u + pivot);
+    if (o - u > 2) {
+        recsort(v, m, u, u + pivot, !i);
+        recsort(v, m, u + pivot + 1, o, !i);
+        if (i) {
+            merge(m, v, u, o, u + pivot);
+        } else {
+            merge(v, m, u, o, u + pivot);
+        }
+    } else {
+        small_sort(v, m, u, o, i);
     }
 }
 
@@ -50,5 +57,109 @@ void merge (std::vector<T> &v, std::vector<T> &m, int u_1, int o_2, int o_1) {
         m[counter] = v[u_2];
         u_2++;
         counter++;
+    }
+}
+
+template <typename T>
+void small_sort (std::vector<T> &v, std::vector<T> &m, int u, int o, bool i){
+    if (i){
+        //sort in v
+        if (o - u == 1) {
+            if (v[u] > v[o]){
+                T temp = v[u];
+                v[u] = v[o];
+                v[o] = temp;
+            }
+        } else {
+            if (v[u] > v[o]) {
+                if (v[u + 1] > v[u]){
+                    // o < u < u+1
+                    T temp = v[u];
+                    v[u] = v[o];
+                    v[o] = v[u+1];
+                    v[u+1] = temp;
+                } else {
+                    if (v[o] > v[u+1]){
+                        //u+1 < o < u
+                        T temp = v[u];
+                        v[u] = v[u+1];
+                        v[u+1] = v[o];
+                        v[o] = temp;
+                    } else {
+                        // o < u+1 < u
+                        T temp = v[u];
+                        v[u] = v[o];
+                        v[o] = temp;
+                    }
+                }
+            } else {
+                // u < o
+                if (v[u+1] > v[o]){
+                    // u < o < u+1
+                    T temp = v[u+1];
+                    v[u+1] = v[o];
+                    v[o] = temp;
+                } else {
+                    if (v[u] > v[u+1]){
+                        // u+1 < u < o
+                        T temp = v[u];
+                        v[u] = v[u+1];
+                        v[u+1] = temp;
+                    }
+                }
+            }
+        }
+    } else {
+        //sort and write to m
+        if (o - u == 1) {
+            if (v[u] > v[o]){
+                m[u] = v[o];
+                m[o] = m[u];
+            } else {
+                m[u] = v[u];
+                m[o] = v[o];
+            }
+        } else {
+            if (v[u] > v[o]) {
+                if (v[u + 1] > v[u]){
+                    // o < u < u+1
+                    m[u] = v[o];
+                    m[o] = v[u+1];
+                    m[u+1] = v[u];
+                } else {
+                    if (v[o] > v[u+1]){
+                        //u+1 < o < u
+                        m[u] = v[u+1];
+                        m[u+1] = v[o];
+                        m[o] = v[u];
+                    } else {
+                        // o < u+1 < u
+                        m[u] = v[o];
+                        m[o] = v[u];
+                        m[u+1] = v[u+1];
+                    }
+                }
+            } else {
+                // u < o
+                if (v[u+1] > v[o]){
+                    // u < o < u+1
+                    m[u] = v[u];
+                    m[u+1] = v[o];
+                    m[o] = v[u+1];
+                } else {
+                    if (v[u] > v[u+1]){
+                        // u+1 < u < o
+                        m[o] = v[o];
+                        m[u] = v[u+1];
+                        m[u+1] = v[u];
+                    } else {
+                        // u < u+1 < o nur kopieren
+                        m[u] = v[u];
+                        m[u+1] = v[u+1];
+                        m[o] = v[o];
+                    }
+                }
+            }
+        }
     }
 }
