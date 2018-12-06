@@ -6,22 +6,30 @@
 #include<vector>
 #include <iostream>
 #include "naivmerge.cpp"
-#include "Wrappers.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 static int z = 0;
-bool comp (int i,int j) { z++; return (i<j); }
+
+bool comp(int i, int j) {
+    z++;
+    return (i < j);
+}
 
 
-int main(){
+int main() {
 
-    std::array<int,18> myarr = { 80, 16, 77, 34, 65, 345, 2, 15, 4, 47, 64, 117, 11, 14, 96, 33, 109, 42 };
-    mergesort(myarr.begin(),myarr.end());
+    std::vector<int> myarr = {80, 16, 77, 34, 65, 345, 2, 15, 4, 47, 64, 117, 11, 14, 96, 33, 109, 42};
+    std::vector<int>::iterator start = myarr.begin();
+    std::vector<int>::iterator end = myarr.end();
+    std::cout << "\nDas Array vor der Sortierung: " << "\n";
+    for (auto it = myarr.begin(); it != myarr.end(); it++) {
+        std::cout << *it;
+        std::cout << " ";
+    }
 
-    std::cout << " das array nach der Sortierung: ";
-    for(auto it=myarr.begin(); it != myarr.end(); it++){
+    mergesort(start, end);
+
+    std::cout << "\nDas Array nach der Sortierung: " << "\n";
+    for (auto it = myarr.begin(); it != myarr.end(); it++) {
         std::cout << *it;
         std::cout << " ";
     }
