@@ -77,7 +77,7 @@ public:
         return (x > y);
     }
 
-    //compare operators for other Wrapper
+    //compare operators for other Wrapper.
 
     bool operator== (const BasetypeWrapper<T> &y) {
         c++;
