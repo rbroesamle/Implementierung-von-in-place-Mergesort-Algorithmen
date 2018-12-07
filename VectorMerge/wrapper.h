@@ -19,12 +19,10 @@ public:
     BasetypeWrapper(T xx) : x(xx) {}
     //copy constructor
     BasetypeWrapper(const BasetypeWrapper& orig) : x(orig.x) {
-        m++;
     }
     //move constructor
     BasetypeWrapper(BasetypeWrapper&& orig) {
         std::swap(x, orig.x);
-        m++;
     }
     //destructor
     ~BasetypeWrapper() {}
@@ -35,6 +33,7 @@ public:
             BasetypeWrapper tmp(other);
             std::swap(x, tmp.x);
         }
+        m++;
         return *this;
     }
 
@@ -48,71 +47,65 @@ public:
     }
 
     //compare operators for Type T
-    bool operator== (const T y) {
+    bool operator== (const T &y) {
         c++;
         return (x == y);
     }
 
-    bool operator!= (const T y) {
+    bool operator!= (const T &y) {
         c++;
         return (x != y);
     }
 
-    bool operator<= (const T y) {
+    bool operator<= (const T &y) {
         c++;
         return (x <= y);
     }
 
-    bool operator>= (const T y) {
+    bool operator>= (const T &y) {
         c++;
         return (x >= y);
     }
 
-    bool operator< (const T y) {
+    bool operator< (const T &y) {
         c++;
         return (x < y);
     }
 
-    bool operator> (const T y) {
+    bool operator> (const T &y) {
         c++;
         return (x > y);
     }
 
     //compare operators for other Wrapper
 
-    bool operator== (const BasetypeWrapper<T> y) {
+    bool operator== (const BasetypeWrapper<T> &y) {
         c++;
-        m--;
         return (x == y.x);
     }
 
-    bool operator!= (const BasetypeWrapper<T> y) {
+    bool operator!= (const BasetypeWrapper<T> &y) {
         c++;
-        m--;
         return (x != y.x);
     }
 
-    bool operator<= (const BasetypeWrapper<T> y) {
+    bool operator<= (const BasetypeWrapper<T> &y) {
         c++;
-        m--;
         return (x <= y.x);
     }
 
-    bool operator>= (const BasetypeWrapper<T> y) {
+    bool operator>= (const BasetypeWrapper<T> &y) {
         c++;
-        m--;
         return (x >= y.x);
     }
 
-    bool operator< (const BasetypeWrapper<T> y) {
+    bool operator< (const BasetypeWrapper<T> &y) {
         c++;
-        m--;
         return (x < y.x);
     }
 
-    bool operator> (const BasetypeWrapper<T> y) {
+    bool operator> (const BasetypeWrapper<T> &y) {
         c++;
-        m--;
         return (x > y.x);
     }
 
