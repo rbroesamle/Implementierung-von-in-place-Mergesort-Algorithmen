@@ -75,7 +75,7 @@ void mergesort(typename std::__1::__wrap_iter<T *> start, typename std::__1::__w
         auto startBlock2New = endBlock1New;
         auto endBlock2New = startBlock2New + blockSize;
 
-        //Continue until there are less than 2 unmerged blocks left.
+        //Merge 2 blocks into extra array/vector
         while (endBlock2Orig <= end) {
             if (copyFromOrigToNew) {
                 merge(startBlock1Orig, endBlock1Orig,
@@ -89,7 +89,7 @@ void mergesort(typename std::__1::__wrap_iter<T *> start, typename std::__1::__w
 
             //Randfälle abdecken
             if (endBlock2Orig + 2 * blockSize <= end) {
-                //Es passen noch 2 ganze Blöcke in den ungemergten Bereich
+                //Es passen noch 2 ganze Blöcke in den "ungemergten" Bereich
                 startBlock1Orig = endBlock2Orig;
                 endBlock1Orig = startBlock1Orig + blockSize;
                 startBlock2Orig = endBlock1Orig;
@@ -100,7 +100,7 @@ void mergesort(typename std::__1::__wrap_iter<T *> start, typename std::__1::__w
                 startBlock2New = endBlock1New;
                 endBlock2New = startBlock2New + blockSize;
             } else if (endBlock2Orig + blockSize <= end) {
-                //Es passt nur noch 1 ganzer Block in den ungemergten Bereich
+                //Es passt nur noch 1 ganzer Block in den "ungemergten" Bereich
                 if (copyFromOrigToNew) {
                     merge(endBlock2Orig, endBlock2Orig + blockSize,
                           endBlock2Orig + blockSize, end,
@@ -112,7 +112,7 @@ void mergesort(typename std::__1::__wrap_iter<T *> start, typename std::__1::__w
                 }
                 break;
             } else {
-                //Es passt kein ganzer Block in den ungemergten Bereich
+                //Es passt kein ganzer Block in den "ungemergten" Bereich
                 //Kopiere letzten Block in anderes Array/Vektor.
                 if (copyFromOrigToNew) {
                     merge(endBlock2Orig, end,
