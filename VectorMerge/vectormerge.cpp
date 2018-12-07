@@ -114,7 +114,7 @@ void small_sort (std::vector<T> &v, std::vector<T> &m, int u, int o, bool i){
         if (o - u == 1) {
             if (v[u] > v[o]){
                 m[u] = v[o];
-                m[o] = m[u];
+                m[o] = v[u];
             } else {
                 m[u] = v[u];
                 m[o] = v[o];
