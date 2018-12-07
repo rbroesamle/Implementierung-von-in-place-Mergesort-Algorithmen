@@ -18,19 +18,19 @@ bool comp(int i, int j) {
 int main() {
 
     std::vector<int> myarr = {80, 16, 77, 34, 65, 345, 2, 15, 4, 47, 64, 117, 11, 14, 96, 33, 109, 42};
-    std::vector<int>::iterator start = myarr.begin();
-    std::vector<int>::iterator end = myarr.end();
+    auto start = myarr.begin();
+    auto end = myarr.end();
     std::cout << "\nDas Array vor der Sortierung: " << "\n";
-    for (auto it = myarr.begin(); it != myarr.end(); it++) {
-        std::cout << *it;
+    for (int &it : myarr) {
+        std::cout << it;
         std::cout << " ";
     }
 
-    mergesort(start, end);
+    mergesort<std::vector<int>::iterator, int>(start, end);
 
     std::cout << "\nDas Array nach der Sortierung: " << "\n";
-    for (auto it = myarr.begin(); it != myarr.end(); it++) {
-        std::cout << *it;
+    for (int &it : myarr) {
+        std::cout << it;
         std::cout << " ";
     }
 
