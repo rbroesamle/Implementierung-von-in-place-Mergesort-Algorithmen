@@ -30,7 +30,7 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     //timeval start, end;
     //mingw_gettimeofday(&start, 0);
     //stdSort? std::sort(test.begin(), test.end()): mergesort(test);
-    stdSort? std::sort(test.begin(), test.end()): mergesort<std::vector<BasetypeWrapper<int>>::iterator, BasetypeWrapper<int>>(test.begin(),test.end());
+    stdSort? std::stable_sort(test.begin(), test.end()): mergesort<std::vector<BasetypeWrapper<int>>::iterator, BasetypeWrapper<int>>(test.begin(),test.end());
     //mingw_gettimeofday(&end,0);
     std::cout << "Anzahl an Vergleichen:" << std::endl;
     std::cout << BasetypeWrapper<int>::get_c() << std::endl;
