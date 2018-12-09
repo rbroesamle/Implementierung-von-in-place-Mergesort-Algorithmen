@@ -14,8 +14,8 @@ void mergesort(Iterator begin, Iterator fin){
 template <typename Iterator, typename T>
 void recsort(Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     int size = fin_v - begin_v;
-    int pivot = size / 2;
-    if(fin_v - begin_v > 3){
+    int pivot = (size - 1) / 2 + 1;
+    if(size > 3){
         recsort<Iterator,T>(begin_v, begin_v + pivot, begin_m, !i);
         recsort<Iterator,T>(begin_v + pivot, fin_v, begin_m + pivot, !i);
         if(i){
