@@ -3,4 +3,4 @@ project(Code)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Code main.cpp naivmerge.cpp)
+add_executable(Code main.cpp naivmerge.cpp vectormain.cpp wrapper.h)
