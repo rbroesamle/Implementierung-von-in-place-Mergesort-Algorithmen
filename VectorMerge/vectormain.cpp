@@ -8,6 +8,7 @@
 #include <time.h>
 #include <algorithm>
 #include <random>
+#include "vectormergeIter.cpp"
 
 /*
  * Testmethode, die auf einer Kopie eines Vektors der Größe size sortiert
@@ -19,19 +20,18 @@
  *
  */
 long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
+    std::vector<BasetypeWrapper<int>> copy;
+    if(!stdSort){
+        copy = test;
+        std::sort(copy.begin(), copy.end());
+    }
     BasetypeWrapper<int>::reset_c();
     BasetypeWrapper<int>::reset_m();
     timeval start, end;
     mingw_gettimeofday(&start, 0);
-    stdSort? std::sort(test.begin(), test.end()): mergesort(test);
+    //stdSort? std::sort(test.begin(), test.end()): mergesort(test);
+    stdSort? std::sort(test.begin(), test.end()): mergesort<std::vector<BasetypeWrapper<int>>::iterator, BasetypeWrapper<int>>(test.begin(),test.end());
     mingw_gettimeofday(&end,0);
-    int before = test[0].get_value();
-    for(int i=1; i < size; i++){
-        if(test[i] < before){
-            std::cout << "testshuffle failed!!!" << std::endl;
-        }
-        before = test[i].get_value();
-    }
     std::cout << "Anzahl an Vergleichen:" << std::endl;
     std::cout << BasetypeWrapper<int>::get_c() << std::endl;
     std::cout << "Anzahl an Zuweisungen:" << std::endl;
@@ -44,6 +44,26 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     std::cout << std::endl;
     std::cout << " -----------------------------------" << std::endl;
     std::cout << std::endl;
+
+    bool success = true;
+    if(!stdSort){
+        auto testIt = test.begin();
+        for(auto sortIt = copy.begin(); sortIt != copy.end(); sortIt++){
+            if(*sortIt != *testIt){
+                std::cout << "------> Sortierung inkorrekt!!! <------" << std::endl;
+                success = false;
+            }
+            testIt++;
+        }
+        if(testIt != test.end()){
+            std::cout << "------> Sortierung inkorrekt!!! <------" << std::endl;
+            success = false;
+        }
+        if(success){
+            std::cout << "------> Sortierreihenfolge stimmt <------" << std::endl;
+        }
+    }
+
     return mikro;
 }
 

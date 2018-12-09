@@ -9,7 +9,7 @@ void mergesort(std::vector<T> &v) {
     unsigned int size = v.size();
     std::vector<T> merge_vector;
     merge_vector.reserve(size);
-    recsort(merge_vector, v, 0, v.size() - 1, true);
+    recsort(v, merge_vector, 0, v.size() - 1, true);
 }
 
 /*rufe diese Methode rekursiv mit vertauschtem m und v auf bis
