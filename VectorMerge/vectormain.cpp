@@ -27,20 +27,20 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     }
     BasetypeWrapper<int>::reset_c();
     BasetypeWrapper<int>::reset_m();
-    timeval start, end;
-    mingw_gettimeofday(&start, 0);
+    //timeval start, end;
+    //mingw_gettimeofday(&start, 0);
     //stdSort? std::sort(test.begin(), test.end()): mergesort(test);
     stdSort? std::sort(test.begin(), test.end()): mergesort<std::vector<BasetypeWrapper<int>>::iterator, BasetypeWrapper<int>>(test.begin(),test.end());
-    mingw_gettimeofday(&end,0);
+    //mingw_gettimeofday(&end,0);
     std::cout << "Anzahl an Vergleichen:" << std::endl;
     std::cout << BasetypeWrapper<int>::get_c() << std::endl;
     std::cout << "Anzahl an Zuweisungen:" << std::endl;
     std::cout << BasetypeWrapper<int>::get_m() << std::endl;
     std::cout << "Dauer der Sortierung:" << std::endl;
-    long mikro = (end.tv_sec - start.tv_sec)* 1000000 + end.tv_usec - start.tv_usec;
-    std::cout << double(mikro)/1000000 << " sekunden" << std::endl;
-    std::cout << double(mikro)/1000 << " millisekunden" << std::endl;
-    std::cout << mikro  << " mikrosekunden" << std::endl;
+    //long mikro = (end.tv_sec - start.tv_sec)* 1000000 + end.tv_usec - start.tv_usec;
+    //std::cout << double(mikro)/1000000 << " sekunden" << std::endl;
+    //std::cout << double(mikro)/1000 << " millisekunden" << std::endl;
+    //std::cout << mikro  << " mikrosekunden" << std::endl;
     std::cout << std::endl;
     std::cout << " -----------------------------------" << std::endl;
     std::cout << std::endl;
@@ -64,7 +64,8 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
         }
     }
 
-    return mikro;
+    //return mikro;
+    return 0;
 }
 
 /*
@@ -98,12 +99,16 @@ long testDifferElem(int size, bool stdSort){
  * und Vergleichs-/Zuweisungszähler beziehen sich auf die Standardsortierung (ansonsten jeweils auf den Mergesort)
  */
 long testRandNum(int size, int u, int o, bool stdSort){
-    std::random_device rd;
+    // TODO: evtl bessere Verteilung implementieren. Hab den "empfohlenen Weg" (der nicht funktioniert) mal nur auskommentiert
+    /*std::random_device rd;
     std::mt19937 rng(rd());
     std::uniform_int_distribution<int> uni(u, o);
+     */
     std::vector<BasetypeWrapper<int>> test;
+    std::srand(time(0));
     for(int i=0; i < size; i++){
-        test.push_back(uni(rng));
+        test.push_back(static_cast<int>(std::rand() * 1.0 / RAND_MAX * (o-u+1) + u));
+        //test.push_back(uni(rng));
     }
     long mikro = testSort(test, size, false);
     if(stdSort){
