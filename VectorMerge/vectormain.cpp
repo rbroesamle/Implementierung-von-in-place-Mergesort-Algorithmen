@@ -79,6 +79,7 @@ long testDifferElem(int size, bool stdSort){
     for(int i=0; i < size; i++){
         test.push_back(i);
     }
+    std::srand(time(0));
     std::random_shuffle(test.begin(), test.end());
     long mikro = testSort(test, size, false);
     if(stdSort){
