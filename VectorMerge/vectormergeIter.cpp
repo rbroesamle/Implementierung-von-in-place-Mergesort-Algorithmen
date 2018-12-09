@@ -4,6 +4,7 @@
 
 #include "vectormergeIter.h"
 
+//starte den rekursiven Mergesort
 template <typename Iterator, typename T>
 void mergesort(Iterator begin, Iterator fin){
     std::vector<T> merge_vector;
@@ -11,6 +12,11 @@ void mergesort(Iterator begin, Iterator fin){
     recsort<Iterator,T>(begin, fin, merge_vector.begin(), true);
 }
 
+/* Rufe diese Methode jeweils rekursiv mit invertiertem boolean i auf
+ * Falls nur noch 2 oder 3 Elemente in v sind, dann rufe den small-sort auf
+ * Merge dann die rekursiv bereits sortierten Teillisten
+ * Falls i = true, dann merge von m in v; ansonsten merge von v in m
+*/
 template <typename Iterator, typename T>
 void recsort(Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     int size = fin_v - begin_v;
@@ -28,6 +34,7 @@ void recsort(Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     }
 }
 
+//merge die Teillisten sortiert vom ersten Vektor in den zweiten
 template <typename Iterator, typename T>
 void merge (Iterator begin_v, Iterator fin_v, Iterator pivot, Iterator begin_m) {
     Iterator middle = pivot;
@@ -54,6 +61,11 @@ void merge (Iterator begin_v, Iterator fin_v, Iterator pivot, Iterator begin_m) 
     }
 }
 
+/*
+ * Diese Prozedur sortiert Listen der Länge 2 oder 3
+ * Falls i = true, dann sortiere innerhalb von v
+ * Ansonsten sortiere die Elemente von v in m
+ */
 template <typename Iterator, typename T>
 void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     if (i){

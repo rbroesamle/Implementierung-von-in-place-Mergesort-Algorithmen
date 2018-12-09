@@ -3,7 +3,8 @@
 //
 
 #include "vectormerge.h"
-// Initialisiere sort mit kopie des vektors zum mergen
+
+//starte den rekursiven Mergesort
 template<typename T>
 void mergesort(std::vector<T> &v) {
     unsigned int size = v.size();
@@ -12,9 +13,10 @@ void mergesort(std::vector<T> &v) {
     recsort(v, merge_vector, 0, v.size() - 1, true);
 }
 
-/*rufe diese Methode rekursiv mit vertauschtem m und v auf bis
- * Untergrenze = Obergrenze, dann merge die sortierten Teillisten
- * Erster Aufruf (also letzer merge) merget immer vom Hilfsvektor m in den zu sortierenden vektor v
+/* Rufe diese Methode jeweils rekursiv mit invertiertem boolean i auf
+ * Falls nur noch 2 oder 3 Elemente in v sind, dann rufe den small-sort auf
+ * Merge dann die rekursiv bereits sortierten Teillisten
+ * Falls i = true, dann merge von m in v; ansonsten merge von v in m
 */
 template<typename T>
 void recsort(std::vector<T> &v, std::vector<T> &m, int u, int o, bool i){
@@ -60,6 +62,11 @@ void merge (std::vector<T> &v, std::vector<T> &m, int u_1, int o_2, int o_1) {
     }
 }
 
+/*
+ * Diese Prozedur sortiert Listen der Länge 2 oder 3
+ * Falls i = true, dann sortiere innerhalb von v
+ * Ansonsten sortiere die Elemente von v in m
+ */
 template <typename T>
 void small_sort (std::vector<T> &v, std::vector<T> &m, int u, int o, bool i){
     if (i){
