@@ -21,7 +21,8 @@ template <typename Iterator, typename T>
 void recsort(Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     int size = fin_v - begin_v;
     int pivot = (size - 1) / 2 + 1;
-    if(size > 3){
+    //TODO: Bedingung für smallsort bzw. gewünschten smallsort anpassen
+    if(size > 6){
         recsort<Iterator,T>(begin_v, begin_v + pivot, begin_m, !i);
         recsort<Iterator,T>(begin_v + pivot, fin_v, begin_m + pivot, !i);
         if(i){
@@ -30,7 +31,8 @@ void recsort(Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
             merge<Iterator,T>(begin_v, fin_v, begin_v + pivot, begin_m);
         }
     } else {
-        small_sort<Iterator,T>(begin_v, fin_v - 1, begin_m, i);
+        //small_sort<Iterator,T>(begin_v, fin_v - 1, begin_m, i);
+        small_insertion_sort<Iterator, T>(begin_v, fin_v, begin_m, i);
     }
 }
 
@@ -170,6 +172,39 @@ void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
                     }
                 }
             }
+        }
+    }
+}
+
+template <typename Iterator, typename T>
+void small_insertion_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
+    if (i) {
+        // Wenn i gesetzt ist sortiere innerhalb von v
+        for(auto it_i = begin_v + 1; it_i != fin_v; it_i++){
+            T temp = *it_i;
+            Iterator it_j;
+            for (it_j = it_i; it_j != begin_v; it_j--) {
+                if (*(it_j-1) > temp) {
+                    *it_j = *(it_j -1);
+                } else {
+                    break;
+                }
+            }
+            *it_j = temp;
+        }
+    } else {
+        // Wenn i nicht gesetzt ist sortiere nach m
+        *begin_m = *begin_v;
+        for(auto it_i = begin_v + 1; it_i != fin_v; it_i++){
+            Iterator it_j;
+            for (it_j = begin_m + (it_i - begin_v); it_j != begin_m; it_j--) {
+                if (*(it_j-1) > *it_i) {
+                    *it_j = *(it_j -1);
+                } else {
+                    break;
+                }
+            }
+            *it_j = *it_i;
         }
     }
 }

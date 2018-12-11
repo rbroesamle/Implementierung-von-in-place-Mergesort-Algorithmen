@@ -18,3 +18,6 @@ void merge (Iterator begin_v, Iterator fin_v, Iterator pivot, Iterator begin_m);
 template <typename Iterator, typename T>
 void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i);
 
+// Insertionsort als Ersatz für den Smallsort um auch größere Blöcke ohne weiteres Aufspalten sortieren zu können.
+template <typename Iterator, typename T>
+void small_insertion_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i);
