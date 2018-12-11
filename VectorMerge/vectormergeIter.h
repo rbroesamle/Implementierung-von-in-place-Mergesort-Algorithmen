@@ -4,8 +4,9 @@
 
 #include <vector>
 #include <iostream>
+#include <iterator>
 
-template <typename Iterator, typename T>
+template <typename Iterator>
 void mergesort(Iterator begin, Iterator fin);
 
 template <typename Iterator, typename T>

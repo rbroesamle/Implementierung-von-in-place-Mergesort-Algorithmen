@@ -5,11 +5,11 @@
 #include "vectormergeIter.h"
 
 //starte den rekursiven Mergesort
-template <typename Iterator, typename T>
+template <typename Iterator>
 void mergesort(Iterator begin, Iterator fin){
-    std::vector<T> merge_vector;
+    std::vector<typename std::iterator_traits<Iterator>::value_type> merge_vector;
     merge_vector.reserve(fin - begin);
-    recsort<Iterator,T>(begin, fin, merge_vector.begin(), true);
+    recsort<Iterator,typename std::iterator_traits<Iterator>::value_type>(begin, fin, merge_vector.begin(), true);
 }
 
 /* Rufe diese Methode jeweils rekursiv mit invertiertem boolean i auf
