@@ -47,64 +47,64 @@ public:
     }
 
     //compare operators for Type T
-    bool operator== (const T &y) {
+    bool operator== (const T &y) const {
         c++;
         return (x == y);
     }
 
-    bool operator!= (const T &y) {
+    bool operator!= (const T &y) const {
         c++;
         return (x != y);
     }
 
-    bool operator<= (const T &y) {
+    bool operator<= (const T &y) const {
         c++;
         return (x <= y);
     }
 
-    bool operator>= (const T &y) {
+    bool operator>= (const T &y) const {
         c++;
         return (x >= y);
     }
 
-    bool operator< (const T &y) {
+    bool operator< (const T &y) const {
         c++;
         return (x < y);
     }
 
-    bool operator> (const T &y) {
+    bool operator> (const T &y) const {
         c++;
         return (x > y);
     }
 
     //compare operators for other Wrapper.
 
-    bool operator== (const BasetypeWrapper<T> &y) {
+    bool operator== (const BasetypeWrapper<T> &y) const {
         c++;
         return (x == y.x);
     }
 
-    bool operator!= (const BasetypeWrapper<T> &y) {
+    bool operator!= (const BasetypeWrapper<T> &y) const {
         c++;
         return (x != y.x);
     }
 
-    bool operator<= (const BasetypeWrapper<T> &y) {
+    bool operator<= (const BasetypeWrapper<T> &y) const {
         c++;
         return (x <= y.x);
     }
 
-    bool operator>= (const BasetypeWrapper<T> &y) {
+    bool operator>= (const BasetypeWrapper<T> &y) const {
         c++;
         return (x >= y.x);
     }
 
-    bool operator< (const BasetypeWrapper<T> &y) {
+    bool operator< (const BasetypeWrapper<T> &y) const {
         c++;
         return (x < y.x);
     }
 
-    bool operator> (const BasetypeWrapper<T> &y) {
+    bool operator> (const BasetypeWrapper<T> &y) const {
         c++;
         return (x > y.x);
     }

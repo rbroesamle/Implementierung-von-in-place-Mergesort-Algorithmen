@@ -145,24 +145,16 @@ void merge(Iterator startBlock1From, Iterator endBlock1From,
     Iterator iteratorBlock2 = startBlock2From;
     Iterator iteratorTo = startTo;
 
-    //Elements to compare
-    auto a = *iteratorBlock1;
-    auto b = *iteratorBlock2;
-
     //While there are unmerged elements in block1 and block2
     while (iteratorBlock1 < endBlock1From && iteratorBlock2 < endBlock2From) {
-        if (a > b) {
+        if (*iteratorBlock1 > *iteratorBlock2) {
             //copy b into extra vector
-            *iteratorTo = b;
+            *iteratorTo = *iteratorBlock2;
             iteratorBlock2++;
-            //update b
-            b = *iteratorBlock2;
         } else {
             //copy a into extra vector
-            *iteratorTo = a;
+            *iteratorTo = *iteratorBlock1;
             iteratorBlock1++;
-            //update a
-            a = *iteratorBlock1;
         }
         iteratorTo++;
     }

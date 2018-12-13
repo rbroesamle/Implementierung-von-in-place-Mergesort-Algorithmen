@@ -8,6 +8,7 @@
 #include <time.h>
 #include <algorithm>
 #include <random>
+#include <chrono>
 
 /*
  * Testmethode, die auf einer Kopie eines Vektors der Größe size sortiert
@@ -18,6 +19,14 @@
  * Der Reset des Vergleichs- und Zuweisungszählers erfolgt direkt am Anfang der Methode
  *
  */
+std::vector<long> times;
+std::vector<int> comps;
+std::vector<int> assis;
+
+std::vector<long> std_times;
+std::vector<int> std_comps;
+std::vector<int> std_assis;
+
 long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     std::vector<BasetypeWrapper<int>> copy;
     if(!stdSort){
@@ -26,18 +35,25 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     }
     BasetypeWrapper<int>::reset_c();
     BasetypeWrapper<int>::reset_m();
-    timeval start, end;
-    mingw_gettimeofday(&start, 0);
-    stdSort? std::sort(test.begin(), test.end()): mergesort<std::vector<BasetypeWrapper<int>>::iterator>(test.begin(), test.end());
-    mingw_gettimeofday(&end,0);
-    std::cout << "Anzahl an Vergleichen:" << std::endl;
-    std::cout << BasetypeWrapper<int>::get_c() << std::endl;
-    std::cout << "Anzahl an Zuweisungen:" << std::endl;
-    std::cout << BasetypeWrapper<int>::get_m() << std::endl;
+    std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+    //stdSort? std::sort(test.begin(), test.end()): mergesort(test);
+    stdSort? std::stable_sort(test.begin(), test.end()): mergesort(test.begin(),test.end());
+    std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+    int c = BasetypeWrapper<int>::get_c();
+    int m = BasetypeWrapper<int>::get_m();
+    auto mikro = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+    float milli = float(mikro)/1000;
+    float seconds = float(mikro)/1000000;
+
+    stdSort? std_comps.push_back(c) : comps.push_back(c);
+    stdSort? std_assis.push_back(m) : assis.push_back(m);
+    stdSort? std_times.push_back(mikro) : times.push_back(mikro);
+
+    std::cout << "Anzahl an Vergleichen:" << std::endl << c << std::endl;
+    std::cout << "Anzahl an Zuweisungen:" << std::endl << m << std::endl;
     std::cout << "Dauer der Sortierung:" << std::endl;
-    long mikro = (end.tv_sec - start.tv_sec)* 1000000 + end.tv_usec - start.tv_usec;
-    std::cout << double(mikro)/1000000 << " sekunden" << std::endl;
-    std::cout << double(mikro)/1000 << " millisekunden" << std::endl;
+    std::cout << seconds  << " sekunden" << std::endl;
+    std::cout << milli  << " millisekunden" << std::endl;
     std::cout << mikro  << " mikrosekunden" << std::endl;
     std::cout << std::endl;
     std::cout << " -----------------------------------" << std::endl;
@@ -62,7 +78,7 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
         }
     }
 
-    return mikro;
+    return static_cast<long>(mikro);
 }
 
 /*
@@ -96,12 +112,12 @@ long testDifferElem(int size, bool stdSort){
  * und Vergleichs-/Zuweisungszähler beziehen sich auf die Standardsortierung (ansonsten jeweils auf den Mergesort)
  */
 long testRandNum(int size, int u, int o, bool stdSort){
-    std::random_device rd;
-    std::mt19937 rng(rd());
-    std::uniform_int_distribution<int> uni(u, o);
+    // TODO: evtl bessere Verteilung implementieren
     std::vector<BasetypeWrapper<int>> test;
+    std::srand(time(0));
     for(int i=0; i < size; i++){
-        test.push_back(uni(rng));
+        test.push_back(static_cast<int>(std::rand() * 1.0 / RAND_MAX * (o-u+1) + u));
+        //test.push_back(uni(rng));
     }
     long mikro = testSort(test, size, false);
     if(stdSort){
@@ -114,7 +130,39 @@ long testRandNum(int size, int u, int o, bool stdSort){
 }
 
 int main (){
-    testRandNum(500000, 0, 10000, true);
-    testDifferElem(500000, true);
+    int anz = 10;
+    int size = 500000;
+    int u = 0;
+    int o = 10000;
+
+    for(int durch = 0; durch < anz; durch++){
+        //testRandNum(size, u, o, true);
+        testDifferElem(size, true);
+    }
+
+    int comp_sum = 0;
+    int assi_sum = 0;
+    long time_sum = 0;
+    int std_comp_sum = 0;
+    int std_assi_sum = 0;
+    long std_time_sum = 0;
+
+    for(int i=0; i < anz; i++){
+        comp_sum += comps[i];
+        assi_sum += assis[i];
+        time_sum += times[i];
+
+        std_comp_sum += std_comps[i];
+        std_assi_sum += std_assis[i];
+        std_time_sum += std_times[i];
+    }
+
+    std::cout << "Vergleichsschnitt:" << std::endl << comp_sum / anz << std::endl;
+    std::cout << "Zuweisungsschnitt:" << std::endl << assi_sum / anz << std::endl;
+    std::cout << "Zeitschnitt:" << std::endl << time_sum / anz << std::endl;
+
+    std::cout << "Vergleichsschnitt std-Sort:" << std::endl << std_comp_sum / anz << std::endl;
+    std::cout << "Zuweisungsschnitt std-Sort:" << std::endl << std_assi_sum / anz << std::endl;
+    std::cout << "Zeitschnitt std-Sort:" << std::endl << std_time_sum / anz << std::endl;
     return 0;
 }
