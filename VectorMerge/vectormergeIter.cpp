@@ -8,7 +8,7 @@
 template <typename Iterator>
 void mergesort(Iterator begin, Iterator fin){
     std::vector<typename std::iterator_traits<Iterator>::value_type> merge_vector(fin-begin);
-    recsort<Iterator>(begin, fin, merge_vector.begin(), true);
+    recsort(begin, fin, merge_vector.begin(), true);
 }
 
 /* Rufe diese Methode jeweils rekursiv mit invertiertem boolean i auf
@@ -16,28 +16,28 @@ void mergesort(Iterator begin, Iterator fin){
  * Merge dann die rekursiv bereits sortierten Teillisten
  * Falls i = true, dann merge von m in v; ansonsten merge von v in m
 */
-template <typename Iterator>
-void recsort(Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
+template <typename Iterator, typename VecIterator>
+void recsort(Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i){
     int size = fin_v - begin_v;
     int pivot = (size - 1) / 2 + 1;
     //TODO: Bedingung für smallsort bzw. gewünschten smallsort anpassen
-    if(size > 6){
-        recsort<Iterator>(begin_v, begin_v + pivot, begin_m, !i);
-        recsort<Iterator>(begin_v + pivot, fin_v, begin_m + pivot, !i);
+    if(size > 3){
+        recsort(begin_v, begin_v + pivot, begin_m, !i);
+        recsort(begin_v + pivot, fin_v, begin_m + pivot, !i);
         if(i){
-            merge<Iterator>(begin_m, begin_m + size, begin_m + pivot, begin_v);
+            merge(begin_m, begin_m + size, begin_m + pivot, begin_v);
         } else {
-            merge<Iterator>(begin_v, fin_v, begin_v + pivot, begin_m);
+            merge(begin_v, fin_v, begin_v + pivot, begin_m);
         }
     } else {
-        //small_sort<Iterator,T>(begin_v, fin_v - 1, begin_m, i);
-        small_insertion_sort<Iterator>(begin_v, fin_v, begin_m, i);
+        small_sort(begin_v, fin_v - 1, begin_m, i);
+        //small_insertion_sort(begin_v, fin_v, begin_m, i);
     }
 }
 
 //merge die Teillisten sortiert vom ersten Vektor in den zweiten
-template <typename Iterator>
-void merge (Iterator begin_v, Iterator fin_v, Iterator pivot, Iterator begin_m) {
+template <typename Iterator, typename VecIterator>
+void merge (Iterator begin_v, Iterator fin_v, Iterator pivot, VecIterator begin_m) {
     Iterator middle = pivot;
     while (begin_v != middle && pivot != fin_v){
         if (*begin_v <= *pivot){
@@ -67,8 +67,8 @@ void merge (Iterator begin_v, Iterator fin_v, Iterator pivot, Iterator begin_m) 
  * Falls i = true, dann sortiere innerhalb von v
  * Ansonsten sortiere die Elemente von v in m
  */
-template <typename Iterator>
-void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
+template <typename Iterator, typename VecIterator>
+void small_sort (Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i){
     if (i){
         //sort in v
         if (fin_v - begin_v == 1) {
@@ -119,7 +119,7 @@ void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
         }
     } else {
         //sort and write to m
-        Iterator middle_m = begin_m + 1;
+        VecIterator middle_m = begin_m + 1;
         if (fin_v - begin_v == 1) {
             if (*begin_v > *fin_v){
                 *begin_m = *fin_v;
@@ -129,7 +129,7 @@ void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
                 *middle_m = *fin_v;
             }
         } else {
-            Iterator fin_m = begin_m + 2;
+            VecIterator fin_m = begin_m + 2;
             Iterator middle_v = begin_v + 1;
             if (*begin_v > *fin_v) {
                 if (*middle_v > *begin_v){
@@ -174,8 +174,8 @@ void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
         }
     }
 }
-template <typename Iterator>
-void small_insertion_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
+template <typename Iterator, typename VecIterator>
+void small_insertion_sort (Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i){
     if (i) {
         // Wenn i gesetzt ist sortiere innerhalb von v
         for(auto it_i = begin_v + 1; it_i != fin_v; it_i++){
@@ -194,7 +194,7 @@ void small_insertion_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, b
         // Wenn i nicht gesetzt ist sortiere nach m
         *begin_m = *begin_v;
         for(auto it_i = begin_v + 1; it_i != fin_v; it_i++){
-            Iterator it_j;
+            VecIterator it_j;
             for (it_j = begin_m + (it_i - begin_v); it_j != begin_m; it_j--) {
                 if (*(it_j-1) > *it_i) {
                     *it_j = *(it_j -1);
