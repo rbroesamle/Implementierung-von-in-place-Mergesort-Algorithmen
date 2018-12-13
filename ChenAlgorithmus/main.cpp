@@ -15,7 +15,7 @@ bool comp(int i, int j) {
 }
 
 
-int old_main() {
+int main() {
 
     std::vector<int> myarr = {80, 16, 77, 34, 65, 345, 2, 15, 4, 47, 64, 117, 11, 14, 96, 33, 109, 42};
     auto start = myarr.begin();

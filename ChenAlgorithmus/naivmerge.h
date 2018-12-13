@@ -14,7 +14,3 @@
 template<typename Iterator>
 void mergesort(Iterator start, Iterator end);
 
-template<typename Iterator>
-void merge(Iterator startBlock1From, Iterator endBlock1From,
-           Iterator startBlock2From, Iterator endBlock2From,
-           Iterator startTo, Iterator endTo);
