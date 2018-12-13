@@ -26,7 +26,7 @@ int old_main() {
         std::cout << " ";
     }
 
-    mergesort<std::vector<int>::iterator, int>(start, end);
+    mergesort<std::vector<int>::iterator>(start, end);
 
     std::cout << "\nDas Array nach der Sortierung: " << "\n";
     for (int &it : myarr) {
