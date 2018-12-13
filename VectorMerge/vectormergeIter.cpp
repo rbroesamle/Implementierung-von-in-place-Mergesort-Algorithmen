@@ -7,9 +7,8 @@
 //starte den rekursiven Mergesort
 template <typename Iterator>
 void mergesort(Iterator begin, Iterator fin){
-    std::vector<typename std::iterator_traits<Iterator>::value_type> merge_vector;
-    merge_vector.reserve(fin - begin);
-    recsort<Iterator,typename std::iterator_traits<Iterator>::value_type>(begin, fin, merge_vector.begin(), true);
+    std::vector<typename std::iterator_traits<Iterator>::value_type> merge_vector(fin-begin);
+    recsort<Iterator>(begin, fin, merge_vector.begin(), true);
 }
 
 /* Rufe diese Methode jeweils rekursiv mit invertiertem boolean i auf
@@ -17,27 +16,27 @@ void mergesort(Iterator begin, Iterator fin){
  * Merge dann die rekursiv bereits sortierten Teillisten
  * Falls i = true, dann merge von m in v; ansonsten merge von v in m
 */
-template <typename Iterator, typename T>
+template <typename Iterator>
 void recsort(Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     int size = fin_v - begin_v;
     int pivot = (size - 1) / 2 + 1;
     //TODO: Bedingung für smallsort bzw. gewünschten smallsort anpassen
     if(size > 6){
-        recsort<Iterator,T>(begin_v, begin_v + pivot, begin_m, !i);
-        recsort<Iterator,T>(begin_v + pivot, fin_v, begin_m + pivot, !i);
+        recsort<Iterator>(begin_v, begin_v + pivot, begin_m, !i);
+        recsort<Iterator>(begin_v + pivot, fin_v, begin_m + pivot, !i);
         if(i){
-            merge<Iterator,T>(begin_m, begin_m + size, begin_m + pivot, begin_v);
+            merge<Iterator>(begin_m, begin_m + size, begin_m + pivot, begin_v);
         } else {
-            merge<Iterator,T>(begin_v, fin_v, begin_v + pivot, begin_m);
+            merge<Iterator>(begin_v, fin_v, begin_v + pivot, begin_m);
         }
     } else {
         //small_sort<Iterator,T>(begin_v, fin_v - 1, begin_m, i);
-        small_insertion_sort<Iterator, T>(begin_v, fin_v, begin_m, i);
+        small_insertion_sort<Iterator>(begin_v, fin_v, begin_m, i);
     }
 }
 
 //merge die Teillisten sortiert vom ersten Vektor in den zweiten
-template <typename Iterator, typename T>
+template <typename Iterator>
 void merge (Iterator begin_v, Iterator fin_v, Iterator pivot, Iterator begin_m) {
     Iterator middle = pivot;
     while (begin_v != middle && pivot != fin_v){
@@ -68,13 +67,13 @@ void merge (Iterator begin_v, Iterator fin_v, Iterator pivot, Iterator begin_m) 
  * Falls i = true, dann sortiere innerhalb von v
  * Ansonsten sortiere die Elemente von v in m
  */
-template <typename Iterator, typename T>
+template <typename Iterator>
 void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     if (i){
         //sort in v
         if (fin_v - begin_v == 1) {
             if (*begin_v > *fin_v){
-                T temp = *begin_v;
+                auto temp = *begin_v;
                 *begin_v = *fin_v;
                 *fin_v = temp;
             }
@@ -83,20 +82,20 @@ void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
             if (*begin_v > *fin_v) {
                 if (*m > *begin_v){
                     // o < u < u+1
-                    T temp = *begin_v;
+                    auto temp = *begin_v;
                     *begin_v = *fin_v;
                     *fin_v = *m;
                     *m = temp;
                 } else {
                     if (*fin_v > *m){
                         //u+1 < o < u
-                        T temp = *begin_v;
+                        auto temp = *begin_v;
                         *begin_v = *m;
                         *m = *fin_v;
                         *fin_v = temp;
                     } else {
                         // o < u+1 < u
-                        T temp = *begin_v;
+                        auto temp = *begin_v;
                         *begin_v = *fin_v;
                         *fin_v = temp;
                     }
@@ -105,13 +104,13 @@ void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
                 // u < o
                 if (*m > *fin_v){
                     // u < o < u+1
-                    T temp = *m;
+                    auto temp = *m;
                     *m = *fin_v;
                     *fin_v = temp;
                 } else {
                     if (*begin_v > *m){
                         // u+1 < u < o
-                        T temp = *begin_v;
+                        auto temp = *begin_v;
                         *begin_v = *m;
                         *m = temp;
                     }
@@ -175,13 +174,12 @@ void small_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
         }
     }
 }
-
-template <typename Iterator, typename T>
+template <typename Iterator>
 void small_insertion_sort (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     if (i) {
         // Wenn i gesetzt ist sortiere innerhalb von v
         for(auto it_i = begin_v + 1; it_i != fin_v; it_i++){
-            T temp = *it_i;
+            auto temp = *it_i;
             Iterator it_j;
             for (it_j = it_i; it_j != begin_v; it_j--) {
                 if (*(it_j-1) > temp) {
