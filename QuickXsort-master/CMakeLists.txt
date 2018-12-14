@@ -1,0 +1,61 @@
+cmake_minimum_required(VERSION 3.12)
+project(QuickXsort_master)
+
+set(CMAKE_CXX_STANDARD 14)
+
+include_directories(.)
+
+add_executable(QuickXsort_master
+        supplementary-material/variance-coefficient.nb
+        binaryinsertionsort.h++
+        driver.cpp
+        insertionsort.h
+        makefile
+        median.h
+        median_of_medians.h
+        mergeinsertion_special2.h++
+        mergesort.h++
+        partition_mom.h
+        partition_stl.h
+        quickheap.h++
+        quickmerge.h
+        quickmerge_binaryinsertionsort.h++
+        quickmerge_binaryinsertionsort_mosqrt.h++
+        quickmerge_hybrid.h++
+        quickmerge_hybrid_mo3.h++
+        quickmerge_hybrid_WORST_CASE.h++
+        quickmerge_larger_merge.h++
+        quickmerge_larger_merge_mo5.h++
+        quickmerge_mergeinsertion.h++
+        quickmerge_mergeinsertion_mosqrt.h++
+        quickmerge_mo5_mo5.h++
+        quickmerge_mosqrt.h++
+        quickmerge_mosqrt_small_base.h++
+        quickmerge_no_sampling_larger_merge.h++
+        quickmerge_no_sampling_smaller_merge.h++
+        quickmerge_Reinhardt_mo3.h++
+        quickmerge_smaller_merge.h++
+        quickmerge_worst_case.h
+        quickmerge_worst_case_efficient.h++
+        quickmerge_worst_case_efficient_3_5.h++
+        quickmerge_worst_case_efficient_3_5_sqrt_hybrid.h++
+        quickmerge_worst_case_efficient_3_5_sqrt_hybrid_WORST_CASE.h++
+        quickmerge_worst_case_efficient_3_5_undersampling.h++
+        quickmerge_worst_case_efficient_3_5_undersampling_WORST_CASE.h++
+        quickmerge_worst_case_efficient_3_5_undersampling_WORST_CASE_SKEW.h++
+        quickmerge_worst_case_efficient_3_5_WORST_CASE.h++
+        quickmerge_worst_case_efficient_WORST_CASE.h++
+        README.md
+        smallsort.h
+        stl_gcc.h++
+        stl_gcc_new.h++
+        stl_gcc_new_no_is.h++
+        stl_gcc_new_pivot.h++
+        stl_gcc_new_qms_intro.h++
+        stl_gcc_new_random.h++
+        stl_gcc_new_random_pivot.h++
+        stl_gcc_qms_intro.h++
+        stl_partial_sort.h++
+        stl_stable_sort.h++
+        wikisort.h++
+        vectormergeIter.h++)
