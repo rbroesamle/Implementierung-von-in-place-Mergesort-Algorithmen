@@ -37,7 +37,7 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     BasetypeWrapper<int>::reset_c();
     BasetypeWrapper<int>::reset_m();
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-    //stdSort? std::sort(test.begin(), test.end()): mergesort(test);
+    //stdSort? std::stable_sort(test.begin(), test.end()): mergesort(test);
     stdSort? std::stable_sort(test.begin(), test.end()): mergesort(test.begin(),test.end());
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
     int c = BasetypeWrapper<int>::get_c();
