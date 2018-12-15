@@ -8,9 +8,14 @@
 /// </summary>
 /// <param name="startFirst">Iterator to the start of the first list</param>
 /// <param name="endFirst">Iterator to the end of the first list</param>
-/// <param name="startSecond">Iterator to the start of the second list</param>
-/// <param name="endSecond">Iterator to the end of the second list</param>
-
 template<typename Iterator>
 void mergesort(Iterator start, Iterator end);
 
+template<typename Iterator>
+void merge(Iterator start, Iterator end, int x0, int y0, int yn, int k);
+
+template<typename Iterator>
+int findNextXBlock(Iterator start, Iterator end, int x0, int z, int y, int k, int f, int b1, int b2);
+
+template<typename Iterator>
+void mergeBandY(Iterator start, Iterator end, int z, int y, int yn);
