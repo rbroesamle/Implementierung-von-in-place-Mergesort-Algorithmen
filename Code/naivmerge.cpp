@@ -30,11 +30,11 @@ void mergesort(Iterator start, Iterator end) {
         //Merge 2 blocks into extra array/vector
         while (endBlock2Orig <= end) {
             if (copyFromOrigToNew) {
-                merge<Iterator>(startBlock1Orig, endBlock1Orig,
+                merge(startBlock1Orig, endBlock1Orig,
                       startBlock2Orig, endBlock2Orig,
                       startBlock1New, endBlock2New);
             } else {
-                merge<Iterator>(startBlock1New, endBlock1New,
+                merge(startBlock1New, endBlock1New,
                       startBlock2New, endBlock2New,
                       startBlock1Orig, endBlock2Orig);
             }
@@ -54,11 +54,11 @@ void mergesort(Iterator start, Iterator end) {
             } else if (endBlock2Orig + blockSize <= end) {
                 //Es passt nur noch 1 ganzer Block in den "ungemergten" Bereich
                 if (copyFromOrigToNew) {
-                    merge<Iterator>(endBlock2Orig, endBlock2Orig + blockSize,
+                    merge(endBlock2Orig, endBlock2Orig + blockSize,
                           endBlock2Orig + blockSize, end,
                           endBlock2New, newEnd);
                 } else {
-                    merge<Iterator>(endBlock2New, endBlock2New + blockSize,
+                    merge(endBlock2New, endBlock2New + blockSize,
                           endBlock2New + blockSize, newEnd,
                           endBlock2Orig, end);
                 }
@@ -67,11 +67,11 @@ void mergesort(Iterator start, Iterator end) {
                 //Es passt kein ganzer Block in den "ungemergten" Bereich
                 //Kopiere letzten Block in anderes Array/Vektor.
                 if (copyFromOrigToNew) {
-                    merge<Iterator>(endBlock2Orig, end,
+                    merge(endBlock2Orig, end,
                           end, end,
                           endBlock2New, newEnd);
                 } else {
-                    merge<Iterator>(endBlock2New, newEnd,
+                    merge(endBlock2New, newEnd,
                           newEnd, newEnd,
                           endBlock2Orig, end);
                 }
@@ -88,62 +88,62 @@ void mergesort(Iterator start, Iterator end) {
         //Merge normally
 
         //Step 1:
-        merge<Iterator>(start, start + blockSize,
+        merge(start, start + blockSize,
               start + blockSize, start + 2 * blockSize,
               newStart, newStart + 2 * blockSize);
         if (start + 3 * blockSize >= end) {
             //Es passt kein ganzer Block in den "ungemergten" Bereich
-            merge<Iterator>(start + 2 * blockSize, end,
+            merge(start + 2 * blockSize, end,
                   end, end,
                   newStart + 2 * blockSize, newEnd);
         } else {
             //Es passt noch 1 ganzer Block in den "ungemergten" Bereich
-            merge<Iterator>(start + 2 * blockSize, start + 3 * blockSize,
+            merge(start + 2 * blockSize, start + 3 * blockSize,
                   start + 3 * blockSize, end,
                   newStart + 2 * blockSize, newEnd);
         }
 
         //Step 2:
         blockSize *= 2;
-        merge<Iterator>(newStart, newStart + blockSize,
+        merge(newStart, newStart + blockSize,
               newStart + blockSize, newEnd,
               start, end);
     } else {
         //Merge so, dass ein zurückkopieren nicht nötig ist.
 
         //Step 1:
-        merge<Iterator>(newStart, newStart + blockSize,
+        merge(newStart, newStart + blockSize,
               newStart + blockSize, newStart + 2 * blockSize,
               end - 2 * blockSize, end);
         unsigned long blockLength = newEnd - (newStart + 2 * blockSize);
         if (newStart + 3 * blockSize >= newEnd) {
             //Es passt kein ganzer Block in den "ungemergten" Bereich
-            merge<Iterator>(newStart + 2 * blockSize, newEnd,
+            merge(newStart + 2 * blockSize, newEnd,
                   newEnd, newEnd,
                   newStart, newStart + blockLength);
         } else {
             //Es passt noch 1 ganzer Block in den "ungemergten" Bereich
-            merge<Iterator>(newStart + 2 * blockSize, newStart + 3 * blockSize,
+            merge(newStart + 2 * blockSize, newStart + 3 * blockSize,
                   newStart + 3 * blockSize, newEnd,
                   newStart, newStart + blockLength);
         }
 
         //Step 2:
         blockSize *= 2;
-        merge<Iterator>(newStart, newStart + blockLength,
+        merge(newStart, newStart + blockLength,
               end - blockSize, end,
               start, end);
     }
 }
 
-template<typename Iterator>
-void merge(Iterator startBlock1From, Iterator endBlock1From,
-           Iterator startBlock2From, Iterator endBlock2From,
-           Iterator startTo, Iterator endTo) {
+template<typename FirstBlockIterator, typename SecondBlockIterator, typename ToIterator>
+void merge(FirstBlockIterator startBlock1From, FirstBlockIterator endBlock1From,
+           SecondBlockIterator startBlock2From, SecondBlockIterator endBlock2From,
+           ToIterator startTo, ToIterator endTo) {
     //Iterators
-    Iterator iteratorBlock1 = startBlock1From;
-    Iterator iteratorBlock2 = startBlock2From;
-    Iterator iteratorTo = startTo;
+    FirstBlockIterator iteratorBlock1 = startBlock1From;
+    SecondBlockIterator iteratorBlock2 = startBlock2From;
+    ToIterator iteratorTo = startTo;
 
     //While there are unmerged elements in block1 and block2
     while (iteratorBlock1 < endBlock1From && iteratorBlock2 < endBlock2From) {

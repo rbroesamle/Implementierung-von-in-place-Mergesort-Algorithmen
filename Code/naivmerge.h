@@ -1,5 +1,4 @@
 #pragma once
-#include<array>
 #include<vector>
 #include <iostream>
 
@@ -14,7 +13,7 @@
 template<typename Iterator>
 void mergesort(Iterator start, Iterator end);
 
-template<typename Iterator>
-void merge(Iterator startBlock1From, Iterator endBlock1From,
-           Iterator startBlock2From, Iterator endBlock2From,
-           Iterator startTo, Iterator endTo);
+template<typename FirstBlockIterator, typename SecondBlockIterator, typename ToIterator>
+void merge(FirstBlockIterator startBlock1From, FirstBlockIterator endBlock1From,
+           SecondBlockIterator startBlock2From, SecondBlockIterator endBlock2From,
+           ToIterator startTo, ToIterator endTo);
