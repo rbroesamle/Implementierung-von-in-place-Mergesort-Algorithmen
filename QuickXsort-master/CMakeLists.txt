@@ -58,4 +58,5 @@ add_executable(QuickXsort_master
         stl_partial_sort.h++
         stl_stable_sort.h++
         wikisort.h++
-        vectormergeIter.h++)
+        vectormergeIter.h++
+        bottomupMerge.h++)

@@ -21,7 +21,7 @@ void recsort(Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i){
     int size = fin_v - begin_v;
     int pivot = (size - 1) / 2 + 1;
     //TODO: Bedingung für smallsort bzw. gewünschten smallsort anpassen
-    if(size > 3){
+    if(size > 50){
         recsort(begin_v, begin_v + pivot, begin_m, !i);
         recsort(begin_v + pivot, fin_v, begin_m + pivot, !i);
         if(i){
@@ -30,8 +30,8 @@ void recsort(Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i){
             merge(begin_v, fin_v, begin_v + pivot, begin_m);
         }
     } else {
-        small_sort(begin_v, fin_v - 1, begin_m, i);
-        //small_insertion_sort(begin_v, fin_v, begin_m, i);
+        //small_sort(begin_v, fin_v - 1, begin_m, i);
+        small_insertion_sort(begin_v, fin_v, begin_m, i);
     }
 }
 

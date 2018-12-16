@@ -131,7 +131,7 @@ long testRandNum(int size, int u, int o, bool stdSort){
 }
 
 int main (){
-    int anz = 10;
+    int anz = 100;
     int size = 500000;
     int u = 0;
     int o = 10000;
