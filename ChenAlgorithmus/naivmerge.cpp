@@ -91,7 +91,42 @@ void merge(Iterator start, Iterator end, int x0, int y0, int yn, int k) {
 
 template<typename Iterator>
 int findNextXBlock(Iterator start, Iterator end, int x0, int z, int y, int k, int f, int b1, int b2) {
-    //TODO
+    int x;
+    //
+    typename std::iterator_traits<Iterator>::value_type min1 = nullptr;
+    typename std::iterator_traits<Iterator>::value_type min2 = nullptr;
+    int temp = (z - x0 - f) / k;
+    int m = temp * k + f + x0;
+    //
+    if (m <= z) {
+        m += k;
+    }
+    //
+    //find from m, the start of the block adjacent to the right of z
+    int j;
+    int i = m;
+    //
+    while (i + k <= y) {
+        //
+        if (i != b1 && i != b2) {
+            //
+            if (i < b1 && b1 < i + k) {
+                j = m - 1;
+            } else {
+                j = i + k - 1;
+            }
+            //
+            if ((*(start + i) <= min1 && *(start + j) <= min2) || (min1 == nullptr && min2 == nullptr)) {
+                x = i;
+                min1 = *(start + i);
+                min2 = *(start + j);
+            }
+        }
+        //
+        i += k;
+    }
+    //
+    return x;
 }
 
 template<typename Iterator>
