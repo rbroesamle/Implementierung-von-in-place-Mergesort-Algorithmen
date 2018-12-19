@@ -5,10 +5,10 @@
 
 template<typename Iterator>
 void mergesort(Iterator start, Iterator end) {
-    int x0;
-    int y0;
-    int yn;
-    int k;
+    int x0 = 0;
+    int y0 = (end - start) / 2;
+    int yn = end - start;
+    int k = 2;
     merge(start, end, x0, y0, yn, k);
 }
 
@@ -93,8 +93,9 @@ template<typename Iterator>
 int findNextXBlock(Iterator start, Iterator end, int x0, int z, int y, int k, int f, int b1, int b2) {
     int x;
     //
-    typename std::iterator_traits<Iterator>::value_type min1 = nullptr;
-    typename std::iterator_traits<Iterator>::value_type min2 = nullptr;
+    typename std::iterator_traits<Iterator>::value_type min1;
+    typename std::iterator_traits<Iterator>::value_type min2;
+    bool areMinsSet = false;
     int temp = (z - x0 - f) / k;
     int m = temp * k + f + x0;
     //
@@ -116,10 +117,11 @@ int findNextXBlock(Iterator start, Iterator end, int x0, int z, int y, int k, in
                 j = i + k - 1;
             }
             //
-            if ((*(start + i) <= min1 && *(start + j) <= min2) || (min1 == nullptr && min2 == nullptr)) {
+            if ((*(start + i) <= min1 && *(start + j) <= min2) || !areMinsSet) {
                 x = i;
                 min1 = *(start + i);
                 min2 = *(start + j);
+                areMinsSet = true;
             }
         }
         //

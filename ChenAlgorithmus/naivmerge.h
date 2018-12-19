@@ -19,3 +19,6 @@ int findNextXBlock(Iterator start, Iterator end, int x0, int z, int y, int k, in
 
 template<typename Iterator>
 void mergeBandY(Iterator start, Iterator end, int z, int y, int yn);
+
+template<typename Iterator>
+void swap(Iterator start, Iterator end, int a, int b);
