@@ -130,6 +130,41 @@ int findNextXBlock(Iterator start, Iterator end, int x0, int z, int y, int k, in
 }
 
 template<typename Iterator>
-void mergeBandY(Iterator start, Iterator end, int z, int y, int yn) {
-    //TODO
+void mergeBandY(Iterator start, Iterator end, int _z, int _y, int _yn) {
+    int z = _z;
+    int y = _y;
+    int yn = _yn;
+    //
+    while (z < y && y <= yn) {
+        //
+        int j = z;
+        for (int i = z + 1; i < y; i++) {
+            if (*(start + j) > *(start + i)) {
+                j = i;
+            }
+        }
+        //
+        if (*(start + j) <= *(start + y)) {
+            swap(start, end, z, j);
+            //
+        } else {
+            swap(start, end, z, y);
+            y += 1;
+        }
+        //
+        z += 1;
+        //
+    }
+    //
+    if (z < y) {
+        std::sort((start + z), (start + yn));
+        //FIXME should be heapsort here...
+    }
+}
+
+template<typename Iterator>
+void swap(Iterator start, Iterator end, int a, int b) {
+    auto temp = *(start + a);
+    *(start + a) = *(start + b);
+    *(start + b) = temp;
 }
