@@ -6,10 +6,12 @@
 template<typename Iterator>
 void mergesort(Iterator start, Iterator end) {
     int x0 = 0;
-    int y0 = (end - start) / 2;
     int yn = end - start - 1;
-    int k = 2;
-    merge(start, end, x0, y0, yn, k);
+    for (int k = 1; k < (end - start); k *= 2) {
+        int y0 = (end - start) / 2;
+        y0 += k - (y0 % k);
+        merge(start, end, x0, y0, yn, k);
+    }
 }
 
 template<typename Iterator>
