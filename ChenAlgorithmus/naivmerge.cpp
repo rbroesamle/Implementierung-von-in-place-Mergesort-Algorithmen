@@ -7,7 +7,7 @@ template<typename Iterator>
 void mergesort(Iterator start, Iterator end) {
     int x0 = 0;
     int y0 = (end - start) / 2;
-    int yn = end - start;
+    int yn = end - start - 1;
     int k = 2;
     merge(start, end, x0, y0, yn, k);
 }
@@ -166,6 +166,9 @@ void mergeBandY(Iterator start, Iterator end, int _z, int _y, int _yn) {
 
 template<typename Iterator>
 void swap(Iterator start, Iterator end, int a, int b) {
+    if (a == b) {
+        return;
+    }
     auto temp = *(start + a);
     *(start + a) = *(start + b);
     *(start + b) = temp;
