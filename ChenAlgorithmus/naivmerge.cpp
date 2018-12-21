@@ -5,10 +5,10 @@
 
 template<typename Iterator>
 void mergesort(Iterator start, Iterator end) {
-    int x0;
-    int y0;
-    int yn;
-    int k;
+    int x0 = 0;
+    int y0 = (end - start) / 2;
+    int yn = end - start - 1;
+    int k = 2;
     merge(start, end, x0, y0, yn, k);
 }
 
@@ -91,10 +91,85 @@ void merge(Iterator start, Iterator end, int x0, int y0, int yn, int k) {
 
 template<typename Iterator>
 int findNextXBlock(Iterator start, Iterator end, int x0, int z, int y, int k, int f, int b1, int b2) {
-    //TODO
+    int x;
+    //
+    typename std::iterator_traits<Iterator>::value_type min1;
+    typename std::iterator_traits<Iterator>::value_type min2;
+    bool areMinsSet = false;
+    int temp = (z - x0 - f) / k;
+    int m = temp * k + f + x0;
+    //
+    if (m <= z) {
+        m += k;
+    }
+    //
+    //find from m, the start of the block adjacent to the right of z
+    int j;
+    int i = m;
+    //
+    while (i + k <= y) {
+        //
+        if (i != b1 && i != b2) {
+            //
+            if (i < b1 && b1 < i + k) {
+                j = m - 1;
+            } else {
+                j = i + k - 1;
+            }
+            //
+            if ((*(start + i) <= min1 && *(start + j) <= min2) || !areMinsSet) {
+                x = i;
+                min1 = *(start + i);
+                min2 = *(start + j);
+                areMinsSet = true;
+            }
+        }
+        //
+        i += k;
+    }
+    //
+    return x;
 }
 
 template<typename Iterator>
-void mergeBandY(Iterator start, Iterator end, int z, int y, int yn) {
-    //TODO
+void mergeBandY(Iterator start, Iterator end, int _z, int _y, int _yn) {
+    int z = _z;
+    int y = _y;
+    int yn = _yn;
+    //
+    while (z < y && y <= yn) {
+        //
+        int j = z;
+        for (int i = z + 1; i < y; i++) {
+            if (*(start + j) > *(start + i)) {
+                j = i;
+            }
+        }
+        //
+        if (*(start + j) <= *(start + y)) {
+            swap(start, end, z, j);
+            //
+        } else {
+            swap(start, end, z, y);
+            y += 1;
+        }
+        //
+        z += 1;
+        //
+    }
+    //
+    if (z < y) {
+        std::sort((start + z), (start + yn));
+        //FIXME should be heapsort here...
+    }
+}
+
+template<typename Iterator>
+void swap(Iterator start, Iterator end, int a, int b) {
+    if (a == b) {
+        return;
+    }
+    auto temp = *(start + a);
+    *(start + a) = *(start + b);
+    *(start + b) = temp;
 }
