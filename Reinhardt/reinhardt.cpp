@@ -4,6 +4,13 @@
 template <typename Iterator>
 void mergesort(Iterator begin, Iterator fin){
     unsigned int size = fin-begin;
+
+    //sortiere mit Insertion Sort für die "kleinen Fälle"
+    if(size < 128){
+        small_insertion_sort(begin, fin, begin, true);
+        return;
+    }
+
     Iterator first_end;
     Iterator second_end;
     Iterator third_end;
@@ -295,14 +302,13 @@ void reinhardt_special(Iterator begin, Iterator second_begin, Iterator third_beg
     merge_reinhardt(third_begin, fourth_begin, fourth_begin, end, erster_merge_end);
 
     Iterator zweiter_merge_end = end - (extra_end - extra_begin);
-
     Iterator now_one = erster_merge_end - 1;
     VecIterator now_one_later = extra_end - 1;
     Iterator now_two = zweiter_merge_end - 1;
     Iterator to = end - 1;
     //merge die beiden Teillisten nach rechts, bis nicht mehr möglich
     //in dieser While-Schleife, bis ExtraArray erreicht
-    while(now_two != erster_merge_end && now_one != begin - 1){
+    while(now_two != erster_merge_end - 1 && now_one != begin - 1){
 
         if (*now_one > *now_two) {
             *to = *now_one;
@@ -320,11 +326,7 @@ void reinhardt_special(Iterator begin, Iterator second_begin, Iterator third_beg
             now_one --;
         }
     }
-
-
-    //TODO: letzter Vergleich evtl. nicht nötig (bei "längeren" Listen)
-    //TODO: fälle der while schleife nach verlassen behandeln
-    while(to != now_two && now_two != erster_merge_end  && now_one_later != extra_begin - 1){
+    while(to != now_two && now_two != erster_merge_end - 1){
 
         if (*now_one_later > *now_two) {
             *to = *now_one_later;
@@ -336,20 +338,23 @@ void reinhardt_special(Iterator begin, Iterator second_begin, Iterator third_beg
         to --;
     }
 
-    /*
-    for(auto i = extra_begin; i!= extra_end; i++){
-        std::cout << *i << ",";
+    if(now_two == erster_merge_end){
+        //zurückkopieren der ersten Liste
+        while(now_one_later != extra_begin - 1){
+            *to = *now_one_later;
+            to --;
+            now_one_later --;
+        }
     }
-    std::cout << std::endl;
-    for(auto i = begin; i!= zweiter_merge_end; i++){
-        std::cout << *i << ",";
+    else{
+        //merge nun von der anderen Seite (siehe Paper Fig. 2)
+        merge_reinhardt(extra_begin, now_one_later + 1, erster_merge_end, now_two + 1, begin);
     }
-     */
 
 }
 
-template <typename Iterator>
-void merge_reinhardt(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator start_merge){
+template <typename Iterator,typename VecIterator>
+void merge_reinhardt(VecIterator start_one, VecIterator end_one, Iterator start_two, Iterator end_two, Iterator start_merge){
     while (start_one != end_one && start_two != end_two) {
         if (*start_one > *start_two) {
             *start_merge = *start_two;

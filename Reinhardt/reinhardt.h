@@ -25,5 +25,5 @@ template <typename Iterator,typename VecIterator>
 void reinhardt_special(Iterator begin, Iterator second_begin, Iterator third_begin, Iterator fourth_begin, Iterator end,
         VecIterator extra_begin, VecIterator extra_end);
 
-template <typename Iterator>
-void merge_reinhardt(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator start_merge);
+template <typename Iterator,typename VecIterator>
+void merge_reinhardt(VecIterator start_one, VecIterator end_one, Iterator start_two, Iterator end_two, Iterator start_merge);
