@@ -12,7 +12,7 @@ void mergesort(Iterator start, Iterator end) {
         y0 += k - (y0 % k);
         merge(start, end, x0, y0, yn, k);
     }
-    //FIXME: Do Insertion-sort for the final element...
+    insertLastElement(start, end);
 }
 
 template<typename Iterator>
@@ -179,4 +179,33 @@ void swap(Iterator start, Iterator end, int a, int b) {
     auto temp = *(start + a);
     *(start + a) = *(start + b);
     *(start + b) = temp;
+}
+
+template<typename Iterator>
+void insertLastElement(Iterator start, Iterator end) {
+    if (end <= (start + 1)) {
+        //Should not happen!
+        return;
+    }
+
+    auto temp = *(end - 1);
+
+    //Get element index at which the last element should be inserted.
+    int i = (end - start) / 2;
+    int upperBound = (end - start - 1);
+    int lowerBound = 0;
+    while (upperBound > lowerBound) {
+        if (temp > *(start + i)) {
+            lowerBound = i + 1;
+        } else {
+            upperBound = i;
+        }
+        i = ((upperBound - lowerBound) / 2) + lowerBound;
+    }
+
+    //Insert i-th element in array.
+    for (int j = (end - start - 2); j >= i; --j) {
+        *(start + j + 1) = *(start + j);
+    }
+    *(start + i) = temp;
 }

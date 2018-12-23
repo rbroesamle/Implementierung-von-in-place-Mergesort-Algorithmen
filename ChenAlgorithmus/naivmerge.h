@@ -22,3 +22,6 @@ void mergeBandY(Iterator start, Iterator end, int z, int y, int yn);
 
 template<typename Iterator>
 void swap(Iterator start, Iterator end, int a, int b);
+
+template<typename Iterator>
+void insertLastElement(Iterator start, Iterator end);
