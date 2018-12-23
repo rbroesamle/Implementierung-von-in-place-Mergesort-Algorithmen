@@ -12,6 +12,7 @@ void mergesort(Iterator start, Iterator end) {
         y0 += k - (y0 % k);
         merge(start, end, x0, y0, yn, k);
     }
+    insertLastElement(start, end);
 }
 
 template<typename Iterator>
@@ -24,6 +25,10 @@ void merge(Iterator start, Iterator end, int x0, int y0, int yn, int k) {
         x = y0 - 2 * k;
     } else {
         x = y0 - k - f;
+    }
+    //Eigener Eintrag
+    if (x < 0) {
+        x = 0;
     }
     //3
     auto t = *(start + x);
@@ -174,4 +179,33 @@ void swap(Iterator start, Iterator end, int a, int b) {
     auto temp = *(start + a);
     *(start + a) = *(start + b);
     *(start + b) = temp;
+}
+
+template<typename Iterator>
+void insertLastElement(Iterator start, Iterator end) {
+    if (end <= (start + 1)) {
+        //Should not happen!
+        return;
+    }
+
+    auto temp = *(end - 1);
+
+    //Get element index at which the last element should be inserted.
+    int i = (end - start) / 2;
+    int upperBound = (end - start - 1);
+    int lowerBound = 0;
+    while (upperBound > lowerBound) {
+        if (temp > *(start + i)) {
+            lowerBound = i + 1;
+        } else {
+            upperBound = i;
+        }
+        i = ((upperBound - lowerBound) / 2) + lowerBound;
+    }
+
+    //Insert i-th element in array.
+    for (int j = (end - start - 2); j >= i; --j) {
+        *(start + j + 1) = *(start + j);
+    }
+    *(start + i) = temp;
 }
