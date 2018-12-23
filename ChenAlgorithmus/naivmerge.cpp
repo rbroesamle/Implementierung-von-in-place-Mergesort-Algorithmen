@@ -12,6 +12,7 @@ void mergesort(Iterator start, Iterator end) {
         y0 += k - (y0 % k);
         merge(start, end, x0, y0, yn, k);
     }
+    //FIXME: Do Insertion-sort for the final element...
 }
 
 template<typename Iterator>
@@ -24,6 +25,10 @@ void merge(Iterator start, Iterator end, int x0, int y0, int yn, int k) {
         x = y0 - 2 * k;
     } else {
         x = y0 - k - f;
+    }
+    //Eigener Eintrag
+    if (x < 0) {
+        x = 0;
     }
     //3
     auto t = *(start + x);
