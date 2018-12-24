@@ -14,7 +14,4 @@ template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin);
 
 template <typename Iterator>
-void rec_reinhardt_right_gap(Iterator start_list, Iterator split_list, Iterator end_list, Iterator end_gap);
-
-template <typename Iterator>
-void rec_reinhardt_right_gap(Iterator start_gap, Iterator start_list, Iterator split_list, Iterator end_list);
+void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator end_list);

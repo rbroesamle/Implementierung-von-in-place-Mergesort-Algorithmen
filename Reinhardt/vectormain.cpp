@@ -3,6 +3,7 @@
 //
 
 #include "reinhardt.cpp"
+#include "reinhardt_inplace.cpp"
 #include <iostream>
 #include "wrapper.h"
 #include <time.h>
