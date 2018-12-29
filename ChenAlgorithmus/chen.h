@@ -57,13 +57,12 @@ void mergeBandY(Iterator z, Iterator y, Iterator y_n) {
         }
         z++;
     }
-    //TODO: implement heapsort instead
     if (z < y) heapSort(z, y_n);
 }
 
 
 template<typename Iterator>
-void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k) {
+void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k, int recursionDepth) {
     // Initialization. (line 1-4 in pseudo-code)
     int f = (y_0 - x_0) % k;
     Iterator x;
@@ -95,7 +94,11 @@ void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k) {
     }
     //copy temp back, merge B and Y
     *z = t;
-    mergeBandY(z, y, y_n);
+    if(recursionDepth > 1) mergeBandY(z, y, y_n);
+    else {
+        heapSort(z, y);
+        merge(z, y, y_n, static_cast<int>(std::sqrt(k)), recursionDepth + 1);
+    }
 }
 
 
@@ -120,14 +123,14 @@ void smallInsertionSort(Iterator s, Iterator e) {
 template<typename Iterator>
 void mergesort_chen(Iterator s, Iterator e) {
     // FIXME: k stattdesse als Parameter übergeben
-    int k = 100;
+    int k = 10000;
     int size = e - s;
     int pivot = (size - 1) / 2 + 1;
     // size > 50
-    if(size > 1000){
+    if(size > 100000){
         mergesort_chen(s, s + pivot);
         mergesort_chen(s + pivot, e);
-        merge(s, s + pivot, e, k);
+        merge(s, s + pivot, e, k, 0);
     } else {
         heapSort(s, e);
     }
