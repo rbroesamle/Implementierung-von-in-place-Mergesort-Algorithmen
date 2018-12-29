@@ -4,6 +4,7 @@
 #include <iterator>
 #include <cmath>
 #include <algorithm>
+#include "heapSort.h"
 
 
 //finds the minimum in range *s to *e-1
@@ -57,7 +58,7 @@ void mergeBandY(Iterator z, Iterator y, Iterator y_n) {
         z++;
     }
     //TODO: implement heapsort instead
-    if (z < y) std::sort(z, y_n);
+    if (z < y) heapSort(z, y_n);
 }
 
 
@@ -123,11 +124,11 @@ void mergesort_chen(Iterator s, Iterator e) {
     int size = e - s;
     int pivot = (size - 1) / 2 + 1;
     // size > 50
-    if(size > 50){
+    if(size > 1000){
         mergesort_chen(s, s + pivot);
         mergesort_chen(s + pivot, e);
         merge(s, s + pivot, e, k);
     } else {
-        smallInsertionSort(s, e);
+        heapSort(s, e);
     }
 }
