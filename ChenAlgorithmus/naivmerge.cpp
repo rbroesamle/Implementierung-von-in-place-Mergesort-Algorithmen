@@ -5,14 +5,16 @@
 
 template<typename Iterator>
 void mergesort(Iterator start, Iterator end) {
-    int x0 = 0;
-    int yn = end - start - 1;
-    for (int k = 1; k < (end - start); k *= 2) {
-        int y0 = (end - start) / 2;
-        y0 += k - (y0 % k);
-        merge(start, end, x0, y0, yn, k);
+    int k = 1;
+    int size = end - start;
+    int pivot = (size - 1) / 2 + 1;
+    if(size > 50){
+        mergesort(start, start + pivot);
+        mergesort(start + pivot, end);
+        merge(start, start + pivot, end, k);
+    } else {
+        insertionSort(start, end);
     }
-    insertLastElement(start, end);
 }
 
 template<typename Iterator>
@@ -182,30 +184,18 @@ void swap(Iterator start, Iterator end, int a, int b) {
 }
 
 template<typename Iterator>
-void insertLastElement(Iterator start, Iterator end) {
-    if (end <= (start + 1)) {
-        //Should not happen!
-        return;
-    }
-
-    auto temp = *(end - 1);
-
-    //Get element index at which the last element should be inserted.
-    int i = (end - start) / 2;
-    int upperBound = (end - start - 1);
-    int lowerBound = 0;
-    while (upperBound > lowerBound) {
-        if (temp > *(start + i)) {
-            lowerBound = i + 1;
-        } else {
-            upperBound = i;
+void insertionSort(Iterator start, Iterator end) {
+    typename std::iterator_traits<Iterator>::value_type temp;
+    for(auto i = start + 1; i < end; i++) {
+        temp = *i;
+        Iterator j;
+        for (j = i; j > start; j--) {
+            if (*(j - 1) > temp) {
+                *j = *(j - 1);
+            } else {
+                break;
+            }
         }
-        i = ((upperBound - lowerBound) / 2) + lowerBound;
+        *j = temp;
     }
-
-    //Insert i-th element in array.
-    for (int j = (end - start - 2); j >= i; --j) {
-        *(start + j + 1) = *(start + j);
-    }
-    *(start + i) = temp;
 }
