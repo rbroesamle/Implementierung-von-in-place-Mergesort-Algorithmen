@@ -3,11 +3,17 @@
 //
 #include "reinhardt_inplace.h"
 #include<iterator>
+#include<math.h>
+//#include "RAI_wrapper.h"
+
+//template<typename Iterator>
+//RAI_wrapper<Iterator> wrap;
 
 //todo: bei mergesort mit Reinhardt stets beachten: swappen statt nur zuweisen (-> reinhardt.cpp hierfür abändern!)
 //todo: dabei stets in-place-Extraspeicher als gap statt neuen Speicherbereich (-> reinhardt.cpp hierfür abändern!)
 template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin){
+    //wrap<Iterator> = RAI_wrapper<Iterator>(begin, fin - 1);
     //todo: mergesort mit Reinhardt der hinteren 0.8n Elemente mit Gap vordere 0.2n Elemente
     //todo: rec_reinhardt_left_gap aufrufen
 }
@@ -78,7 +84,7 @@ void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two
             merge++;
         }
     //falls erste Liste leer
-    } else if (act_one == end_one && merge != act_two) {
+    } else if (act_one == end_one) {
         if(merge != act_two) {
             while (act_two != end_two) {
                 temp = *merge;
@@ -160,4 +166,94 @@ void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_tw
         auto new_merge = end_two.base() - (end_one - act_one);
         sym_merge_gap_left(new_start_one, new_end_one, new_start_two, new_end_two, new_merge);
     }
+}
+
+template <typename Iterator>
+void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge){
+    int size_short = end_one - start_one;
+    int size_long = end_two - start_two;
+
+    int k = get_k(size_short, size_long);
+    if(k == 1){
+        sym_merge_gap_left(start_one, end_one, start_two, end_two, merge);
+        return;
+    }
+    //k dekrementieren sodass act_iter + k stets auf k'tes Element nach act_iter zeigt
+    k --;
+    Iterator act_one = start_one;
+    Iterator act_two = start_two;
+    typename std::iterator_traits<Iterator>::value_type temp;
+
+    //while kurze Liste nichtleer und keine Kollsion
+    //Anmerkung: ein Platz für merge pro Schleifendurchlauf reicht stets aus
+    while (act_one != end_one && merge != act_two) {
+        if(act_two + k >= end_two){
+            //k ist zu groß (zeigt über Ende der zweiten Liste)
+            if(end_two - act_two < end_one - act_one || end_two - act_two < 20){
+                //merge symmetrisch falls Listen nur noch ca gleich lang
+                //oder wenn es sich asymmetrisch nicht mehr lohnt weil lange Liste nun kurz
+                sym_merge_gap_left(act_one, end_one, act_two, end_two, merge);
+                return;
+            }
+            else{
+                //ansonsten falls sich asymmetrisch noch lohnt, dann verringere k
+                while(act_two + k >= end_two){
+                    k = k / 2;
+                }
+            }
+        }
+        int pos = binSearch(act_one, act_two, k);
+        if(pos == -1){
+            // ganzer Block von two kopieren
+            for(int i = 0; i <= k; i ++){
+                temp = *merge;
+               *merge = *(act_two + i);
+               *(act_two + i) = temp;
+               merge ++;
+            }
+            act_two = act_two + (k + 1);
+        }
+        else{
+            // act_one an passender Stelle "einfügen"
+            for(int i = 0; i < pos; i++){
+                temp = *merge;
+                *merge = *(act_two + i);
+                *(act_two + i) = temp;
+                merge ++;
+            }
+            temp = *merge;
+            *merge = *act_one;
+            *act_one = temp;
+            merge ++;
+            act_one ++;
+            act_two = act_two + pos;
+        }
+    }
+    //falls erste Liste leer
+    if (act_one == end_one) {
+        if(merge != act_two) {
+            while (act_two != end_two) {
+                temp = *merge;
+                *merge = *act_two;
+                *act_two = temp;
+                act_two++;
+                merge++;
+            }
+        }
+    }
+    //falls Kollsion
+    else{
+        //nun im zweiten Durchlauf absteigend mergen
+        std::reverse_iterator<Iterator> new_start_one(end_one);
+        std::reverse_iterator<Iterator> new_end_one(act_one);
+        std::reverse_iterator<Iterator> new_start_two(end_two);
+        std::reverse_iterator<Iterator> new_end_two(act_two);
+        std::reverse_iterator<Iterator> new_merge(end_two + (end_one - act_one));
+        asym_merge_gap_right(new_start_one, new_end_one, new_start_two, new_end_two, new_merge);
+    }
+}
+
+template <typename Iterator>
+void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge){
+    //todo: schauen ob asym_gap_left passt und analog implementieren
 }
