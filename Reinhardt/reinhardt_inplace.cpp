@@ -168,22 +168,33 @@ void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_tw
     }
 }
 
+/*
+ * Zur Nutzung siehe sym_merge_gap_left
+ * Diese Prozedur ist Vergleichs-effizienter bei Listen ungleicher Länge
+ * k_inp ist das 2**k aus dem Paper (siehe 3.1)
+ * k_inp <= 0: der Faktor wird von der Prozedur bestimmt, ansonsten wird der übergebene Wert übernommen
+ * k_inp = 1 entspricht symmetrischem mergen
+ */
 template <typename Iterator>
-void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge){
-    int size_short = end_one - start_one;
-    int size_long = end_two - start_two;
-
-    int teiler = size_long / size_short;
-    //suche nächstliegende Zweierpotenz po <= teiler
-    int po = 1;
-    while(po * 2 <= teiler){
-        po = po * 2;
-    }
-    // bei gleicher Distanz wird aufgerundet (-> gleicht evtl. Abschneiden bei Berechnung von teiler wieder aus)
+void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, int k_inp){
     int k;
-    int k_down = po;
-    int k_up = 2 * po;
-    teiler - k_down < k_up - teiler ? k = k_down : k = k_up;
+    if(k_inp <= 0){
+        int size_short = end_one - start_one;
+        int size_long = end_two - start_two;
+
+        int teiler = size_long / size_short;
+        //suche nächstliegende Zweierpotenz po <= teiler
+        int po = 1;
+        while(po * 2 <= teiler){
+            po = po * 2;
+        }
+        // bei gleicher Distanz wird aufgerundet (-> gleicht evtl. Abschneiden bei Berechnung von teiler wieder aus)
+        int k_down = po;
+        int k_up = 2 * po;
+        teiler - k_down < k_up - teiler ? k = k_down : k = k_up;
+    } else{
+        k = k_inp;
+    }
 
     if(k == 1){
         sym_merge_gap_left(start_one, end_one, start_two, end_two, merge);
@@ -260,26 +271,37 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
         std::reverse_iterator<Iterator> new_start_two(end_two);
         std::reverse_iterator<Iterator> new_end_two(act_two);
         std::reverse_iterator<Iterator> new_merge(end_two + (end_one - act_one));
-        asym_merge_gap_right(new_start_one, new_end_one, new_start_two, new_end_two, new_merge);
+        asym_merge_gap_right(new_start_one, new_end_one, new_start_two, new_end_two, new_merge, k+1);
     }
 }
 
+/*
+ * Zur Nutzung siehe sym_merge_gap_right
+ * Diese Prozedur ist Vergleichs-effizienter bei Listen ungleicher Länge
+ * k_inp ist das 2**k aus dem Paper (siehe 3.1)
+ * k_inp <= 0: der Faktor wird von der Prozedur bestimmt, ansonsten wird der übergebene Wert übernommen
+ * k_inp = 1 entspricht symmetrischem mergen
+ */
 template <typename Iterator>
-void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge){
-    int size_short = end_one - start_one;
-    int size_long = end_two - start_two;
-
-    int teiler = size_long / size_short;
-    //suche nächstliegende Zweierpotenz po <= teiler
-    int po = 1;
-    while(po * 2 <= teiler){
-        po = po * 2;
-    }
-    // bei gleicher Distanz wird aufgerundet (-> gleicht evtl. Abschneiden bei Berechnung von teiler wieder aus)
+void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, int k_inp){
     int k;
-    int k_down = po;
-    int k_up = 2 * po;
-    teiler - k_down < k_up - teiler ? k = k_down : k = k_up;
+    if(k_inp <= 0){
+        int size_short = end_one - start_one;
+        int size_long = end_two - start_two;
+
+        int teiler = size_long / size_short;
+        //suche nächstliegende Zweierpotenz po <= teiler
+        int po = 1;
+        while(po * 2 <= teiler){
+            po = po * 2;
+        }
+        // bei gleicher Distanz wird aufgerundet (-> gleicht evtl. Abschneiden bei Berechnung von teiler wieder aus)
+        int k_down = po;
+        int k_up = 2 * po;
+        teiler - k_down < k_up - teiler ? k = k_down : k = k_up;
+    } else{
+        k = k_inp;
+    }
 
     if(k == 1){
         sym_merge_gap_right(start_one, end_one, start_two, end_two, merge);
@@ -309,7 +331,7 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
                 }
             }
         }
-        int pos = binSearch(act_one, act_two, k);
+        int pos = binSearch_inverted(act_one, act_two, k);
         if(pos == -1){
             // ganzer Block von two kopieren
             for(int i = 0; i <= k; i ++){
@@ -356,6 +378,6 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
         auto new_start_two = end_two.base();
         auto new_end_two = act_two.base();
         auto new_merge = end_two.base() - (end_one - act_one);
-        asym_merge_gap_left(new_start_one, new_end_one, new_start_two, new_end_two, new_merge);
+        asym_merge_gap_left(new_start_one, new_end_one, new_start_two, new_end_two, new_merge, k+1);
     }
 }
