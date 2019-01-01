@@ -173,7 +173,18 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
     int size_short = end_one - start_one;
     int size_long = end_two - start_two;
 
-    int k = get_k(size_short, size_long);
+    int teiler = size_long / size_short;
+    //suche nächstliegende Zweierpotenz po <= teiler
+    int po = 1;
+    while(po * 2 <= teiler){
+        po = po * 2;
+    }
+    // bei gleicher Distanz wird aufgerundet (-> gleicht evtl. Abschneiden bei Berechnung von teiler wieder aus)
+    int k;
+    int k_down = po;
+    int k_up = 2 * po;
+    teiler - k_down < k_up - teiler ? k = k_down : k = k_up;
+
     if(k == 1){
         sym_merge_gap_left(start_one, end_one, start_two, end_two, merge);
         return;
@@ -255,5 +266,96 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
 
 template <typename Iterator>
 void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge){
-    //todo: schauen ob asym_gap_left passt und analog implementieren
+    int size_short = end_one - start_one;
+    int size_long = end_two - start_two;
+
+    int teiler = size_long / size_short;
+    //suche nächstliegende Zweierpotenz po <= teiler
+    int po = 1;
+    while(po * 2 <= teiler){
+        po = po * 2;
+    }
+    // bei gleicher Distanz wird aufgerundet (-> gleicht evtl. Abschneiden bei Berechnung von teiler wieder aus)
+    int k;
+    int k_down = po;
+    int k_up = 2 * po;
+    teiler - k_down < k_up - teiler ? k = k_down : k = k_up;
+
+    if(k == 1){
+        sym_merge_gap_left(start_one, end_one, start_two, end_two, merge);
+        return;
+    }
+    //k dekrementieren sodass act_iter + k stets auf k'tes Element nach act_iter zeigt
+    k --;
+    Iterator act_one = start_one;
+    Iterator act_two = start_two;
+    typename std::iterator_traits<Iterator>::value_type temp;
+
+    //while kurze Liste nichtleer und keine Kollsion
+    //Anmerkung: ein Platz für merge pro Schleifendurchlauf reicht stets aus
+    while (act_one != end_one && merge != act_two) {
+        if(act_two + k >= end_two){
+            //k ist zu groß (zeigt über Ende der zweiten Liste)
+            if(end_two - act_two < end_one - act_one || end_two - act_two < 20){
+                //merge symmetrisch falls Listen nur noch ca gleich lang
+                //oder wenn es sich asymmetrisch nicht mehr lohnt weil lange Liste nun kurz
+                sym_merge_gap_left(act_one, end_one, act_two, end_two, merge);
+                return;
+            }
+            else{
+                //ansonsten falls sich asymmetrisch noch lohnt, dann verringere k
+                while(act_two + k >= end_two){
+                    k = k / 2;
+                }
+            }
+        }
+        int pos = binSearch(act_one, act_two, k);
+        if(pos == -1){
+            // ganzer Block von two kopieren
+            for(int i = 0; i <= k; i ++){
+                temp = *merge;
+                *merge = *(act_two + i);
+                *(act_two + i) = temp;
+                merge ++;
+            }
+            act_two = act_two + (k + 1);
+        }
+        else{
+            // act_one an passender Stelle "einfügen"
+            for(int i = 0; i < pos; i++){
+                temp = *merge;
+                *merge = *(act_two + i);
+                *(act_two + i) = temp;
+                merge ++;
+            }
+            temp = *merge;
+            *merge = *act_one;
+            *act_one = temp;
+            merge ++;
+            act_one ++;
+            act_two = act_two + pos;
+        }
+    }
+    //falls erste Liste leer
+    if (act_one == end_one) {
+        if(merge != act_two) {
+            while (act_two != end_two) {
+                temp = *merge;
+                *merge = *act_two;
+                *act_two = temp;
+                act_two++;
+                merge++;
+            }
+        }
+    }
+        //falls Kollsion
+    else{
+        //nun im zweiten Durchlauf aufsteigend mergen
+        auto new_start_one = end_one.base();
+        auto new_end_one = act_one.base();
+        auto new_start_two = end_two.base();
+        auto new_end_two = act_two.base();
+        auto new_merge = end_two.base() - (end_one - act_one);
+        asym_merge_gap_left(new_start_one, new_end_one, new_start_two, new_end_two, new_merge);
+    }
 }

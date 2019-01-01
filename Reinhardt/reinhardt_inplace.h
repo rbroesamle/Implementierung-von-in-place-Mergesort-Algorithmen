@@ -20,24 +20,6 @@ template <typename Iterator>
 void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator end_list);
 
 
-/*
- * return k: Element der kurzen Liste sollte jeweils mit k'tem Element der langen Liste verglichen werden
- * Für k = 1 sollte also am besten symmetrisch gemergt werden, für k > 1 asymmetrisch
- */
-int get_k(int size_short, int size_long){
-    int teiler = size_long / size_short;
-    //suche nächstliegende Zweierpotenz po <= teiler
-    int po = 1;
-    while(po * 2 <= teiler){
-        po = po * 2;
-    }
-    // bei gleicher Distanz wird aufgerundet (-> gleicht evtl. Abschneiden bei Berechnung von teiler wieder aus)
-    int k;
-    int k_down = po;
-    int k_up = 2 * po;
-    teiler - k_down < k_up - teiler ? k = k_down : k = k_up;
-    return k;
-}
 
 //für k = 0 (d.h. two enthält nur ein Element) ist diese Funktion nicht optimal/ nicht gedacht!
 template<typename Iterator>
