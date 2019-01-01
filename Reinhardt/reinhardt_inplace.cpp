@@ -282,7 +282,7 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
     teiler - k_down < k_up - teiler ? k = k_down : k = k_up;
 
     if(k == 1){
-        sym_merge_gap_left(start_one, end_one, start_two, end_two, merge);
+        sym_merge_gap_right(start_one, end_one, start_two, end_two, merge);
         return;
     }
     //k dekrementieren sodass act_iter + k stets auf k'tes Element nach act_iter zeigt
@@ -299,7 +299,7 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
             if(end_two - act_two < end_one - act_one || end_two - act_two < 20){
                 //merge symmetrisch falls Listen nur noch ca gleich lang
                 //oder wenn es sich asymmetrisch nicht mehr lohnt weil lange Liste nun kurz
-                sym_merge_gap_left(act_one, end_one, act_two, end_two, merge);
+                sym_merge_gap_right(act_one, end_one, act_two, end_two, merge);
                 return;
             }
             else{
