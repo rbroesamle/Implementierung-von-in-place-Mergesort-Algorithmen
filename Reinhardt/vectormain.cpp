@@ -2,8 +2,10 @@
 // Created by Patrick on 29.11.2018.
 //
 
-#include "reinhardt.cpp"
-#include "reinhardt_inplace.cpp"
+//#include "reinhardt.cpp"
+//#include "inplace_merge.cpp"
+//#include "reinhardt_swap.cpp"
+#include "inplace_mergesort.cpp"
 #include <iostream>
 #include "wrapper.h"
 #include <time.h>
@@ -21,8 +23,8 @@
  *
  */
 std::vector<long> times;
-std::vector<int> comps;
-std::vector<int> assis;
+std::vector<long> comps;
+std::vector<long> assis;
 
 std::vector<long> std_times;
 std::vector<int> std_comps;
@@ -38,7 +40,7 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     BasetypeWrapper<int>::reset_m();
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
     //stdSort? std::stable_sort(test.begin(), test.end()): mergesort(test);
-    stdSort? std::stable_sort(test.begin(), test.end()): mergesort(test.begin(),test.end());
+    stdSort? std::stable_sort(test.begin(), test.end()): in_place_mergesort(test.begin(),test.end());
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
     int c = BasetypeWrapper<int>::get_c();
     int m = BasetypeWrapper<int>::get_m();
@@ -141,11 +143,11 @@ int main (){
         testDifferElem(size, true);
     }
 
-    int comp_sum = 0;
-    int assi_sum = 0;
+    long comp_sum = 0;
+    signed long long assi_sum = 0;
     long time_sum = 0;
-    int std_comp_sum = 0;
-    int std_assi_sum = 0;
+    long std_comp_sum = 0;
+    long std_assi_sum = 0;
     long std_time_sum = 0;
 
     for(int i=0; i < anz; i++){
@@ -165,5 +167,25 @@ int main (){
     std::cout << "Vergleichsschnitt std-Sort:" << std::endl << std_comp_sum / anz << std::endl;
     std::cout << "Zuweisungsschnitt std-Sort:" << std::endl << std_assi_sum / anz << std::endl;
     std::cout << "Zeitschnitt std-Sort:" << std::endl << std_time_sum / anz << std::endl;
+
+    /*
+    std::vector<int> test(11900);
+    for(int i=0; i < 1900; i++){
+        test[i] = i  + 100000;
+    }
+    for(int i=1900; i < 10900; i++){
+        test[i] = i;
+    }
+    for(int i=10900; i < 11900; i++){
+        test[i] = 0;
+    }
+    auto begin = test.rbegin();
+    asym_merge_gap_right(begin + 10000, begin + 11900, begin + 1000, begin + 10000, begin,-1);
+    for(int i=0; i < 11900; i++){
+        std::cout << test[i] << std::endl;
+    }
+     */
+
+
     return 0;
 }

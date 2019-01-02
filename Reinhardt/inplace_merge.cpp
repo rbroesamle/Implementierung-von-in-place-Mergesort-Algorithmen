@@ -1,52 +1,9 @@
 //
 // Created by jonas on 22.12.2018.
 //
-#include "reinhardt_inplace.h"
+#include "inplace_merge.h"
 #include<iterator>
 #include<math.h>
-//#include "RAI_wrapper.h"
-
-//template<typename Iterator>
-//RAI_wrapper<Iterator> wrap;
-
-//todo: bei mergesort mit Reinhardt stets beachten: swappen statt nur zuweisen (-> reinhardt.cpp hierfür abändern!)
-//todo: dabei stets in-place-Extraspeicher als gap statt neuen Speicherbereich (-> reinhardt.cpp hierfür abändern!)
-template <typename Iterator>
-void in_place_mergesort(Iterator begin, Iterator fin){
-    //wrap<Iterator> = RAI_wrapper<Iterator>(begin, fin - 1);
-    //todo: mergesort mit Reinhardt der hinteren 0.8n Elemente mit Gap vordere 0.2n Elemente
-    //todo: rec_reinhardt_left_gap aufrufen
-}
-
-template <typename Iterator>
-void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator end_list){
-    unsigned int size = start_list - start_gap;
-    //für unsortierte Liste < Konstante dann füge einzeln in die lange bereits sortierte Liste ein (O(n))
-    if(size < 4){
-        //todo: hier evtl. zuerst binäre Suche statt wie hier "lineares Einfügen", um Vergleiche einzusparen
-        for(Iterator now = start_list - 1; now != start_gap - 1; now--){
-            Iterator next = now + 1;
-            Iterator temp;
-            while(next != end_list && *next < *now){
-                *temp = *now;
-                *now = *next;
-                *next = *temp;
-                now = next;
-                next = now + 1;
-            }
-        }
-    }
-    else{
-        //todo: mergesort mit Reinhardt der hinteren 2/3 von der unsortierten Liste und verwende die vorderen 1/3 als gap
-        //todo: (nun die beiden sortierten Teillisten einmal nach links shiften, um gap nach rechts zu bekommen)
-        //todo: hierzu logischen Ringspeicher!! Idee: iterator+x als (iterator+x) - size falls drüber (+/- überladen) um die shifts zu vermeiden
-        //todo: anschließend sortierte Listen absteigend mergen (später asymmetrisch, anfangs sym_merge_gap_right verwenden)
-        //todo: danach rec_reinhardt_left_gap wieder rekursiv aufrufen
-    }
-}
-
-
-
 /*
  * diese Prozedur mergt zwei Listen, two ist dabei die längere Liste
  * notwendig 1: gap <-> lange Liste = two <-> kurze Liste = one

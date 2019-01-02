@@ -13,13 +13,6 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
 template <typename Iterator>
 void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, int k_inp);
 
-template <typename Iterator>
-void in_place_mergesort(Iterator begin, Iterator fin);
-
-template <typename Iterator>
-void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator end_list);
-
-
 //die Funktion macht eine binäre Suche, um die Einfügeposition von one zu finden (Listen aufsteigender Reihenfolge)
 //für k = 0 (d.h. two enthält nur ein Element) ist diese Funktion nicht optimal/ nicht gedacht!
 template<typename Iterator>
