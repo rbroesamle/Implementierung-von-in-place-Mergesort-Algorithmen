@@ -323,7 +323,7 @@ void reinhardt_special_swap(Iterator begin, Iterator second_begin, Iterator thir
         }
         to --;
     }
-    if(now_two == erster_merge_end){
+    if(now_two == erster_merge_end - 1){
         while(now_one != begin - 1){
             std::swap(*to, *now_one);
             to --;
@@ -342,7 +342,7 @@ void reinhardt_special_swap(Iterator begin, Iterator second_begin, Iterator thir
         to --;
     }
 
-    if(now_two == erster_merge_end){
+    if(now_two == erster_merge_end - 1){
         //zurückkopieren der ersten Liste
         while(now_one_later != extra_begin - 1){
             std::swap(*to, *now_one_later);

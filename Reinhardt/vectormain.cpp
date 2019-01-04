@@ -22,13 +22,13 @@
  * Der Reset des Vergleichs- und Zuweisungszählers erfolgt direkt am Anfang der Methode
  *
  */
-std::vector<long> times;
-std::vector<long> comps;
-std::vector<long> assis;
+std::vector<unsigned long long> times;
+std::vector<unsigned long long> comps;
+std::vector<unsigned long long> assis;
 
-std::vector<long> std_times;
-std::vector<int> std_comps;
-std::vector<int> std_assis;
+std::vector<unsigned long long> std_times;
+std::vector<unsigned long long> std_comps;
+std::vector<unsigned long long> std_assis;
 
 long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     std::vector<BasetypeWrapper<int>> copy;
@@ -42,9 +42,9 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     //stdSort? std::stable_sort(test.begin(), test.end()): mergesort(test);
     stdSort? std::stable_sort(test.begin(), test.end()): in_place_mergesort(test.begin(),test.end());
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
-    int c = BasetypeWrapper<int>::get_c();
-    int m = BasetypeWrapper<int>::get_m();
-    auto mikro = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+    unsigned long long c = BasetypeWrapper<int>::get_c();
+    unsigned long long m = BasetypeWrapper<int>::get_m();
+    unsigned long long mikro = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
     float milli = float(mikro)/1000;
     float seconds = float(mikro)/1000000;
 
@@ -68,6 +68,8 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
         for(auto sortIt = copy.begin(); sortIt != copy.end(); sortIt++){
             if(*sortIt != *testIt){
                 std::cout << "------> Sortierung inkorrekt!!! <------" << std::endl;
+                std::cout << "Wert: " << testIt -> get_value() << std::endl;
+                std::cout << "erwartet: " << sortIt -> get_value() << std::endl;
                 success = false;
             }
             testIt++;
@@ -78,6 +80,8 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
         }
         if(success){
             std::cout << "------> Sortierreihenfolge stimmt <------" << std::endl;
+        } else{
+            std::exit(-1);
         }
     }
 
@@ -134,7 +138,7 @@ long testRandNum(int size, int u, int o, bool stdSort){
 
 int main (){
     int anz = 100;
-    int size = 500000;
+    int size = 1372892;
     int u = 0;
     int o = 10000;
 
@@ -143,12 +147,12 @@ int main (){
         testDifferElem(size, true);
     }
 
-    long comp_sum = 0;
-    signed long long assi_sum = 0;
-    long time_sum = 0;
-    long std_comp_sum = 0;
-    long std_assi_sum = 0;
-    long std_time_sum = 0;
+    unsigned long long comp_sum = 0;
+    unsigned long long assi_sum = 0;
+    unsigned long long time_sum = 0;
+    unsigned long long std_comp_sum = 0;
+    unsigned long long std_assi_sum = 0;
+    unsigned long long std_time_sum = 0;
 
     for(int i=0; i < anz; i++){
         comp_sum += comps[i];

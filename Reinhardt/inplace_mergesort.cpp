@@ -48,7 +48,6 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
             std::swap(*start, *i);
             start ++;
         }
-        //todo: asymmetrisch mergen!
         Iterator start_long = start_gap + (size_unsorted - size_new_gap);
         std::reverse_iterator<Iterator> start_merge(end_list);
         std::reverse_iterator<Iterator> start_second(end_list - size_new_gap);
