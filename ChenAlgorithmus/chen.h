@@ -4,7 +4,7 @@
 #include <iterator>
 #include <cmath>
 #include <algorithm>
-#include "heapSort.h"
+#include "bufferMerge.h"
 
 
 //finds the minimum in range *s to *e-1
@@ -57,7 +57,9 @@ void mergeBandY(Iterator z, Iterator y, Iterator y_n) {
         }
         z++;
     }
-    if (z < y) heapSort(z, y_n);
+    //TODO: mit rekursivem chen-aufruf statt heapsort experimentieren
+    //if (z < y) heapSort(z, y_n);
+    if (z < y) mergesort_chen(z, y_n);
 }
 
 
@@ -96,7 +98,9 @@ void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k, int recursionDepth) 
     *z = t;
     if(recursionDepth > 1) mergeBandY(z, y, y_n);
     else {
-        heapSort(z, y);
+        //TODO: mit rekursivem chen-aufruf statt heapsort experimentieren
+        mergesort_chen(z, y);
+        //heapSort(z, y);
         merge(z, y, y_n, static_cast<int>(std::sqrt(k)), recursionDepth + 1);
     }
 }
@@ -122,16 +126,17 @@ void smallInsertionSort(Iterator s, Iterator e) {
 
 template<typename Iterator>
 void mergesort_chen(Iterator s, Iterator e) {
-    // FIXME: k stattdesse als Parameter übergeben
-    int k = 10000;
     int size = e - s;
-    int pivot = (size - 1) / 2 + 1;
+    int k = static_cast<int>(std::sqrt(size));
+    int pivot = (size - 1) / 2;
     // size > 50
-    if(size > 100000){
-        mergesort_chen(s, s + pivot);
+    if(size > 50){
+        bufferMerge::mergesort(s, s+pivot, s+pivot); //vorher: mergesort_chen(s, s + pivot);
         mergesort_chen(s + pivot, e);
         merge(s, s + pivot, e, k, 0);
     } else {
-        heapSort(s, e);
+        //TODO mit alternativen zu heapsort experimentieren
+        bufferMerge::small_insertion_sort(s, e, e, true);
+        //heapSort(s, e);
     }
 }
