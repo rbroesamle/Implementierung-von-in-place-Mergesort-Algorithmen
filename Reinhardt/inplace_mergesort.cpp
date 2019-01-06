@@ -28,14 +28,30 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
     unsigned int size = start_list - start_gap;
     //für unsortierte Liste < Konstante dann füge einzeln in die lange bereits sortierte Liste ein (O(n))
     if(size < 8){
-        //todo: hier zuerst binäre Suche statt wie hier "lineares Einfügen", um Vergleiche einzusparen
+        //alternativ zur binären Suche die lineare Suche:
+        /*
         for(Iterator now = start_list - 1; now != start_gap - 1; now--){
-            Iterator next = now + 1;
-            while(next != end_list && *next < *now){
-                std::swap(*now, *next);
-                now = next;
-                next = now + 1;
+            auto temp = *now;
+            for(Iterator comp = now; comp != end_list - 1; comp++){
+                if(*(comp + 1) < temp){
+                    *comp = *(comp + 1);
+                } else{
+                    *comp = temp;
+                    break;
+                }
             }
+        }
+         */
+        for(Iterator now = start_list - 1; now != start_gap - 1; now--){
+            auto temp = *now;
+            int size_list = (end_list - now) - 1;
+            int pos = binSearch(now, now + 1, size_list - 1);
+            pos = pos == -1 ? size_list : pos;
+            Iterator i;
+            for(i = now; i != now + pos; i++){
+                *i = *(i+1);
+            }
+            *i = temp;
         }
     }
     else{

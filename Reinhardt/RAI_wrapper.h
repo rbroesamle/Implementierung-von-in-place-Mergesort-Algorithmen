@@ -12,24 +12,24 @@ class RAI_wrapper {
         size = last - first + 1;
     };
 
-    Iterator add(Iterator old, int i){
-       Iterator now = old + i;
-       while(now > last){
+    Iterator add(Iterator old, unsigned int i){
+       Iterator now = old + (i % size);
+       if(now > last){
            now -= size;
        }
        return now;
     }
 
-    Iterator sub(Iterator old, int i){
-        Iterator now = old - i;
-        while (now < first) {
+    Iterator sub(Iterator old, unsigned int i){
+        Iterator now = old - (i % size);
+        if(now < first) {
             now += size;
         }
         return now;
     }
     int sub(Iterator first, Iterator second){
         int now = first - second;
-        while(now < 0){
+        if(now < 0){
             now += size;
         }
         return now;
