@@ -3,6 +3,7 @@
 //
 
 //#include "chen.h"
+#include <chrono>
 #include <iostream>
 #include "wrapper.h"
 #include <random>
@@ -130,8 +131,10 @@ long testRandNum(int size, int u, int o, bool stdSort) {
 }
 
 int main() {
-    int anz = 100;
-    int size = 500000;
+    //Anzahl Wiederholungen
+    int anz = 1;
+    //Größe der zu sortierenden Listen
+    int size = 30000000;
     int u = 0;
     int o = 10000;
 
