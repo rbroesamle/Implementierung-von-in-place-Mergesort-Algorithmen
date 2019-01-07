@@ -6,14 +6,8 @@
 #include "inplace_merge.cpp"
 #include "reinhardt_swap.cpp"
 
-//#include "RAI_wrapper.h"
-
-//template<typename Iterator>
-//RAI_wrapper<Iterator> wrap;
-
 template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin){
-    //wrap<Iterator> = RAI_wrapper<Iterator>(begin, fin - 1);
     unsigned int size = fin - begin;
     if(size < 128){
         small_insertion_sort_swap(begin, fin, begin, true);
@@ -58,7 +52,7 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
         unsigned int size_unsorted = start_list - start_gap;
         unsigned int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
         mergesort_in(start_gap + size_new_gap, start_list);
-        //todo: logischer ringspeicher statt shift! iterator+x als (iterator+x) - size falls drüber (+/- überladen) um die shifts zu vermeiden
+        //todo: logischer ringspeicher statt shift! ---> RAI_shift.h
         Iterator start = start_gap;
         for(Iterator i = start_gap + size_new_gap; i != end_list; i++){
             std::swap(*start, *i);
