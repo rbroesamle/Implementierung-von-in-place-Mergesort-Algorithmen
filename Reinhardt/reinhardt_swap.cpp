@@ -231,14 +231,16 @@ void small_insertion_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator be
         std::swap(*begin_m, *begin_v);
         for(auto it_i = begin_v + 1; it_i != fin_v; it_i++){
             VecIterator it_j;
+            auto temp = *(begin_m + (it_i - begin_v));
             for (it_j = begin_m + (it_i - begin_v); it_j != begin_m; it_j--) {
                 if (*(it_j-1) > *it_i) {
-                    std::swap(*it_j, *(it_j -1));
+                    *it_j = *(it_j - 1);
                 } else {
                     break;
                 }
             }
-            std::swap(*it_j, *it_i);
+            *it_j = *it_i;
+            *it_i = temp;
         }
     }
 }
