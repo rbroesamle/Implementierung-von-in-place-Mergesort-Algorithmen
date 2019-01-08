@@ -4,13 +4,12 @@
 
 template<typename Iterator>
 class RAI {
-
     static Iterator begin;
     static Iterator fin;
+public:
     static unsigned int shift;
     static unsigned int size;
 
-public:
     static void initialize(Iterator begin_i, Iterator fin_i, unsigned int shift_i){
         begin = begin_i;
         fin = fin_i;

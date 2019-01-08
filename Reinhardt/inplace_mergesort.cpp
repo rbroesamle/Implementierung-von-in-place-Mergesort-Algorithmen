@@ -1,10 +1,8 @@
 //
 // Created by jonas on 02.01.2019.
 //
-
 #include "inplace_mergesort.h"
-#include "inplace_merge.cpp"
-#include "reinhardt_swap.cpp"
+#include "reinhardt_swap_shift.cpp"
 
 template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin){
@@ -14,6 +12,7 @@ void in_place_mergesort(Iterator begin, Iterator fin){
         return;
     }
     mergesort_in(begin + size / 5 + 1, fin);
+    RAI<Iterator>::initialize(begin, fin, 0);
     rec_reinhardt_left_gap(begin, begin + (size / 5 + 1), fin);
 }
 
@@ -37,27 +36,36 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
         }
          */
         for(Iterator now = start_list - 1; now != start_gap - 1; now--){
-            auto temp = *now;
+            auto temp = RAI<Iterator>::star(now);
             int size_list = (end_list - now) - 1;
             int pos = binSearch(now, now + 1, size_list - 1);
             pos = pos == -1 ? size_list : pos;
             Iterator i;
             for(i = now; i != now + pos; i++){
-                *i = *(i+1);
+                *RAI<Iterator>::get(i) = RAI<Iterator>::star(i+1);
             }
-            *i = temp;
+            *RAI<Iterator>::get(i) = temp;
         }
+        /*
+        for(Iterator i = start_gap; i != end_list; i++){
+            std::swap(*i, *RAI<Iterator>::get(i));
+            i ++;
+        }
+         */
     }
     else{
         unsigned int size_unsorted = start_list - start_gap;
         unsigned int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
         mergesort_in(start_gap + size_new_gap, start_list);
         //todo: logischer ringspeicher statt shift! ---> RAI_shift.h
+        /*
         Iterator start = start_gap;
         for(Iterator i = start_gap + size_new_gap; i != end_list; i++){
             std::swap(*start, *i);
             start ++;
         }
+         */
+        RAI<Iterator>::shift = (RAI<Iterator>::shift + size_new_gap) % RAI<Iterator>::size;
         Iterator start_long = start_gap + (size_unsorted - size_new_gap);
         std::reverse_iterator<Iterator> start_merge(end_list);
         std::reverse_iterator<Iterator> start_second(end_list - size_new_gap);
