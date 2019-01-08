@@ -105,6 +105,7 @@ void merge_swap (Iterator begin_v, Iterator fin_v, Iterator pivot, Iterator begi
  * Ansonsten sortiere die Elemente von v in m
  */
 //TODO: ändern auf shift
+/*
 template <typename Iterator>
 void small_sort_swap (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     if (i){
@@ -212,6 +213,7 @@ void small_sort_swap (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i
         }
     }
 }
+ */
 template <typename Iterator>
 void small_insertion_sort_swap (Iterator begin_v, Iterator fin_v, Iterator begin_m, bool i){
     if (i) {
