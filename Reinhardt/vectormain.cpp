@@ -1,11 +1,11 @@
 //
 // Created by Patrick on 29.11.2018.
 //
-
+#include "inplace_mergesort_without_ring.cpp"
 //#include "reinhardt.cpp"
 //#include "inplace_merge.cpp"
 //#include "reinhardt_swap.cpp"
-#include "inplace_mergesort.cpp"
+//#include "inplace_mergesort.cpp"
 #include <iostream>
 #include "wrapper.h"
 #include <time.h>
@@ -137,8 +137,8 @@ long testRandNum(int size, int u, int o, bool stdSort){
 }
 
 int main (){
-    int anz = 100;
-    int size = 1372892;
+    int anz = 10;
+    int size = 50000000;
     int u = 0;
     int o = 10000;
 
@@ -188,8 +188,13 @@ int main (){
     for(int i=0; i < 11900; i++){
         std::cout << test[i] << std::endl;
     }
-     */
 
-
+    std::vector<int> vec = {1,2,3,4,5,6,7,8,9};
+    RAI<std::vector<int>::iterator>::initialize(vec.begin(),vec.end(),2);
+    *RAI<std::vector<int>::iterator>::get(vec.begin() + 6) = RAI<std::vector<int>::iterator>::star(vec.begin());
+    for (auto i = vec.begin(); i!= vec.end(); i++){
+        std::cout << *i << std::endl;
+    }
     return 0;
+    */
 }

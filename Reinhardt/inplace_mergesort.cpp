@@ -1,6 +1,7 @@
 //
 // Created by jonas on 02.01.2019.
 //
+#include "RAI_shift.h"
 #include "inplace_mergesort.h"
 #include "reinhardt_swap_shift.cpp"
 
@@ -78,8 +79,10 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
             start ++;
         }
          */
-        RAI<Iterator>::shift = (RAI<Iterator>::shift + size_new_gap) % RAI<Iterator>::size;
-        RAI<std::reverse_iterator<Iterator>>::shift = RAI<Iterator>::size - RAI<Iterator>::shift;
+        //RAI<Iterator>::shift = (RAI<Iterator>::shift + size_new_gap) % RAI<Iterator>::size;
+        //RAI<std::reverse_iterator<Iterator>>::shift = RAI<Iterator>::size - RAI<Iterator>::shift;
+        RAI<Iterator>::set_shift((RAI<Iterator>::shift + size_new_gap) % RAI<Iterator>::size);
+        RAI<std::reverse_iterator<Iterator>>::set_shift(RAI<Iterator>::size - RAI<Iterator>::shift);
 
         Iterator start_long = start_gap + (size_unsorted - size_new_gap);
         std::reverse_iterator<Iterator> start_merge(end_list);

@@ -1,6 +1,7 @@
 //
 // Created by jonas on 22.12.2018.
 //
+#include "RAI_shift.h"
 #include "inplace_merge_shift.h"
 #include<iterator>
 #include<math.h>

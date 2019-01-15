@@ -1,3 +1,4 @@
+#include "RAI_shift.h"
 #include "reinhardt_swap_shift.h"
 #include "inplace_merge_shift.cpp"
 #include<algorithm>
