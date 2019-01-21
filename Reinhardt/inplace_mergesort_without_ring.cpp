@@ -4,6 +4,8 @@
 
 #include "inplace_mergesort.h"
 #include "quicksort_step.cpp"
+#include "vector"
+#include "iterator"
 
 template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin){
@@ -20,7 +22,6 @@ template <typename Iterator>
 void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator end_list){
     unsigned int size = start_list - start_gap;
     //für unsortierte Liste < Konstante dann füge einzeln in die lange bereits sortierte Liste ein (O(n))
-    //TODO: Gleich ganzer Block shiften
     if(size < 8){
         /* alternativ: Insertion Sort getrennt für die Elemente:
         for(Iterator now = start_list - 1; now != start_gap - 1; now--){
@@ -37,19 +38,36 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
          */
         small_insertion_sort_swap(start_gap,start_list,start_gap, true);
         Iterator start_unsorted = start_gap;
+        Iterator start_sorted = start_unsorted + size;
+        std::vector<typename std::iterator_traits<Iterator>::value_type> extra(size);
+        for(int i = 0; i != size; i++){
+            extra[i] = *(start_gap + i);
+        }
         for(int act = 0; act != size; act ++){
-            Iterator start_sorted = start_unsorted + (size - act);
             int size_sorted = end_list - start_sorted;
-            int pos = binSearch(start_unsorted, start_sorted, size_sorted - 1);
-            if(pos == -1){
-                //Ausnahme behandlen und dann Abbruch der for-Schleife
+            int pos;
+            if(size_sorted == 0){
+                for(int elem = act; elem != size; elem ++){
+                    *start_unsorted = extra[elem];
+                    start_unsorted ++;
+                }
+                break;
+            }
+            if(size_sorted == 1){
+                pos = extra[act] < *start_sorted ? 0 : 1;
+            }
+            else{
+                pos = binSearch(extra.begin() + act, start_sorted, size_sorted - 1);
+                pos = pos == -1 ? size_sorted : pos;
             }
             Iterator insert_pos = start_sorted + pos;
-            //erstmal so swappen, dass unsortierter Block vor der Einfügeposition steht
-            while(start_sorted + size < insert_pos){
-                //size mal swappen.....
+            while(start_sorted != insert_pos){
+                *start_unsorted = *start_sorted;
+                start_unsorted ++;
+                start_sorted ++;
             }
-            //jetzt schauen ob hinter Einfügeposition noch genug Platz ist
+            *start_unsorted = extra[act];
+            start_unsorted ++;
         }
 
     }
