@@ -3,8 +3,7 @@
 //
 
 #include "inplace_mergesort.h"
-#include "inplace_merge.cpp"
-#include "reinhardt_swap.cpp"
+#include "quicksort_step.cpp"
 
 template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin){
