@@ -23,20 +23,7 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
     unsigned int size = start_list - start_gap;
     //für unsortierte Liste < Konstante dann füge einzeln in die lange bereits sortierte Liste ein (O(n))
     if(size < 8){
-        //alternativ zur binären Suche die lineare Suche:
-        /*
-        for(Iterator now = start_list - 1; now != start_gap - 1; now--){
-            auto temp = *now;
-            for(Iterator comp = now; comp != end_list - 1; comp++){
-                if(*(comp + 1) < temp){
-                    *comp = *(comp + 1);
-                } else{
-                    *comp = temp;
-                    break;
-                }
-            }
-        }
-         */
+        //TODO: gleich ganzer Block shiften
         for(Iterator now = start_list - 1; now != start_gap - 1; now--){
             auto temp = RAI<Iterator>::star(now);
             int size_list = (end_list - now) - 1;

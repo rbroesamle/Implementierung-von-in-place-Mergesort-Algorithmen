@@ -20,21 +20,9 @@ template <typename Iterator>
 void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator end_list){
     unsigned int size = start_list - start_gap;
     //für unsortierte Liste < Konstante dann füge einzeln in die lange bereits sortierte Liste ein (O(n))
+    //TODO: Gleich ganzer Block shiften
     if(size < 8){
-        //alternativ zur binären Suche die lineare Suche:
-        /*
-        for(Iterator now = start_list - 1; now != start_gap - 1; now--){
-            auto temp = *now;
-            for(Iterator comp = now; comp != end_list - 1; comp++){
-                if(*(comp + 1) < temp){
-                    *comp = *(comp + 1);
-                } else{
-                    *comp = temp;
-                    break;
-                }
-            }
-        }
-         */
+        /* alternativ: Insertion Sort getrennt für die Elemente:
         for(Iterator now = start_list - 1; now != start_gap - 1; now--){
             auto temp = *now;
             int size_list = (end_list - now) - 1;
@@ -46,6 +34,24 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
             }
             *i = temp;
         }
+         */
+        small_insertion_sort_swap(start_gap,start_list,start_gap, true);
+        Iterator start_unsorted = start_gap;
+        for(int act = 0; act != size; act ++){
+            Iterator start_sorted = start_unsorted + (size - act);
+            int size_sorted = end_list - start_sorted;
+            int pos = binSearch(start_unsorted, start_sorted, size_sorted - 1);
+            if(pos == -1){
+                //Ausnahme behandlen und dann Abbruch der for-Schleife
+            }
+            Iterator insert_pos = start_sorted + pos;
+            //erstmal so swappen, dass unsortierter Block vor der Einfügeposition steht
+            while(start_sorted + size < insert_pos){
+                //size mal swappen.....
+            }
+            //jetzt schauen ob hinter Einfügeposition noch genug Platz ist
+        }
+
     }
     else{
         unsigned int size_unsorted = start_list - start_gap;
@@ -63,6 +69,7 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
         std::reverse_iterator<Iterator> end_first(start_gap);
 
         asym_merge_gap_right(end_second, end_first, start_second, end_second, start_merge,-1);
+        //TODO: evtl. zweite Iteration (Quicksort-Step verwenden)
         rec_reinhardt_left_gap(start_gap, start_gap + size_new_gap, end_list);
 
     }
