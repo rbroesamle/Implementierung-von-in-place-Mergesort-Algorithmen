@@ -57,8 +57,7 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
                 pos = extra[act] < *start_sorted ? 0 : 1;
             }
             else{
-                pos = binSearch(extra.begin() + act, start_sorted, size_sorted - 1);
-                pos = pos == -1 ? size_sorted : pos;
+                pos = std::lower_bound(start_sorted, end_list, extra[act]) - start_sorted;
             }
             Iterator insert_pos = start_sorted + pos;
             while(start_sorted != insert_pos){

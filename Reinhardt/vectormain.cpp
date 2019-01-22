@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include<cmath>
 
 /*
  * Testmethode, die auf einer Kopie eines Vektors der Größe size sortiert
@@ -59,6 +60,13 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     std::cout << milli  << " millisekunden" << std::endl;
     std::cout << mikro  << " mikrosekunden" << std::endl;
     std::cout << std::endl;
+
+    std::cout << "Vergleiche durch n*log2(n):" << std::endl << c / (size*log2(size)) << std::endl;
+    std::cout << "Zuweisungen durch n*log2(n):" << std::endl << m / (size*log2(size)) << std::endl;
+    std::cout << "Dauer (mikrosekunden) durch n*log2(n):" << std::endl;
+    std::cout << mikro / (size*log2(size)) << std::endl;
+    std::cout << std::endl;
+
     std::cout << " -----------------------------------" << std::endl;
     std::cout << std::endl;
 
@@ -165,12 +173,24 @@ int main (){
     }
 
     std::cout << "Vergleichsschnitt:" << std::endl << comp_sum / anz << std::endl;
+    std::cout << "Vergleiche durch n*log2(n):" << std::endl << comp_sum / (anz*size*log2(size)) << std::endl;
+    std::cout << std::endl;
     std::cout << "Zuweisungsschnitt:" << std::endl << assi_sum / anz << std::endl;
+    std::cout << "Zuweisungen durch n*log2(n):" << std::endl << assi_sum / (anz*size*log2(size)) << std::endl;
+    std::cout << std::endl;
     std::cout << "Zeitschnitt:" << std::endl << time_sum / anz << std::endl;
-
+    std::cout << "Zeit durch n*log2(n):" << std::endl << time_sum / (anz*size*log2(size)) << std::endl;
+    std::cout << std::endl;
+    std::cout << " -----------------------------------" << std::endl;
+    std::cout << std::endl;
     std::cout << "Vergleichsschnitt std-Sort:" << std::endl << std_comp_sum / anz << std::endl;
+    std::cout << "Vergleiche std-Sort durch n*log2(n):" << std::endl << std_comp_sum / (anz*size*log2(size)) << std::endl;
+    std::cout << std::endl;
     std::cout << "Zuweisungsschnitt std-Sort:" << std::endl << std_assi_sum / anz << std::endl;
+    std::cout << "Zuweisungen std-Sort durch n*log2(n):" << std::endl << std_assi_sum / (anz*size*log2(size)) << std::endl;
+    std::cout << std::endl;
     std::cout << "Zeitschnitt std-Sort:" << std::endl << std_time_sum / anz << std::endl;
+    std::cout << "Zeit std-Sort durch n*log2(n):" << std::endl << std_time_sum / (anz*size*log2(size)) << std::endl;
 
     /*
     std::vector<int> test(11900);
