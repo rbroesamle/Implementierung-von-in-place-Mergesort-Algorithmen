@@ -20,16 +20,6 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
     //gap_middle wird später auf jeden Fall noch zur gap gehören
     std::reverse_iterator<Iterator> gap_middle(start_gap + ((start_list - start_gap - 1) / 2));
 
-    /*
-    while(act <= last && act != gap_middle){
-        if(*act > pivot_value){
-            std::swap(*act, *last);
-            last --;
-        } else{
-            act ++;
-        }
-    }
-     */
     while(true){
         while(*act <= pivot_value && act <= last && act != gap_middle){
             act ++;
@@ -46,7 +36,31 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
 
     Iterator new_start_short = act.base();
     mergesort_in(new_start_short, start_list);
-    asym_merge_gap_left(new_start_short, start_list, start_list, pivot + 1);
-    return (pivot + 1) - (new_start_short - start_gap);
+    Iterator end_merge = pivot + 1;
+    Iterator size_short = start_list - new_start_short;
+
+    //besser für später um einen shift zu verhindern: nur kurze und lange Liste tauschen
+    Iterator start_long = start_list;
+    Iterator smallest = start_list;
+    for(Iterator i = new_start_short; i != end_merge; i++){
+        if(smallest == end_merge){
+            if(i < start_long){
+                smallest = start_long;
+            }
+            else{
+                break;
+            }
+        }
+        if(i == start_long){
+            start_long = smallest;
+        }
+        std::swap(*i, *smallest);
+        smallest++;
+    }
+
+    //anschließend aufsteigend mergen, zweite Liste fängt bei Start erster Liste vor dem Tausch an
+    Iterator start_one = end_merge - size_short;
+    asym_merge_gap_left(start_one, end_merge, new_start_short, start_one, start_gap, -1);
+    return end_merge - (start_list - start_gap);
 }
 

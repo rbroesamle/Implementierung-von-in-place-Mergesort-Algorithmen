@@ -7,6 +7,9 @@
 #include "vector"
 #include "iterator"
 
+//TODO: hier angeben die wievielte Iteration den Quicksort-step verwenden soll ( >= 1 )
+static const unsigned int qstep = 1;
+static unsigned int qstep_counter = 1;
 template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin){
     unsigned int size = fin - begin;
@@ -71,14 +74,36 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
 
     }
     else{
+        /*
+        if(qstep == qstep_counter){
+            qstep_counter = 1;
+            //pivot ist später das letzte von second_iteration mitgemergte Element
+            Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
+            Iterator new_start_gap = second_iteratorion(start_gap, start_list, end_list);
+            rec_reinhardt_left_gap(new_start_gap, pivot + 1, end_list);
+            return;
+        }
+        qstep_counter ++;
+         */
         unsigned int size_unsorted = start_list - start_gap;
         unsigned int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
+        //hier verändert: linker Teil der gap sortieren und dann nur lange Liste shiften
+        /*
         mergesort_in(start_gap + size_new_gap, start_list);
         Iterator start = start_gap;
         for(Iterator i = start_gap + size_new_gap; i != end_list; i++){
             std::swap(*start, *i);
             start ++;
         }
+         */
+        Iterator end_new_sort = start_list - size_new_gap;
+        mergesort_in_gap_right(start_gap, end_new_sort);
+        Iterator start = end_new_sort;
+        for(Iterator i = start_list; i != end_list; i++){
+            std::swap(*start, *i);
+            start ++;
+        }
+
         Iterator start_long = start_gap + (size_unsorted - size_new_gap);
         std::reverse_iterator<Iterator> start_merge(end_list);
         std::reverse_iterator<Iterator> start_second(end_list - size_new_gap);
@@ -86,7 +111,6 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
         std::reverse_iterator<Iterator> end_first(start_gap);
 
         asym_merge_gap_right(end_second, end_first, start_second, end_second, start_merge,-1);
-        //TODO: evtl. zweite Iteration (Quicksort-Step verwenden)
         rec_reinhardt_left_gap(start_gap, start_gap + size_new_gap, end_list);
 
     }

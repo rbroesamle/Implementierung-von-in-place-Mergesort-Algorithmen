@@ -4,6 +4,9 @@
 template <typename Iterator>
 void mergesort_in(Iterator begin, Iterator fin);
 
+template <typename Iterator>
+void mergesort_in_gap_right(Iterator begin, Iterator fin);
+
 template <typename Iterator, typename VecIterator>
 void recsort_swap(Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i);
 

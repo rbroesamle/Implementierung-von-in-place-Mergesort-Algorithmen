@@ -47,6 +47,53 @@ void mergesort_in(Iterator begin, Iterator fin){
     reinhardt_special_swap(begin, first_end, second_end, third_end, fin, (begin - (size / 4)) - 1, begin);
 }
 
+/**
+ * Rufe diese Prozedur im In-Place-Algorithmus auf
+ * Sie macht das gleiche wie obige in-place-Prozedur, nur verwerndet Elemente rechts davon als gap
+ */
+template <typename Iterator>
+void mergesort_in_gap_right(Iterator begin, Iterator fin){
+    unsigned int size = fin-begin;
+
+    //sortiere mit Insertion Sort für die "kleinen Fälle"
+    if(size < 128){
+        small_insertion_sort_swap(begin, fin, begin, true);
+        return;
+    }
+
+    Iterator first_end;
+    Iterator second_end;
+    Iterator third_end;
+
+    int quarter = size/4;
+    first_end = begin + quarter;
+
+    switch(size % 4){
+        case 2:
+            second_end = first_end + quarter;
+            third_end = second_end + (quarter + 1);
+            break;
+        case 3:
+            second_end = first_end + (quarter + 1);
+            third_end = second_end + (quarter + 1);
+            break;
+        default:
+            //case 0 oder 1 Rest
+            second_end = first_end + quarter;
+            third_end = second_end + quarter;
+            break;
+    }
+
+    recsort_swap(begin, first_end, fin, true);
+    recsort_swap(first_end, second_end, fin, true);
+    recsort_swap(second_end, third_end, fin, true);
+    recsort_swap(third_end, fin, fin, true);
+
+    reinhardt_special_swap(begin, first_end, second_end, third_end, fin, fin, fin + (size / 4) + 1);
+}
+
+
+
 /* Rufe diese Methode jeweils rekursiv mit invertiertem boolean i auf
  * Falls nur noch 2 oder 3 Elemente in v sind, dann rufe den small-sort auf
  * Merge dann die rekursiv bereits sortierten Teillisten

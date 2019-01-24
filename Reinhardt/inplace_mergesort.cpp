@@ -37,7 +37,6 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
         }
         //finaler Shift
         Iterator start_short = RAI<Iterator>::get(start_gap);
-        //TODO: Elemente ab hier passen noch nicht
         Iterator smallest = RAI<Iterator>::get(start_gap);
         for(Iterator i = start_gap; i != end_list; i++){
             if(smallest == end_list){
