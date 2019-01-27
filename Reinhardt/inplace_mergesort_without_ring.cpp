@@ -8,10 +8,11 @@
 #include "iterator"
 
 //TODO: hier angeben die wievielte Iteration den Quicksort-step verwenden soll ( >= 1 )
-static const unsigned int qstep = 1;
-static unsigned int qstep_counter = 1;
+static const unsigned int qstep = 2;
+static unsigned int qstep_counter;
 template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin){
+    qstep_counter = 1;
     unsigned int size = fin - begin;
     if(size < 128){
         small_insertion_sort_swap(begin, fin, begin, true);
@@ -74,17 +75,16 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
 
     }
     else{
-        /*
         if(qstep == qstep_counter){
             qstep_counter = 1;
             //pivot ist später das letzte von second_iteration mitgemergte Element
-            Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
             Iterator new_start_gap = second_iteratorion(start_gap, start_list, end_list);
-            rec_reinhardt_left_gap(new_start_gap, pivot + 1, end_list);
+            int size_unsorted = start_list - start_gap;
+            int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
+            rec_reinhardt_left_gap(new_start_gap, new_start_gap + size_new_gap, end_list);
             return;
         }
         qstep_counter ++;
-         */
         unsigned int size_unsorted = start_list - start_gap;
         unsigned int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
         //hier verändert: linker Teil der gap sortieren und dann nur lange Liste shiften
