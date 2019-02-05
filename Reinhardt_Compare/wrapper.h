@@ -109,6 +109,10 @@ public:
         return (x > y.x);
     }
 
+    static bool compare(BasetypeWrapper<T> x, BasetypeWrapper<T> y){
+        return x < y;
+    }
+
     //returns actual value
     T get_value() {
         return x;

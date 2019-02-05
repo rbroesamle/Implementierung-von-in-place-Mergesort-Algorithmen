@@ -75,13 +75,13 @@ Iterator third_iteratorion(Iterator start_gap, Iterator start_list, Iterator end
 
     //mache eine Quicksort-Iteration
     while(true){
-        while(*act <= pivot_value && act <= last){
+        while(!comp(pivot_value, *act) && act <= last){
             act ++;
         }
         if(act >= last){
             break;
         }
-        while(*last > pivot_value){
+        while(comp(pivot_value, *last)){
             last --;
         }
         std::swap(*act, *last);

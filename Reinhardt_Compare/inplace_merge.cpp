@@ -20,7 +20,7 @@ void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two
     //while beide Listen nichtleer und keine Kollision
     while (act_one != end_one && act_two != end_two && merge != act_two) {
         temp = *merge;
-        if (*act_two < *act_one) {
+        if (comp(*act_two, *act_one)) {
             *merge = *act_two;
             *act_two = temp;
             act_two++;
@@ -81,7 +81,7 @@ void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_tw
     //while beide Listen nichtleer und keine Kollision
     while (act_one != end_one && act_two != end_two && merge != act_two) {
         temp = *merge;
-        if (*act_one < *act_two) {
+        if (comp(*act_one, *act_two)) {
             *merge = *act_two;
             *act_two = temp;
             act_two++;

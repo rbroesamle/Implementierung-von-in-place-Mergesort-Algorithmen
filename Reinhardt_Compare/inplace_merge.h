@@ -20,7 +20,7 @@ template<typename Iterator>
 int binSearch(Iterator pos_one, Iterator pos_two, int k){
 
     auto elem_one = *pos_one;
-    if(*(pos_two + k) <= elem_one){
+    if(!comp(elem_one, *(pos_two + k))){
         //Ganzer Block der zweiten Liste ist kleiner, dann wird -1 zurückgegeben
         return -1;
     }
@@ -28,7 +28,7 @@ int binSearch(Iterator pos_one, Iterator pos_two, int k){
 
     do{
         k = k / 2;
-        if(*(elem_two + k) <= elem_one){
+        if(!comp(elem_one, *(elem_two + k))){
             //Suche in der rechten Teilhälfte weiter nach Einfügeposition
             elem_two = elem_two + (k + 1);
         }
@@ -43,7 +43,7 @@ template<typename Iterator>
 int binSearch_inverted(Iterator pos_one, Iterator pos_two, int k){
 
     auto elem_one = *pos_one;
-    if(*(pos_two + k) >= elem_one){
+    if(!comp(*(pos_two + k), elem_one)){
         //Ganzer Block der zweiten Liste ist kleiner, dann wird -1 zurückgegeben
         return -1;
     }
@@ -51,7 +51,7 @@ int binSearch_inverted(Iterator pos_one, Iterator pos_two, int k){
 
     do{
         k = k / 2;
-        if(*(elem_two + k) >= elem_one){
+        if(!comp(*(elem_two + k), elem_one)){
             //Suche in der linken Teilhälfte weiter nach Einfügeposition
             elem_two = elem_two + (k + 1);
         }

@@ -123,7 +123,7 @@ template <typename Iterator, typename VecIterator>
 void merge_swap (Iterator begin_v, Iterator fin_v, Iterator pivot, VecIterator begin_m) {
     Iterator middle = pivot;
     while (begin_v != middle && pivot != fin_v){
-        if (*begin_v <= *pivot){
+        if (!comp(*pivot, *begin_v)){
             std::swap(*begin_m, *begin_v);
             begin_v++;
         }else{
@@ -155,22 +155,22 @@ void small_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator begin_m, boo
     if (i){
         //sort in v
         if (fin_v - begin_v == 1) {
-            if (*begin_v > *fin_v){
+            if (comp(*fin_v, *begin_v)){
                 auto temp = *begin_v;
                 *begin_v = *fin_v;
                 *fin_v = temp;
             }
         } else {
             Iterator m = begin_v + 1;
-            if (*begin_v > *fin_v) {
-                if (*m > *begin_v){
+            if (comp(*fin_v, *begin_v)) {
+                if (comp(*begin_v, *m)){
                     // o < u < u+1
                     auto temp = *begin_v;
                     *begin_v = *fin_v;
                     *fin_v = *m;
                     *m = temp;
                 } else {
-                    if (*fin_v > *m){
+                    if (comp(*m, *fin_v)){
                         //u+1 < o < u
                         auto temp = *begin_v;
                         *begin_v = *m;
@@ -185,7 +185,7 @@ void small_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator begin_m, boo
                 }
             } else {
                 // u < o
-                if (*m > *fin_v){
+                if (comp(*fin_v, *m)){
                     // u < o < u+1
                     auto temp = *m;
                     *m = *fin_v;
@@ -204,7 +204,7 @@ void small_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator begin_m, boo
         //sort and write to m
         VecIterator middle_m = begin_m + 1;
         if (fin_v - begin_v == 1) {
-            if (*begin_v > *fin_v){
+            if (comp(*fin_v, *begin_v)){
                 std::swap(*begin_m, *fin_v);
                 std::swap(*middle_m, *begin_v);
             } else {
@@ -214,14 +214,14 @@ void small_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator begin_m, boo
         } else {
             VecIterator fin_m = begin_m + 2;
             Iterator middle_v = begin_v + 1;
-            if (*begin_v > *fin_v) {
-                if (*middle_v > *begin_v){
+            if (comp(*fin_v, *begin_v)) {
+                if (comp(*begin_v, *middle_v)){
                     // o < u < u+1
                     std::swap(*begin_m, *fin_v);
                     std::swap(*fin_m, *middle_v);
                     std::swap(*middle_m, *begin_v);
                 } else {
-                    if (*fin_v > *middle_v){
+                    if (comp(*middle_v, *fin_v)){
                         //u+1 < o < u
                         std::swap(*begin_m, *middle_v);
                         std::swap(*middle_m, *fin_v);
@@ -235,13 +235,13 @@ void small_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator begin_m, boo
                 }
             } else {
                 // u < o
-                if (*middle_v > *fin_v){
+                if (comp(*fin_v, *middle_v)){
                     // u < o < u+1
                     std::swap(*begin_m, *begin_v);
                     std::swap(*middle_m, *fin_v);
                     std::swap(*fin_m, *middle_v);
                 } else {
-                    if (*begin_v > *middle_v){
+                    if (comp(*middle_v, *begin_v)){
                         // u+1 < u < o
                         std::swap(*fin_m, *fin_v);
                         std::swap(*begin_m, *middle_v);
@@ -265,7 +265,7 @@ void small_insertion_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator be
             auto temp = *it_i;
             Iterator it_j;
             for (it_j = it_i; it_j != begin_v; it_j--) {
-                if (*(it_j-1) > temp) {
+                if (comp(temp, *(it_j-1))) {
                     *it_j = *(it_j -1);
                 } else {
                     break;
@@ -280,7 +280,7 @@ void small_insertion_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator be
             VecIterator it_j;
             auto temp = *(begin_m + (it_i - begin_v));
             for (it_j = begin_m + (it_i - begin_v); it_j != begin_m; it_j--) {
-                if (*(it_j-1) > *it_i) {
+                if (comp(*it_i, *(it_j-1))) {
                     *it_j = *(it_j - 1);
                 } else {
                     break;
@@ -303,7 +303,7 @@ void reinhardt_special_swap(Iterator begin, Iterator second_begin, Iterator thir
     Iterator act_in = begin;
     VecIterator act_extra;
     for(act_extra = extra_begin; act_extra != extra_end - 1; act_extra ++){
-        if (*act_first > *act_second) {
+        if (comp(*act_second, *act_first)) {
             std::swap(*act_extra, *act_second);
             act_second++;
         } else {
@@ -337,7 +337,7 @@ void reinhardt_special_swap(Iterator begin, Iterator second_begin, Iterator thir
     }
     else{
         //Falls beide Listen noch nicht leer
-        if (*act_first > *act_second) {
+        if (comp(*act_second, *act_first)) {
             std::swap(*act_extra, *act_second);
             act_second++;
         } else {
@@ -363,7 +363,7 @@ void reinhardt_special_swap(Iterator begin, Iterator second_begin, Iterator thir
     //in dieser While-Schleife, bis ExtraArray erreicht
     while(now_two != erster_merge_end - 1 && now_one != begin - 1){
 
-        if (*now_one > *now_two) {
+        if (comp(*now_two, *now_one)) {
             std::swap(*to, *now_one);
             now_one--;
         } else {
@@ -381,7 +381,7 @@ void reinhardt_special_swap(Iterator begin, Iterator second_begin, Iterator thir
     }
     while(to != now_two && now_two != erster_merge_end - 1){
 
-        if (*now_one_later > *now_two) {
+        if (comp(*now_two, *now_one_later)) {
             std::swap(*to, *now_one_later);
             now_one_later--;
         } else {
@@ -409,7 +409,7 @@ void reinhardt_special_swap(Iterator begin, Iterator second_begin, Iterator thir
 template <typename Iterator,typename VecIterator>
 void merge_reinhardt_swap(VecIterator start_one, VecIterator end_one, Iterator start_two, Iterator end_two, Iterator start_merge){
     while (start_one != end_one && start_two != end_two) {
-        if (*start_one > *start_two) {
+        if (comp(*start_two, *start_one)) {
             std::swap(*start_merge, *start_two);
             start_two++;
         } else {

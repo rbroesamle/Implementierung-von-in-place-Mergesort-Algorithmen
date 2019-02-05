@@ -13,7 +13,7 @@ static const unsigned int qstep = 1;
 static unsigned int qstep_counter;
 template <typename Iterator, typename Compare>
 void in_place_mergesort(Iterator begin, Iterator fin, Compare compare){
-    //comp = compare;
+    comp = compare;
     qstep_counter = 1;
     unsigned int size = fin - begin;
     if(size < 128){
