@@ -109,8 +109,9 @@ public:
         return (x > y.x);
     }
 
-    static bool compare(BasetypeWrapper<T> x, BasetypeWrapper<T> y){
-        return x < y;
+    inline static bool compare(const BasetypeWrapper<T> &a, const BasetypeWrapper<T> &y){
+        c++;
+        return (a.x < y.x);
     }
 
     //returns actual value

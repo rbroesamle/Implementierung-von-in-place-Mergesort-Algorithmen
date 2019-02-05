@@ -11,8 +11,8 @@
  * Sie swapped dabei immer Elemente der "gap" mit Elementen der zu mergenden Listen
  */
 
-template <typename Iterator>
-void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge){
+template <typename Iterator, typename Compare>
+void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, Compare comp){
     typename std::iterator_traits<Iterator>::value_type temp;
     Iterator act_one = start_one;
     Iterator act_two = start_two;
@@ -60,7 +60,7 @@ void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two
             std::reverse_iterator<Iterator> new_start_two(end_two);
             std::reverse_iterator<Iterator> new_end_two(act_two);
             std::reverse_iterator<Iterator> new_merge(end_two + (end_one - act_one));
-        sym_merge_gap_right(new_start_one, new_end_one, new_start_two, new_end_two, new_merge);
+        sym_merge_gap_right(new_start_one, new_end_one, new_start_two, new_end_two, new_merge, comp);
     }
 }
 
@@ -72,8 +72,8 @@ void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two
  * bei Reverse-Iteratoren den "Versatz" zu normalen Iteratoren bei der Initialisierung beachten
  */
 
-template <typename Iterator>
-void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge){
+template <typename Iterator, typename Compare>
+void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, Compare comp){
     typename std::iterator_traits<Iterator>::value_type temp;
     Iterator act_one = start_one;
     Iterator act_two = start_two;
@@ -121,7 +121,7 @@ void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_tw
         auto new_start_two = end_two.base();
         auto new_end_two = act_two.base();
         auto new_merge = end_two.base() - (end_one - act_one);
-        sym_merge_gap_left(new_start_one, new_end_one, new_start_two, new_end_two, new_merge);
+        sym_merge_gap_left(new_start_one, new_end_one, new_start_two, new_end_two, new_merge, comp);
     }
 }
 
@@ -132,8 +132,8 @@ void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_tw
  * k_inp <= 0: der Faktor wird von der Prozedur bestimmt, ansonsten wird der übergebene Wert übernommen
  * k_inp = 1 entspricht symmetrischem mergen
  */
-template <typename Iterator>
-void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, int k_inp){
+template <typename Iterator, typename Compare>
+void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, int k_inp, Compare comp){
     int k;
     if(k_inp <= 0){
         int size_short = end_one - start_one;
@@ -154,7 +154,7 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
     }
 
     if(k == 1){
-        sym_merge_gap_left(start_one, end_one, start_two, end_two, merge);
+        sym_merge_gap_left(start_one, end_one, start_two, end_two, merge, comp);
         return;
     }
     //k dekrementieren sodass act_iter + k stets auf k'tes Element nach act_iter zeigt
@@ -171,7 +171,7 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
             if(end_two - act_two < end_one - act_one || end_two - act_two < 20){
                 //merge symmetrisch falls Listen nur noch ca gleich lang
                 //oder wenn es sich asymmetrisch nicht mehr lohnt weil lange Liste nun kurz
-                sym_merge_gap_left(act_one, end_one, act_two, end_two, merge);
+                sym_merge_gap_left(act_one, end_one, act_two, end_two, merge, comp);
                 return;
             }
             else{
@@ -181,7 +181,7 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
                 }
             }
         }
-        int pos = binSearch(act_one, act_two, k);
+        int pos = binSearch(act_one, act_two, k, comp);
         if(pos == -1){
             // ganzer Block von two kopieren
             for(int i = 0; i <= k; i ++){
@@ -228,7 +228,7 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
         std::reverse_iterator<Iterator> new_start_two(end_two);
         std::reverse_iterator<Iterator> new_end_two(act_two);
         std::reverse_iterator<Iterator> new_merge(end_two + (end_one - act_one));
-        asym_merge_gap_right(new_start_one, new_end_one, new_start_two, new_end_two, new_merge, k+1);
+        asym_merge_gap_right(new_start_one, new_end_one, new_start_two, new_end_two, new_merge, k+1, comp);
     }
 }
 
@@ -239,8 +239,8 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
  * k_inp <= 0: der Faktor wird von der Prozedur bestimmt, ansonsten wird der übergebene Wert übernommen
  * k_inp = 1 entspricht symmetrischem mergen
  */
-template <typename Iterator>
-void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, int k_inp){
+template <typename Iterator, typename Compare>
+void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge, int k_inp, Compare comp){
     int k;
     if(k_inp <= 0){
         int size_short = end_one - start_one;
@@ -261,7 +261,7 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
     }
 
     if(k == 1){
-        sym_merge_gap_right(start_one, end_one, start_two, end_two, merge);
+        sym_merge_gap_right(start_one, end_one, start_two, end_two, merge, comp);
         return;
     }
     //k dekrementieren sodass act_iter + k stets auf k'tes Element nach act_iter zeigt
@@ -278,7 +278,7 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
             if(end_two - act_two < end_one - act_one || end_two - act_two < 20){
                 //merge symmetrisch falls Listen nur noch ca gleich lang
                 //oder wenn es sich asymmetrisch nicht mehr lohnt weil lange Liste nun kurz
-                sym_merge_gap_right(act_one, end_one, act_two, end_two, merge);
+                sym_merge_gap_right(act_one, end_one, act_two, end_two, merge, comp);
                 return;
             }
             else{
@@ -288,7 +288,7 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
                 }
             }
         }
-        int pos = binSearch_inverted(act_one, act_two, k);
+        int pos = binSearch_inverted(act_one, act_two, k, comp);
         if(pos == -1){
             // ganzer Block von two kopieren
             for(int i = 0; i <= k; i ++){
@@ -335,6 +335,6 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
         auto new_start_two = end_two.base();
         auto new_end_two = act_two.base();
         auto new_merge = end_two.base() - (end_one - act_one);
-        asym_merge_gap_left(new_start_one, new_end_one, new_start_two, new_end_two, new_merge, k+1);
+        asym_merge_gap_left(new_start_one, new_end_one, new_start_two, new_end_two, new_merge, k+1, comp);
     }
 }

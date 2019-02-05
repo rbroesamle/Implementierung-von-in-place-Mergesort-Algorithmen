@@ -6,26 +6,24 @@
 #include "quicksort_step.cpp"
 #include "vector"
 #include "iterator"
-#include "Compare.h"
 
 //TODO: hier angeben die wievielte Iteration den Quicksort-step verwenden soll ( >= 1 )
 static const unsigned int qstep = 1;
 static unsigned int qstep_counter;
 template <typename Iterator, typename Compare>
-void in_place_mergesort(Iterator begin, Iterator fin, Compare compare){
-    comp = compare;
+void in_place_mergesort(Iterator begin, Iterator fin, Compare comp){
     qstep_counter = 1;
     unsigned int size = fin - begin;
     if(size < 128){
-        small_insertion_sort_swap(begin, fin, begin, true);
+        small_insertion_sort_swap(begin, fin, begin, true, comp);
         return;
     }
-    mergesort_in(begin + size / 5 + 1, fin);
-    rec_reinhardt_left_gap(begin, begin + (size / 5 + 1), fin);
+    mergesort_in(begin + size / 5 + 1, fin, comp);
+    rec_reinhardt_left_gap(begin, begin + (size / 5 + 1), fin, comp);
 }
 
-template <typename Iterator>
-void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator end_list){
+template <typename Iterator, typename Compare>
+void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
     unsigned int size = start_list - start_gap;
     //für unsortierte Liste < Konstante dann füge einzeln in die lange bereits sortierte Liste ein (O(n))
     if(size < 8){
@@ -42,7 +40,7 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
             *i = temp;
         }
          */
-        small_insertion_sort_swap(start_gap,start_list,start_gap, true);
+        small_insertion_sort_swap(start_gap,start_list,start_gap, true, comp);
         Iterator start_unsorted = start_gap;
         Iterator start_sorted = start_unsorted + size;
         std::vector<typename std::iterator_traits<Iterator>::value_type> extra(size);
@@ -79,17 +77,17 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
     else{
         if(qstep == qstep_counter){
             qstep_counter = 1;
-            Iterator new_start_gap = second_iteratorion(start_gap, start_list, end_list);
+            Iterator new_start_gap = second_iteratorion(start_gap, start_list, end_list, comp);
             int size_unsorted = start_list - start_gap;
             int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
-            rec_reinhardt_left_gap(new_start_gap, new_start_gap + size_new_gap, end_list);
+            rec_reinhardt_left_gap(new_start_gap, new_start_gap + size_new_gap, end_list, comp);
             return;
         }
         qstep_counter ++;
         unsigned int size_unsorted = start_list - start_gap;
         unsigned int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
         Iterator end_new_sort = start_list - size_new_gap;
-        mergesort_in_gap_right(start_gap, end_new_sort);
+        mergesort_in_gap_right(start_gap, end_new_sort, comp);
         Iterator start = end_new_sort;
         for(Iterator i = start_list; i != end_list; i++){
             std::swap(*start, *i);
@@ -102,8 +100,8 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
         std::reverse_iterator<Iterator> end_second(start_long);
         std::reverse_iterator<Iterator> end_first(start_gap);
 
-        asym_merge_gap_right(end_second, end_first, start_second, end_second, start_merge,-1);
-        rec_reinhardt_left_gap(start_gap, start_gap + size_new_gap, end_list);
+        asym_merge_gap_right(end_second, end_first, start_second, end_second, start_merge,-1, comp);
+        rec_reinhardt_left_gap(start_gap, start_gap + size_new_gap, end_list, comp);
 
     }
 }

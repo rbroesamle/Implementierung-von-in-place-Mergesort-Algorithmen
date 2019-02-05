@@ -4,20 +4,19 @@
 #include <iterator>
 #include "inplace_merge.cpp"
 #include "reinhardt_swap.cpp"
-#include "Compare.h"
 /*
  * Performs a quickselect-step
  * returns the "new" start_gap
  */
-template<typename Iterator>
-Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator end_list){
+template<typename Iterator, typename Compare>
+Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
     int size_unsorted = start_list - start_gap;
     int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
     Iterator start_new_list = start_gap + size_new_gap;
     int size_new_list = size_unsorted - size_new_gap;
     //TODO: space??
     std::nth_element(std::reverse_iterator<Iterator>(start_list), std::reverse_iterator<Iterator>(start_new_list), std::reverse_iterator<Iterator>(start_gap));
-    mergesort_in(start_new_list, start_list);
+    mergesort_in(start_new_list, start_list, comp);
     Iterator end_merge = std::upper_bound(start_list, end_list, *(start_list - 1));
 
     //tausche die Listen, falls erste Liste kleiner als zweite Liste
@@ -48,13 +47,13 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
                 swap ++;
             }
         } else{
-            asym_merge_gap_left(start_list, end_merge, start_new_list, start_list, start_gap, -1);
+            asym_merge_gap_left(start_list, end_merge, start_new_list, start_list, start_gap, -1, comp);
         }
         return end_merge - size_new_gap;
     }
     Iterator start_one = end_merge - size_new_list;
     Iterator start_two = start_list - size_new_list;
-    asym_merge_gap_left(start_one, end_merge, start_two, start_one, start_gap, -1);
+    asym_merge_gap_left(start_one, end_merge, start_two, start_one, start_gap, -1, comp);
     return end_merge - size_new_gap;
 }
 
@@ -64,8 +63,8 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
  * Performs the other Iteration as described in the paper
  * returns the "new" start_gap
  */
-template<typename Iterator>
-Iterator third_iteratorion(Iterator start_gap, Iterator start_list, Iterator end_list){
+template<typename Iterator, typename Compare>
+Iterator third_iteratorion(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
     //pivot wird nachher mitgemergt
     Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
     auto pivot_value = *pivot;
@@ -97,7 +96,7 @@ Iterator third_iteratorion(Iterator start_gap, Iterator start_list, Iterator end
     //sortiere kleine oder große Elemente, je nach Gapgröße und Größe der Partitionen
     if((size_small > size_big && size_min_gap <= size_big) || size_min_gap > size_small){
         //nun die kleinen Elemente sortieren
-        mergesort_in(new_start_short, start_list);
+        mergesort_in(new_start_short, start_list, comp);
         Iterator end_merge = pivot + 1;
 
         //besser für später um einen shift zu verhindern: nur kurze und lange Liste tauschen
@@ -121,7 +120,7 @@ Iterator third_iteratorion(Iterator start_gap, Iterator start_list, Iterator end
 
         //anschließend aufsteigend mergen, zweite Liste fängt bei Start erster Liste vor dem Tausch an
         Iterator start_one = end_merge - size_small;
-        asym_merge_gap_left(start_one, end_merge, new_start_short, start_one, start_gap, -1);
+        asym_merge_gap_left(start_one, end_merge, new_start_short, start_one, start_gap, -1, comp);
         return end_merge - (start_list - start_gap);
     }
 
