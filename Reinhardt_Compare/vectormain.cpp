@@ -31,7 +31,7 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     std::vector<BasetypeWrapper<int>> copy;
     if(!stdSort){
         copy = test;
-        std::sort(copy.begin(), copy.end());
+        std::sort(copy.begin(), copy.end(), BasetypeWrapper<int>::compare);
     }
     BasetypeWrapper<int>::reset_c();
     BasetypeWrapper<int>::reset_m();
@@ -70,7 +70,7 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     if(!stdSort){
         auto testIt = test.begin();
         for(auto sortIt = copy.begin(); sortIt != copy.end(); sortIt++){
-            if(!BasetypeWrapper<int>::compare(*sortIt,*testIt) && !BasetypeWrapper<int>::compare(*testIt,*sortIt)){
+            if(BasetypeWrapper<int>::compare(*sortIt,*testIt) || BasetypeWrapper<int>::compare(*testIt,*sortIt)){
                 std::cout << "------> Sortierung inkorrekt!!! <------" << std::endl;
                 std::cout << "Wert: " << testIt -> get_value() << std::endl;
                 std::cout << "erwartet: " << sortIt -> get_value() << std::endl;
