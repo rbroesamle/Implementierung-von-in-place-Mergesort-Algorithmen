@@ -56,14 +56,16 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
     return end_merge - size_new_gap;
 }
 
-//TODO: diese Iteration evtl. weglassen, da ineffizienter ohne Ringliste
-//TODO: sie ist noch nicht vollständig implementiert
+//TODO: das ist noch nicht vollständig implementiert
 /*
  * Performs the other Iteration as described in the paper
+ * if the gap is on the right side afterwards, the "right_side"-boolean ist set
  * returns the "new" start_gap
  */
+/*
+static bool right_side = false;
 template<typename Iterator, typename Compare>
-Iterator third_iteratorion(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
+Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
     //pivot wird nachher mitgemergt
     Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
     auto pivot_value = *pivot;
@@ -120,9 +122,28 @@ Iterator third_iteratorion(Iterator start_gap, Iterator start_list, Iterator end
         //anschließend aufsteigend mergen, zweite Liste fängt bei Start erster Liste vor dem Tausch an
         Iterator start_one = end_merge - size_small;
         asym_merge_gap_left(start_one, end_merge, new_start_short, start_one, start_gap, -1, comp);
-        return end_merge - (start_list - start_gap);
+        return end_merge - size_unsorted;
     }
 
-    //TODO: große Elemente sortieren und mergen
+    //die großen Elemente sortieren
+    right_side = true;
+    mergesort_in_gap_right(start_gap, new_start_short, comp);
+    Iterator end_merge = pivot + 1;
+
+    //TODO: passt noch nicht
+    //besser für später um einen shift zu verhindern: nur gap und lange Liste tauschen
+    Iterator gap_swap = new_start_short;
+    for(Iterator i = start_list; i != end_merge; i++){
+        std::swap(*i, *gap_swap);
+        gap_swap++;
+    }
+    //anschließend absteigend mergen
+    std::reverse_iterator<Iterator> start_two(end_merge - size_unsorted);
+    std::reverse_iterator<Iterator> start_one(new_start_short);
+    std::reverse_iterator<Iterator> end_one(start_gap);
+    std::reverse_iterator<Iterator> start_merge(end_merge);
+    asym_merge_gap_right(start_one, end_one, start_two, start_one, start_merge, -1, comp);
+    return end_merge - size_unsorted;
 }
+ */
 

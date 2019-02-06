@@ -2,7 +2,7 @@
 // Created by jonas on 02.01.2019.
 //
 
-#include "inplace_mergesort.h"
+#include "inplace_mergesort_qsel.h"
 #include "quicksort_step.cpp"
 #include "vector"
 #include "iterator"
