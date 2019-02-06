@@ -15,7 +15,6 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
     int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
     Iterator start_new_list = start_gap + size_new_gap;
     int size_new_list = size_unsorted - size_new_gap;
-    //TODO: space??
     std::nth_element(std::reverse_iterator<Iterator>(start_list), std::reverse_iterator<Iterator>(start_new_list), std::reverse_iterator<Iterator>(start_gap));
     mergesort_in(start_new_list, start_list);
     Iterator end_merge = std::upper_bound(start_list, end_list, *(start_list - 1));

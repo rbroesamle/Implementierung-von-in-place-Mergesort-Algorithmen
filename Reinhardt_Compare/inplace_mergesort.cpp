@@ -58,10 +58,10 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
                 break;
             }
             if(size_sorted == 1){
-                pos = extra[act] < *start_sorted ? 0 : 1;
+                pos = comp(extra[act], *start_sorted) ? 0 : 1;
             }
             else{
-                pos = std::lower_bound(start_sorted, end_list, extra[act]) - start_sorted;
+                pos = std::lower_bound(start_sorted, end_list, extra[act],comp) - start_sorted;
             }
             Iterator insert_pos = start_sorted + pos;
             while(start_sorted != insert_pos){
