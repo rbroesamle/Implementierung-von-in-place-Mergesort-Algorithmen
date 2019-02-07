@@ -9,6 +9,7 @@
 #include <random>
 #include <chrono>
 #include<cmath>
+#include<functional>
 
 /*
  * Testmethode, die auf einer Kopie eines Vektors der Größe size sortiert
@@ -125,10 +126,10 @@ long testDifferElem(int size, bool stdSort){
 long testRandNum(int size, int u, int o, bool stdSort){
     // TODO: evtl bessere Verteilung implementieren
     std::vector<BasetypeWrapper<int>> test;
-    std::srand(time(0));
+    std::mt19937::result_type seed = time(0);
+    auto rand = std::bind(std::uniform_int_distribution<int>(u,o), std::mt19937(seed));
     for(int i=0; i < size; i++){
-        test.push_back(static_cast<int>(std::rand() * 1.0 / RAND_MAX * (o-u+1) + u));
-        //test.push_back(uni(rng));
+        test.emplace_back(static_cast<int>(rand()));
     }
     long mikro = testSort(test, size, false);
     if(stdSort){

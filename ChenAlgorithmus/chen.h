@@ -43,7 +43,6 @@ Iterator findNextXBlock(Iterator x_0, Iterator z, Iterator y, int k, int f, Iter
 }
 
 
-//TODO: Implement the improvements suggested in the paper
 template<typename Iterator>
 void mergeBandY(Iterator z, Iterator y, Iterator y_n) {
     Iterator j; typename std::iterator_traits<Iterator>::value_type t;
@@ -129,14 +128,11 @@ void mergesort_chen(Iterator s, Iterator e) {
     int size = e - s;
     int k = static_cast<int>(std::sqrt(size));
     int pivot = (size - 1) / 2;
-    // size > 50
     if(size > 50){
-        bufferMerge::mergesort(s, s+pivot, s+pivot); //vorher: mergesort_chen(s, s + pivot);
+        bufferMerge::mergesort(s, s+pivot, s+pivot);
         mergesort_chen(s + pivot, e);
         merge(s, s + pivot, e, k, 0);
     } else {
-        //TODO mit alternativen zu heapsort experimentieren
-        bufferMerge::small_insertion_sort(s, e, e, true);
-        //heapSort(s, e);
+        bufferMerge::small_insertion_sort(s, e, e);
     }
 }
