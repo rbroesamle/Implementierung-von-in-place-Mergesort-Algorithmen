@@ -1,7 +1,37 @@
-#include "../Reinhardt_Compare/inplace_mergesort_qsel.cpp"
-namespace reinhardt_sort{
-	template<typename Iter, typename Comp>
-	void sort(Iter begin, Iter fin, Comp comp){
-	    in_place_mergesort(begin, fin, comp);
-	}
+#pragma once
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <string>
+#include <stdlib.h>
+#include <random>
+#include <ctime>
+#include <cmath>
+#include <assert.h>
+
+
+
+
+
+#include "insertionsort.h"
+#include "median_of_medians.h"
+#include "partition_stl.h"
+#include "smallsort.h"
+
+#include "quickmerge_worst_case.h"
+
+namespace quickmerge_worst_case_efficient_3_5_undersampling {
+    template<typename iter, typename Compare>
+    void sort(iter begin, iter end, Compare less) {
+        quickmerge::sort_worst_case_efficient_3_5<true>(begin, end, less);
+    }
+    template<typename T>
+    void sort(std::vector<T> &v) {
+        typename std::vector<T>::iterator begin = v.begin();
+        typename std::vector<T>::iterator end = v.end();
+        //   quicksort::qsort_blocked(begin,end);
+        quickmerge::sort_worst_case_efficient_3_5<true>(begin, end, std::less<T>());
+    }
 }

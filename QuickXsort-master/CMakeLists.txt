@@ -58,6 +58,7 @@ add_executable(QuickXsort_master
         stl_partial_sort.h++
         stl_stable_sort.h++
         wikisort.h++
+        in_situ_merge.h++
         vectormergeIter.h++
         bottomupMerge.h++
         reinhardt_sort.h++)
