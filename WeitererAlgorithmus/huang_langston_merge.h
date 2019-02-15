@@ -166,6 +166,35 @@ namespace huang_langston_merge{
         }
     }
 
+    /*
+     * merge D and C using A and B as Buffer
+     */
+    template <typename Iterator>
+    void mergeCandD(Iterator c_first, Iterator c_last, Iterator d_first, Iterator d_last, Iterator e){
+        e--; c_first--; d_first--;
+        while(d_last != d_first && c_last != c_first){
+            if(*d_last < *c_last){
+                std::swap(*e, *c_last);
+                c_last--;
+            } else {
+                std::swap(*e, *d_last);
+                d_last--;
+            }
+            e--;
+        }
+
+        while(d_last != d_first){
+            std::swap(*e, *d_last);
+            d_last--; e--;
+        }
+
+        while(c_last != c_first){
+            std::swap(*e, *c_last);
+            c_last--; e--;
+        }
+    }
+
+
 
     /*
      * merge procedure doing some preparations and then calling the basic algorithm
@@ -186,11 +215,12 @@ namespace huang_langston_merge{
             //TODO: extract buffer step has already been done, so it must be removed from the basic_merge, which must receive the blockSize
             basic_inplace_merge(s, e, blockSize);
         }
-        swap_blocks(m - (s_1 + s_2), e - s_2, s_2);
         //TODO merge b and c using the buffer instead
+        mergeCandD(m - (s_1 + s_2), m - (s_1 + 1), e - (s_2 + d), e-(s_2+1), e);
+        //swap_blocks(m - (s_1 + s_2), e - s_2, s_2);
         //chen_sort::mergesort_chen(e - (s_2 + d), e);
         //std::sort(e - (s_2 + d), e);
-        huang_langston_merge::mergesort(e - (s_2 + d), e);
+        //huang_langston_merge::mergesort(e - (s_2 + d), e);
         int t_1 = (m - s) % blockSize;
         if (t_1 != 0) mergeFandG(s, s + t_1, m, m + blockSize, m - t_1);
         swap_blocks(s + t_1, m - blockSize, blockSize);
