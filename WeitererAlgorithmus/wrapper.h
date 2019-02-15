@@ -10,8 +10,8 @@ class BasetypeWrapper
 private:
     //Value
     T x;
-    static int c;
-    static int m;
+    static unsigned long long c;
+    static unsigned long long m;
 
 public:
     //constructors
@@ -115,7 +115,7 @@ public:
     }
 
     //returns comparison count
-    static int get_c() {
+    static unsigned long long get_c() {
         return c;
     }
 
@@ -125,7 +125,7 @@ public:
     }
 
     //returns move count
-    static int get_m() {
+    static unsigned long long get_m() {
         return m;
     }
 
@@ -136,6 +136,6 @@ public:
 };
 
 template <typename T>
-int BasetypeWrapper<T>::c = 0;
+unsigned long long BasetypeWrapper<T>::c = 0;
 template <typename T>
-int BasetypeWrapper<T>::m = 0;
+unsigned long long BasetypeWrapper<T>::m = 0;
