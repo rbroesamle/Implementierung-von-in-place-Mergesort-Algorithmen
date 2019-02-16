@@ -61,9 +61,8 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
  * if the gap is on the right side afterwards, the "right_side"-boolean ist set
  * returns the "new" start_gap
  */
-static bool right_side = false;
 template<typename Iterator, typename Compare>
-Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
+void third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
     //pivot wird nachher mitgemergt
     Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
     auto pivot_value = *pivot;
@@ -92,14 +91,25 @@ Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, It
     int size_unsorted = start_list - start_gap;
     int size_min_gap = size_unsorted - ((2* size_unsorted) / 3);
     Iterator end_merge = pivot + 1;
-    if(new_start_short == start_gap || start_list == new_start_short){
-        std::cout << "todo: fix this case" << std::endl;
+
+    if(new_start_short == start_gap){
+        rec_reinhardt_left_gap(start_gap, start_list, end_merge, comp);
+        return;
+    }
+
+    if (start_list == new_start_short){
+        Iterator s_g = start_gap;
+        for(Iterator s_l = start_list; s_l != end_merge; s_l++){
+            std::swap(*s_l,*s_g);
+            s_g ++;
+        }
+        rec_reinhardt_left_gap(s_g, end_merge, end_list, comp);
+        return;
     }
 
     //sortiere kleine oder große Elemente, je nach Gapgröße und Größe der Partitionen
     if((size_small > size_big && size_min_gap <= size_big) || size_min_gap > size_small){
         //nun die kleinen Elemente sortieren
-        right_side = false;
         mergesort_in(new_start_short, start_list, comp);
 
         //TODO: hier nur die Listen tauschen falls nötig
@@ -125,11 +135,11 @@ Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, It
         //anschließend aufsteigend mergen, zweite Liste fängt bei Start erster Liste vor dem Tausch an
         Iterator start_one = end_merge - size_small;
         asym_merge_gap_left(start_one, end_merge, new_start_short, start_one, start_gap, -1, comp);
-        return end_merge - size_big;
+        rec_reinhardt_left_gap(end_merge - size_big, end_merge, end_list, comp);
+        return;
     }
 
     //die großen Elemente sortieren
-    right_side = true;
     mergesort_in_gap_right(start_gap, new_start_short, comp);
 
     //erstmal neue Liste und gap mit vorderem Teil der langen Liste swappen
@@ -164,7 +174,7 @@ Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, It
     std::reverse_iterator<Iterator> end_one(one_end);
     std::reverse_iterator<Iterator> start_merge(end_list);
     asym_merge_gap_right(start_one, end_one, start_two, start_one, start_merge, -1, comp);
-    return one_end + size_small;
+    rec_reinhardt_right_gap(std::reverse_iterator<Iterator>(one_end + size_small), std::reverse_iterator<Iterator>(one_end), std::reverse_iterator<Iterator>(start_gap), comp);
 }
 
 
@@ -174,7 +184,7 @@ Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, It
 
 //diese Funktion erwartet reverse-Iteratoren
 template<typename Iterator, typename Compare>
-Iterator third_iteratorion_right_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp) {
+void third_iteratorion_right_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp) {
     //pivot wird nachher mitgemergt
     Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
     auto pivot_value = *pivot;
@@ -198,19 +208,30 @@ Iterator third_iteratorion_right_side(Iterator start_gap, Iterator start_list, I
 
     //new_start_big zeigt auf das erste "größere" Element
     Iterator new_start_big(act);
-    if(new_start_big == start_gap || start_list == new_start_big){
-        std::cout << "todo: fix this case" << std::endl;
-    }
     int size_big = start_list - new_start_big;
     int size_small = new_start_big - start_gap;
     int size_unsorted = start_list - start_gap;
     int size_min_gap = size_unsorted - ((2* size_unsorted) / 3);
     Iterator end_merge = pivot + 1;
 
+    if(new_start_big == start_gap){
+        rec_reinhardt_right_gap(start_gap, start_list, end_merge, comp);
+        return;
+    }
+
+    if (start_list == new_start_big){
+        Iterator s_g = start_gap;
+        for(Iterator s_l = start_list; s_l != end_merge; s_l++){
+            std::swap(*s_l,*s_g);
+            s_g ++;
+        }
+        rec_reinhardt_right_gap(s_g, end_merge, end_list, comp);
+        return;
+    }
+
     //sortiere kleine oder große Elemente, je nach Gapgröße und Größe der Partitionen
     if((size_big > size_small && size_min_gap <= size_small) || size_min_gap > size_big){
         //nun die großen Elemente sortieren
-        right_side = true;
         mergesort_in_gap_right(start_list.base(), new_start_big.base(), comp);
 
         //TODO: hier nur die Listen tauschen falls nötig
@@ -236,11 +257,11 @@ Iterator third_iteratorion_right_side(Iterator start_gap, Iterator start_list, I
         //anschließend absteigend mergen, zweite Liste fängt bei Start erster Liste vor dem Tausch an
         Iterator start_one = end_merge - size_big;
         asym_merge_gap_right(start_one, end_merge, new_start_big, start_one, start_gap, -1, comp);
-        return end_merge - size_small;
+        rec_reinhardt_right_gap(end_merge - size_small, end_merge, end_list, comp);
+        return;
     }
 
     //die kleinen Elemente sortieren
-    right_side = false;
     mergesort_in(new_start_big.base(), start_gap.base(), comp);
 
     //erstmal neue Liste und gap mit vorderem Teil der langen Liste swappen
@@ -273,5 +294,5 @@ Iterator third_iteratorion_right_side(Iterator start_gap, Iterator start_list, I
     auto end_one = one_end.base();
     auto start_merge = end_list.base();
     asym_merge_gap_left(start_one, end_one, start_two, start_one, start_merge, -1, comp);
-    return one_end + size_big;
+    rec_reinhardt_left_gap((one_end + size_big).base(), one_end.base(), start_gap.base(), comp);
 }

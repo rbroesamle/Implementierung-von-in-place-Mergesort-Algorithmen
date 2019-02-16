@@ -62,17 +62,9 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
 
     }
     else{
-        if(qstep == qstep_counter){
+        if(qstep <= qstep_counter && end_list - start_list > 16){
             qstep_counter = 1;
-            unsigned int size_unsorted = start_list - start_gap;
-            Iterator end_merge = start_list + (((end_list - start_list) - 1) / 2) + 1;
-            Iterator new_start_gap = third_iteratorion_left_side(start_gap, start_list, end_list, comp);
-            if(right_side){
-                Iterator new_start_list = end_merge - size_unsorted;
-                rec_reinhardt_right_gap(std::reverse_iterator<Iterator>(new_start_gap), std::reverse_iterator<Iterator>(new_start_list), std::reverse_iterator<Iterator>(start_gap), comp);
-            } else{
-                rec_reinhardt_left_gap(new_start_gap, end_merge, end_list, comp);
-            }
+            third_iteratorion_left_side(start_gap, start_list, end_list, comp);
             return;
         }
         qstep_counter ++;
@@ -139,17 +131,9 @@ void rec_reinhardt_right_gap(Iterator start_gap, Iterator start_list, Iterator e
 
     }
     else{
-        if(qstep == qstep_counter){
+        if(qstep <= qstep_counter && end_list - start_list > 16){
             qstep_counter = 1;
-            unsigned int size_unsorted = start_list - start_gap;
-            Iterator end_merge = start_list + (((end_list - start_list) - 1) / 2) + 1;
-            Iterator new_start_gap = third_iteratorion_right_side(start_gap, start_list, end_list, comp);
-            if(right_side){
-                rec_reinhardt_right_gap(new_start_gap, end_merge, end_list, comp);
-            } else{
-                Iterator new_start_list = end_merge - size_unsorted;
-                rec_reinhardt_left_gap(new_start_gap.base(), new_start_list.base(), start_gap.base(), comp);
-            }
+            third_iteratorion_right_side(start_gap, start_list, end_list, comp);
             return;
         }
         qstep_counter ++;
