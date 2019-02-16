@@ -1,7 +1,8 @@
 //
 // Created by Patrick on 29.11.2018.
 //
-#include "inplace_mergesort_qsel.cpp"
+//#include "inplace_mergesort_qsel.cpp"
+#include "inplace_mergesort_qsort.cpp"
 #include <iostream>
 #include "wrapper.h"
 #include <time.h>

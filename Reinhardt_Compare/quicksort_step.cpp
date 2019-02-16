@@ -61,7 +61,6 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
  * if the gap is on the right side afterwards, the "right_side"-boolean ist set
  * returns the "new" start_gap
  */
-//TODO: noch nicht überprüft
 static bool right_side = false;
 template<typename Iterator, typename Compare>
 Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
@@ -77,11 +76,11 @@ Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, It
         while(!comp(pivot_value, *act) && act <= last){
             act ++;
         }
+        while(comp(pivot_value, *last) && act < last){
+            last --;
+        }
         if(act >= last){
             break;
-        }
-        while(comp(pivot_value, *last)){
-            last --;
         }
         std::swap(*act, *last);
     }
@@ -93,6 +92,9 @@ Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, It
     int size_unsorted = start_list - start_gap;
     int size_min_gap = size_unsorted - ((2* size_unsorted) / 3);
     Iterator end_merge = pivot + 1;
+    if(new_start_short == start_gap || start_list == new_start_short){
+        std::cout << "todo: fix this case" << std::endl;
+    }
 
     //sortiere kleine oder große Elemente, je nach Gapgröße und Größe der Partitionen
     if((size_small > size_big && size_min_gap <= size_big) || size_min_gap > size_small){
@@ -153,7 +155,7 @@ Iterator third_iteratorion_left_side(Iterator start_gap, Iterator start_list, It
         std::swap(*i, *gap_swap);
         gap_swap++;
     }
-    //anschließend absteigend mergen TODO: korrekt?
+    //anschließend absteigend mergen
     //Iterator one_end = end_merge - size_big;
     Iterator one_end = end_merge - size_unsorted;
     std::reverse_iterator<Iterator> start_two(gap_swap);
@@ -185,17 +187,20 @@ Iterator third_iteratorion_right_side(Iterator start_gap, Iterator start_list, I
         while(comp(pivot_value, *act) && act <= last){
             act ++;
         }
+        while(!comp(pivot_value, *last) && act < last){
+            last --;
+        }
         if(act >= last){
             break;
-        }
-        while(!comp(pivot_value, *last)){
-            last --;
         }
         std::swap(*act, *last);
     }
 
     //new_start_big zeigt auf das erste "größere" Element
     Iterator new_start_big(act);
+    if(new_start_big == start_gap || start_list == new_start_big){
+        std::cout << "todo: fix this case" << std::endl;
+    }
     int size_big = start_list - new_start_big;
     int size_small = new_start_big - start_gap;
     int size_unsorted = start_list - start_gap;
@@ -261,7 +266,7 @@ Iterator third_iteratorion_right_side(Iterator start_gap, Iterator start_list, I
         std::swap(*i, *gap_swap);
         gap_swap++;
     }
-    //anschließend aufsteigend mergen TODO: korrekt?
+    //anschließend aufsteigend mergen
     Iterator one_end = end_merge - size_unsorted;
     auto start_two = gap_swap.base();
     auto start_one = (one_end + size_small).base();
