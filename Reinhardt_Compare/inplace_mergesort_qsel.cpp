@@ -7,7 +7,7 @@
 #include "vector"
 #include "iterator"
 
-//TODO: hier angeben die wievielte Iteration den Quicksort-step verwenden soll ( >= 1 )
+//TODO: hier angeben die wievielte Iteration den Quickselect-step verwenden soll ( >= 1 )
 static const unsigned int qstep = 1;
 static unsigned int qstep_counter;
 template <typename Iterator, typename Compare>

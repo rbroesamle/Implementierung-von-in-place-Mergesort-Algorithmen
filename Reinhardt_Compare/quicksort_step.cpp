@@ -57,13 +57,12 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
 }
 
 /*
- * Performs the other Iteration as described in the paper
- * if the gap is on the right side afterwards, the "right_side"-boolean ist set
- * returns the "new" start_gap
+ * Performs a Quicksort-iteration as described in the paper
+ * Call this procedure if the gap is on the left side of the list
  */
 template<typename Iterator, typename Compare>
 void third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
-    //pivot wird nachher mitgemergt
+
     Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
     auto pivot_value = *pivot;
 
@@ -84,7 +83,7 @@ void third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterat
         std::swap(*act, *last);
     }
 
-    //act.base() zeigt auf das erste "kleinere" Element
+    //act.base() zeigt auf das erste der kleineren Elemente
     Iterator new_start_short = act.base();
     int size_small = start_list - new_start_short;
     int size_big = new_start_short - start_gap;
@@ -112,7 +111,6 @@ void third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterat
         //nun die kleinen Elemente sortieren
         mergesort_in(new_start_short, start_list, comp);
 
-        //TODO: hier nur die Listen tauschen falls nötig
         //hier nur kurze und lange Liste tauschen
         Iterator start_long = start_list;
         Iterator smallest = start_list;
@@ -166,10 +164,8 @@ void third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterat
         gap_swap++;
     }
     //anschließend absteigend mergen
-    //Iterator one_end = end_merge - size_big;
     Iterator one_end = end_merge - size_unsorted;
     std::reverse_iterator<Iterator> start_two(gap_swap);
-    //std::reverse_iterator<Iterator> start_one(end_merge);
     std::reverse_iterator<Iterator> start_one(one_end + size_big);
     std::reverse_iterator<Iterator> end_one(one_end);
     std::reverse_iterator<Iterator> start_merge(end_list);
@@ -182,10 +178,13 @@ void third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterat
 
 
 
-//diese Funktion erwartet reverse-Iteratoren
+/*
+ * Call this procedure with reverse iterators (gap on the right side of the list)
+ * It has the same effect as the procedure above
+ */
 template<typename Iterator, typename Compare>
 void third_iteratorion_right_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp) {
-    //pivot wird nachher mitgemergt
+
     Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
     auto pivot_value = *pivot;
 
@@ -206,7 +205,7 @@ void third_iteratorion_right_side(Iterator start_gap, Iterator start_list, Itera
         std::swap(*act, *last);
     }
 
-    //new_start_big zeigt auf das erste "größere" Element
+    //new_start_big zeigt auf das erste der größeren Elemente
     Iterator new_start_big(act);
     int size_big = start_list - new_start_big;
     int size_small = new_start_big - start_gap;
@@ -234,7 +233,6 @@ void third_iteratorion_right_side(Iterator start_gap, Iterator start_list, Itera
         //nun die großen Elemente sortieren
         mergesort_in_gap_right(start_list.base(), new_start_big.base(), comp);
 
-        //TODO: hier nur die Listen tauschen falls nötig
         //hier nur kurze und lange Liste tauschen
         Iterator start_long = start_list;
         Iterator smallest = start_list;
@@ -254,7 +252,7 @@ void third_iteratorion_right_side(Iterator start_gap, Iterator start_list, Itera
             smallest++;
         }
 
-        //anschließend absteigend mergen, zweite Liste fängt bei Start erster Liste vor dem Tausch an
+        //anschließend absteigend mergen
         Iterator start_one = end_merge - size_big;
         asym_merge_gap_right(start_one, end_merge, new_start_big, start_one, start_gap, -1, comp);
         rec_reinhardt_right_gap(end_merge - size_small, end_merge, end_list, comp);
