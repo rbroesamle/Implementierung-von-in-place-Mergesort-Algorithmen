@@ -209,11 +209,12 @@ namespace huang_langston_merge{
         }
         s_1--, s_2--;
         int d = ((e - m) - s_2) % blockSize;
+        // if both lists are integral multiples of the blocksize, just use the basic merging scheme
         if (d == 0 && ((m - s) - s_1) % blockSize == 0) {
             std::rotate(m, e - s_2, e);
             std::rotate(s, (m - s_1), m + s_2);
-            //TODO: extract buffer step has already been done, so it must be removed from the basic_merge, which must receive the blockSize
             basic_inplace_merge(s, e, blockSize);
+            return;
         }
         //TODO merge b and c using the buffer instead
         mergeCandD(m - (s_1 + s_2), m - (s_1 + 1), e - (s_2 + d), e-(s_2+1), e);
@@ -229,7 +230,7 @@ namespace huang_langston_merge{
             basic_inplace_merge(s+t_1, e, blockSize);
         } else {
             if (e-block_e > blockSize) {
-                // rotate the largest block-sized part of block E in correct block-position and merge ignoring the rest of E. merge thhe rest later
+                // rotate the largest block-sized part of block E in correct block-position and merge ignoring the rest of E. merge the rest later
                 std::rotate(block_e, e - blockSize, e);
                 basic_inplace_merge(s + t_1, block_e + blockSize, blockSize);
                 block_merge_backward(s+t_1, block_e + blockSize, e);
@@ -247,13 +248,13 @@ namespace huang_langston_merge{
     void mergesort(Iterator s, Iterator e){
         int size = e - s;
         int pivot = (size - 1) / 2;
-        if(size > 3000){
+        if(size > 50){
             bufferMerge::mergesort(s, s+pivot, s+pivot);
             huang_langston_merge::mergesort(s + pivot, e);
             huang_langston_merge::merge(s, s + pivot, e);
         } else {
-            //bufferMerge::small_insertion_sort(s, e, e);
-            chen_sort::mergesort_chen(s, e);
+            bufferMerge::small_insertion_sort(s, e, e);
+            //chen_sort::mergesort_chen(s, e);
         }
     }
 }
