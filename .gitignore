@@ -5,6 +5,11 @@ Anforderungen/*.bbl
 Anforderungen/*.blg
 Anforderungen/*.log
 Anforderungen/*.synctex.*
+Ausarbeitung/*.aux
+Ausarbeitung/*.bbl
+Ausarbeitung/*.blg
+Ausarbeitung/*.log
+Ausarbeitung/*.synctex.*
 **/cmake-build-debug
 Code/.vs
 Code/Debug
