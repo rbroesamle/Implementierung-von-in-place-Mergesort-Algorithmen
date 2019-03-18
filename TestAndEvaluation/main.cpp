@@ -114,7 +114,7 @@ std::array<unsigned long long, 3> compute_average(std::array<long long,  repetit
 
 // check if the sorted list is correct return true if correct
 template <class T>
-bool check_sorted_list(std::array<std::vector<BasetypeWrapper<T>>, 4> lists){
+bool check_sorted_list(std::array<std::vector<BasetypeWrapper<T>>, 4> &lists){
     bool errorOccured = false;
     if(lists[0].size() != lists[1].size() || lists[0].size() != lists[2].size() || lists[0].size() != lists[3].size()){
         if (!debug.is_open()) {
