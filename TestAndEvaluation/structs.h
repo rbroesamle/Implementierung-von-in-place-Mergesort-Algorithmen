@@ -6,9 +6,9 @@
 #include <functional>
 #include <array>
 #include <random>
-#include "main.h"
 
-template<int size, bool expensive_compare>
+
+template<int size, bool expensive_compare, int MIN_NUMBER, int MAX_NUMBER>
 class Big_Type
 {
 private:
@@ -53,13 +53,28 @@ public:
         return *this;
     }
 
+    bool operator!= (const Big_Type &y) const {
+        if (!expensive_compare) return (this->x[0] != y.x[0]);
+        long sum_x, sum_y = 0;
+        for(typename std::array<int, size>::const_iterator it = x.begin(); it != x.end();++it) {
+            sum_x += *it;
+        }
+        for(typename std::array<int, size>::const_iterator it = y.x.begin(); it != y.x.end();++it) {
+            sum_y += *it;
+        }
+        sum_x /= size;
+        sum_y /= size;
+        return (sum_x != sum_y);
+    }
+
+    // < operator
     bool operator< (const Big_Type &y) const {
         if (!expensive_compare) return (this->x[0] < y.x[0]);
         long sum_x, sum_y = 0;
-        for(typename std::array<int, size>::iterator it = x.begin(); it != x.end();++it) {
-            sum_x *= *it;
+        for(typename std::array<int, size>::const_iterator it = x.begin(); it != x.end();++it) {
+            sum_x += *it;
         }
-        for(typename std::array<int, size>::iterator it = y.x.begin(); it != y.x.end();++it) {
+        for(typename std::array<int, size>::const_iterator it = y.x.begin(); it != y.x.end();++it) {
             sum_y += *it;
         }
         sum_x /= size;

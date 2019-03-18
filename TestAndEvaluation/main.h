@@ -11,6 +11,7 @@
 #include "chen.h"
 #include <iostream>
 #include <fstream>
+#include "structs.h"
 #include "wrapper.h"
 
 
@@ -25,8 +26,8 @@ std::ofstream debug;
 const int repetitions = 1;
 
 //control the length of list that are created and tested
-const unsigned long long MIN_ELEMENTS_TO_SORT = 50000000;
-const unsigned long long MAX_ELEMENTS_TO_SORT = 50000000;
+const unsigned long long MIN_ELEMENTS_TO_SORT = 10000;
+const unsigned long long MAX_ELEMENTS_TO_SORT = 10000;
 
 unsigned long long current_elements_to_sort = MIN_ELEMENTS_TO_SORT;
 
@@ -37,6 +38,9 @@ const int STEP_FACTOR = 10;
 const int MIN_NUMBER = std::numeric_limits<int>::min();
 const int MAX_NUMBER = std::numeric_limits<int>::max();
 
+// set the type to be tested
+typedef Big_Type<30, true, MIN_NUMBER, MAX_NUMBER> gen_type;
+//typedef int gen_type;
 
 // 0 := stdSort; 1 := Chen; 2 := Reinhardt; 3 := weitererAlgo
 std::array<std::array<long long, repetitions>, 4> timings;
