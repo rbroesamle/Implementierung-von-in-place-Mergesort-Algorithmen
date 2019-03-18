@@ -16,16 +16,16 @@
 
 
 // enables debugging messeges and  logs stuff
-const bool DEBUGGING = true;
+const bool DEBUGGING = false;
 
 std::ofstream debug;
 
 //number of repetitions done for every list length
-const int repetitions = 1;
+const int repetitions = 10;
 
 //control the length of list that are created and tested
-const unsigned long long MIN_ELEMENTS_TO_SORT = 1000;
-const unsigned long long MAX_ELEMENTS_TO_SORT = 1000000;
+const unsigned long long MIN_ELEMENTS_TO_SORT = 100000000;
+const unsigned long long MAX_ELEMENTS_TO_SORT = 100000000;
 
 unsigned long long current_elements_to_sort = MIN_ELEMENTS_TO_SORT;
 
@@ -49,10 +49,10 @@ std::ofstream reinhardt_out;
 std::ofstream other_out;
 
 // Files the output is stored to
-std::string STANDARD_OUTPUTFILE = "results/standard.dat";
-std::string CHEN_OUTPUTFILE = "results/chen.dat";
-std::string REINHARDT_OUTPUTFILE = "results/reinhardt.dat";
-std::string OTHER_OUTPUTFILE = "results/other.dat";
+std::string STANDARD_OUTPUTFILE = "standard.csv";
+std::string CHEN_OUTPUTFILE = "chen.csv";
+std::string REINHARDT_OUTPUTFILE = "reinhardt.csv";
+std::string OTHER_OUTPUTFILE = "other.csv";
 
 std::string DEBUG_LOG = "debug.log";
 

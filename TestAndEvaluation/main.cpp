@@ -48,10 +48,10 @@ void outputdata(std::array<unsigned long long, 3> standard, std::array<unsigned 
     if(!other_out.is_open()){
         other_out.open(OTHER_OUTPUTFILE, std::ofstream::out | std::ofstream::app);
     }
-    standard_out << "(" << current_elements_to_sort << ":" << standard[0] << ", " << standard[1] << ", " << standard[2] << ")" << std::endl;
-    chen_out << "(" << current_elements_to_sort << ":" << chen[0] << ", " << chen[1] << ", " << chen[2] << ")" << std::endl;
-    reinhardt_out << "(" << current_elements_to_sort << ":" << reinhardt[0] << ", " << reinhardt[1] << ", " << reinhardt[2] << ")" << std::endl;
-    other_out << "(" << current_elements_to_sort << ":" << other[0] << ", " << other[1] << ", " << other[2] << ")" << std::endl;
+    standard_out << current_elements_to_sort << ";" << standard[0] << ";" << standard[1] << ";" << standard[2] << std::endl;
+    chen_out << current_elements_to_sort << ";" << chen[0] << ";" << chen[1] << ";" << chen[2] << std::endl;
+    reinhardt_out << current_elements_to_sort << ";" << reinhardt[0] << ";" << reinhardt[1] << ";" << reinhardt[2] << std::endl;
+    other_out << current_elements_to_sort << ";" << other[0] << ";" << other[1] << ";" << other[2] << std::endl;
 
 }
 
@@ -63,7 +63,7 @@ void clear_files(){
         debug.open(DEBUG_LOG, std::ofstream::out | std::ofstream::app);
     }
     if(!chen_out.is_open()){
-        chen_out.open(CHEN_OUTPUTFILE, std::ofstream::out | std::ofstream::app);
+        chen_out.open(CHEN_OUTPUTFILE, std::ofstream::out | std::ofstream::trunc);
     }
     if(!reinhardt_out.is_open()){
         reinhardt_out.open(REINHARDT_OUTPUTFILE, std::ofstream::out | std::ofstream::trunc);
@@ -71,7 +71,9 @@ void clear_files(){
     if(!other_out.is_open()){
         other_out.open(OTHER_OUTPUTFILE, std::ofstream::out | std::ofstream::trunc);
     }
-
+    if(!standard_out.is_open()){
+        standard_out.open(STANDARD_OUTPUTFILE, std::ofstream::out | std::ofstream::trunc);
+    }
 }
 
 std::array<unsigned long long, 3> compute_average(std::array<long long,  repetitions> timings,
