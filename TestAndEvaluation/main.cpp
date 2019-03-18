@@ -202,16 +202,19 @@ int main(){
                     case 1:
                         t1 = std::chrono::high_resolution_clock::now();
                         // TODO CHEN sort
+                        chen::mergesort_chen(lists[1].begin(), lists[1].end(), BasetypeWrapper<int>::compare);
                         t2 = std::chrono::high_resolution_clock::now();
                         break;
                     case 2:
                         t1 = std::chrono::high_resolution_clock::now();
                         // TODO REINHARDT sort
+                        in_place_mergesort(lists[2].begin(), lists[2].end(), BasetypeWrapper<int>::compare);
                         t2 = std::chrono::high_resolution_clock::now();
                         break;
                     case 3:
                         t1 = std::chrono::high_resolution_clock::now();
                         // TODO OTHER sort
+                        huang_langston_merge::mergesort(lists[3].begin(), lists[3].end(), BasetypeWrapper<int>::compare);
                         t2 = std::chrono::high_resolution_clock::now();
                         break;
                     default:

@@ -2,11 +2,13 @@
 // Created by kai on 26.02.2019.
 //
 
-
+#pragma once
 #include <array>
 #include <vector>
 
-#include "..\Reinhardt_Compare\inplace_mergesort_qsort.cpp"
+#include "Reinhardt_Compare/inplace_mergesort_qsel.cpp"
+#include "huang_langston_merge.h"
+#include "chen.h"
 #include <iostream>
 #include <fstream>
 #include "wrapper.h"

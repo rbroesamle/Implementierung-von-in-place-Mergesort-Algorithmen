@@ -1,6 +1,7 @@
 //
 // Created by Patrick on 09.02.2019.
 //
+#pragma once
 #include <cmath>
 #include <algorithm>
 #include "bufferMerge.h"
@@ -68,7 +69,7 @@ namespace huang_langston_merge{
             for (Iterator other = min + blockSize; other != e ; other += blockSize){
                 if (comp(other[tail_distance], min[tail_distance])) min = other;
             }
-            if (min != current) swap_blocks(min, current, blockSize);
+            if (min != current) swap_blocks(min, current, blockSize, comp);
         }
     }
 
@@ -219,7 +220,7 @@ namespace huang_langston_merge{
             return;
         }
         //TODO merge b and c using the buffer instead
-        mergeCandD(m - (s_1 + s_2), m - (s_1 + 1), e - (s_2 + d), e-(s_2+1), e);
+        mergeCandD(m - (s_1 + s_2), m - (s_1 + 1), e - (s_2 + d), e-(s_2+1), e, comp);
         //swap_blocks(m - (s_1 + s_2), e - s_2, s_2);
         //chen_sort::mergesort_chen(e - (s_2 + d), e);
         //std::sort(e - (s_2 + d), e);

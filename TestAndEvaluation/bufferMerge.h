@@ -1,7 +1,7 @@
 //
 // Created by Patrick on 03.01.2019.
 //
-
+#pragma once
 #include <vector>
 #include <iostream>
 #include <iterator>
@@ -66,9 +66,9 @@ namespace bufferMerge {
             recsort(begin_v, begin_v + pivot, begin_m, !i, compare);
             recsort(begin_v + pivot, fin_v, begin_m + pivot, !i, compare);
             if(i){
-                merge(begin_m, begin_m + size, begin_m + pivot, begin_v, compare);
+                bufferMerge::merge(begin_m, begin_m + size, begin_m + pivot, begin_v, compare);
             } else {
-                merge(begin_v, fin_v, begin_v + pivot, begin_m, compare);
+                bufferMerge::merge(begin_v, fin_v, begin_v + pivot, begin_m, compare);
             }
         } else {
             small_insertion_sort(begin_v, fin_v, begin_m, compare);
