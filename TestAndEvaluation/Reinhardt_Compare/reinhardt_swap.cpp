@@ -1,0 +1,437 @@
+#include "reinhardt_swap.h"
+#include<algorithm>
+
+
+/**
+ * Rufe diese Prozedur im In-Place-Algorithmus auf
+ * Sie verwendet swap statt Zuweisungen und als Gap einen Teil der unsortierten Liste (size/4 + 1 Elemente vor begin)
+ */
+template <typename Iterator, typename Compare>
+void mergesort_in(Iterator begin, Iterator fin, Compare comp){
+    unsigned int size = fin-begin;
+
+    //sortiere mit Insertion Sort für die "kleinen Fälle"
+    if(size < 128){
+        small_insertion_sort_swap(begin, fin, begin, true, comp);
+        return;
+    }
+
+    Iterator first_end;
+    Iterator second_end;
+    Iterator third_end;
+
+    int quarter = size/4;
+    first_end = begin + quarter;
+
+    switch(size % 4){
+        case 2:
+            second_end = first_end + quarter;
+            third_end = second_end + (quarter + 1);
+            break;
+        case 3:
+            second_end = first_end + (quarter + 1);
+            third_end = second_end + (quarter + 1);
+            break;
+        default:
+            //case 0 oder 1 Rest
+            second_end = first_end + quarter;
+            third_end = second_end + quarter;
+            break;
+    }
+
+    recsort_swap(begin, first_end, (begin - (size / 4)) - 1, true, comp);
+    recsort_swap(first_end, second_end, (begin - (size / 4)) - 1, true, comp);
+    recsort_swap(second_end, third_end, (begin - (size / 4)) - 1, true, comp);
+    recsort_swap(third_end, fin, (begin - (size / 4)) - 1, true, comp);
+
+    reinhardt_special_swap(begin, first_end, second_end, third_end, fin, (begin - (size / 4)) - 1, begin, comp);
+}
+
+/**
+ * Rufe diese Prozedur im In-Place-Algorithmus auf
+ * Sie macht das gleiche wie obige in-place-Prozedur, nur verwerndet Elemente rechts davon als gap
+ */
+template <typename Iterator, typename Compare>
+void mergesort_in_gap_right(Iterator begin, Iterator fin, Compare comp){
+    unsigned int size = fin-begin;
+
+    //sortiere mit Insertion Sort für die "kleinen Fälle"
+    if(size < 128){
+        small_insertion_sort_swap(begin, fin, begin, true, comp);
+        return;
+    }
+
+    Iterator first_end;
+    Iterator second_end;
+    Iterator third_end;
+
+    int quarter = size/4;
+    first_end = begin + quarter;
+
+    switch(size % 4){
+        case 2:
+            second_end = first_end + quarter;
+            third_end = second_end + (quarter + 1);
+            break;
+        case 3:
+            second_end = first_end + (quarter + 1);
+            third_end = second_end + (quarter + 1);
+            break;
+        default:
+            //case 0 oder 1 Rest
+            second_end = first_end + quarter;
+            third_end = second_end + quarter;
+            break;
+    }
+
+    recsort_swap(begin, first_end, fin, true, comp);
+    recsort_swap(first_end, second_end, fin, true, comp);
+    recsort_swap(second_end, third_end, fin, true, comp);
+    recsort_swap(third_end, fin, fin, true, comp);
+
+    reinhardt_special_swap(begin, first_end, second_end, third_end, fin, fin, fin + (size / 4) + 1, comp);
+}
+
+
+
+/* Rufe diese Methode jeweils rekursiv mit invertiertem boolean i auf
+ * Falls nur noch 2 oder 3 Elemente in v sind, dann rufe den small-sort auf
+ * Merge dann die rekursiv bereits sortierten Teillisten
+ * Falls i = true, dann merge von m in v; ansonsten merge von v in m
+*/
+template <typename Iterator, typename VecIterator, typename Compare>
+void recsort_swap(Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i, Compare comp){
+    int size = fin_v - begin_v;
+    int pivot = (size - 1) / 2 + 1;
+    //TODO: Bedingung für smallsort bzw. gewünschten smallsort anpassen
+    if(size > 50){
+        recsort_swap(begin_v, begin_v + pivot, begin_m, !i, comp);
+        recsort_swap(begin_v + pivot, fin_v, begin_m + pivot, !i, comp);
+        if(i){
+            merge_swap(begin_m, begin_m + size, begin_m + pivot, begin_v, comp);
+        } else {
+            merge_swap(begin_v, fin_v, begin_v + pivot, begin_m, comp);
+        }
+    } else {
+        //small_sort_swap(begin_v, fin_v - 1, begin_m, i);
+        small_insertion_sort_swap(begin_v, fin_v, begin_m, i, comp);
+    }
+}
+
+//merge die Teillisten sortiert vom ersten Vektor in den zweiten
+template <typename Iterator, typename VecIterator, typename Compare>
+void merge_swap (Iterator begin_v, Iterator fin_v, Iterator pivot, VecIterator begin_m, Compare comp) {
+    Iterator middle = pivot;
+    while (begin_v != middle && pivot != fin_v){
+        if (!comp(*pivot, *begin_v)){
+            std::swap(*begin_m, *begin_v);
+            begin_v++;
+        }else{
+            std::swap(*begin_m, *pivot);
+            pivot++;
+        }
+        begin_m++;
+    }
+
+    while (begin_v != middle){
+        std::swap(*begin_m, *begin_v);
+        begin_v++;
+        begin_m++;
+    }
+    while (pivot != fin_v){
+        std::swap(*begin_m, *pivot);
+        pivot++;
+        begin_m++;
+    }
+}
+
+/*
+ * Diese Prozedur sortiert Listen der Länge 2 oder 3
+ * Falls i = true, dann sortiere innerhalb von v
+ * Ansonsten sortiere die Elemente von v in m
+ */
+template <typename Iterator, typename VecIterator, typename Compare>
+void small_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i, Compare comp){
+    if (i){
+        //sort in v
+        if (fin_v - begin_v == 1) {
+            if (comp(*fin_v, *begin_v)){
+                auto temp = *begin_v;
+                *begin_v = *fin_v;
+                *fin_v = temp;
+            }
+        } else {
+            Iterator m = begin_v + 1;
+            if (comp(*fin_v, *begin_v)) {
+                if (comp(*begin_v, *m)){
+                    // o < u < u+1
+                    auto temp = *begin_v;
+                    *begin_v = *fin_v;
+                    *fin_v = *m;
+                    *m = temp;
+                } else {
+                    if (comp(*m, *fin_v)){
+                        //u+1 < o < u
+                        auto temp = *begin_v;
+                        *begin_v = *m;
+                        *m = *fin_v;
+                        *fin_v = temp;
+                    } else {
+                        // o < u+1 < u
+                        auto temp = *begin_v;
+                        *begin_v = *fin_v;
+                        *fin_v = temp;
+                    }
+                }
+            } else {
+                // u < o
+                if (comp(*fin_v, *m)){
+                    // u < o < u+1
+                    auto temp = *m;
+                    *m = *fin_v;
+                    *fin_v = temp;
+                } else {
+                    if (*begin_v > *m){
+                        // u+1 < u < o
+                        auto temp = *begin_v;
+                        *begin_v = *m;
+                        *m = temp;
+                    }
+                }
+            }
+        }
+    } else {
+        //sort and write to m
+        VecIterator middle_m = begin_m + 1;
+        if (fin_v - begin_v == 1) {
+            if (comp(*fin_v, *begin_v)){
+                std::swap(*begin_m, *fin_v);
+                std::swap(*middle_m, *begin_v);
+            } else {
+                std::swap(*begin_m, *begin_v);
+                std::swap(*middle_m, *fin_v);
+            }
+        } else {
+            VecIterator fin_m = begin_m + 2;
+            Iterator middle_v = begin_v + 1;
+            if (comp(*fin_v, *begin_v)) {
+                if (comp(*begin_v, *middle_v)){
+                    // o < u < u+1
+                    std::swap(*begin_m, *fin_v);
+                    std::swap(*fin_m, *middle_v);
+                    std::swap(*middle_m, *begin_v);
+                } else {
+                    if (comp(*middle_v, *fin_v)){
+                        //u+1 < o < u
+                        std::swap(*begin_m, *middle_v);
+                        std::swap(*middle_m, *fin_v);
+                        std::swap(*fin_m, *begin_v);
+                    } else {
+                        // o < u+1 < u
+                        std::swap(*begin_m, *fin_v);
+                        std::swap(*fin_m, *begin_v);
+                        std::swap(*middle_m, *middle_v);
+                    }
+                }
+            } else {
+                // u < o
+                if (comp(*fin_v, *middle_v)){
+                    // u < o < u+1
+                    std::swap(*begin_m, *begin_v);
+                    std::swap(*middle_m, *fin_v);
+                    std::swap(*fin_m, *middle_v);
+                } else {
+                    if (comp(*middle_v, *begin_v)){
+                        // u+1 < u < o
+                        std::swap(*fin_m, *fin_v);
+                        std::swap(*begin_m, *middle_v);
+                        std::swap(*middle_m, *begin_v);
+                    } else {
+                        // u < u+1 < o nur kopieren
+                        std::swap(*begin_m, *begin_v);
+                        std::swap(*middle_m, *middle_v);
+                        std::swap(*fin_m, *fin_v);
+                    }
+                }
+            }
+        }
+    }
+}
+template <typename Iterator, typename VecIterator, typename Compare>
+void small_insertion_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i, Compare comp){
+    if (i) {
+        // Wenn i gesetzt ist sortiere innerhalb von v
+        for(auto it_i = begin_v + 1; it_i != fin_v; it_i++){
+            auto temp = *it_i;
+            Iterator it_j;
+            for (it_j = it_i; it_j != begin_v; it_j--) {
+                if (comp(temp, *(it_j-1))) {
+                    *it_j = *(it_j -1);
+                } else {
+                    break;
+                }
+            }
+            *it_j = temp;
+        }
+    } else {
+        // Wenn i nicht gesetzt ist sortiere nach m
+        std::swap(*begin_m, *begin_v);
+        for(auto it_i = begin_v + 1; it_i != fin_v; it_i++){
+            VecIterator it_j;
+            auto temp = *(begin_m + (it_i - begin_v));
+            for (it_j = begin_m + (it_i - begin_v); it_j != begin_m; it_j--) {
+                if (comp(*it_i, *(it_j-1))) {
+                    *it_j = *(it_j - 1);
+                } else {
+                    break;
+                }
+            }
+            *it_j = *it_i;
+            *it_i = temp;
+        }
+    }
+}
+
+
+template <typename Iterator,typename VecIterator, typename Compare>
+void reinhardt_special_swap(Iterator begin, Iterator second_begin, Iterator third_begin, Iterator fourth_begin, Iterator end,
+                       VecIterator extra_begin, VecIterator extra_end, Compare comp){
+    Iterator act_first = begin;
+    Iterator act_second = second_begin;
+
+    //merge die ersten size/4 Elemente in den Extravektor
+    Iterator act_in = begin;
+    VecIterator act_extra;
+    for(act_extra = extra_begin; act_extra != extra_end - 1; act_extra ++){
+        if (comp(*act_second, *act_first)) {
+            std::swap(*act_extra, *act_second);
+            act_second++;
+        } else {
+            std::swap(*act_extra, *act_first);
+            act_first++;
+        }
+    }
+
+    //merge noch genau ein Element in den Extravektor
+    if(act_first == second_begin){
+        //Falls erste Viertelliste schon leer
+        std::swap(*act_extra, *act_second);
+        act_second ++;
+
+        while(act_second != third_begin){
+            std::swap(*act_in, *act_second);
+            act_second ++;
+            act_in ++;
+        }
+    }
+    else if(act_second == third_begin){
+        //Falls zweite Viertelliste schon leer
+        std::swap(*act_extra, *act_first);
+        act_first ++;
+
+        while(act_first != second_begin){
+            std::swap(*act_in, *act_first);
+            act_first ++;
+            act_in ++;
+        }
+    }
+    else{
+        //Falls beide Listen noch nicht leer
+        if (comp(*act_second, *act_first)) {
+            std::swap(*act_extra, *act_second);
+            act_second++;
+        } else {
+            std::swap(*act_extra, *act_first);
+            act_first++;
+        }
+
+        merge_reinhardt_swap(act_first, second_begin, act_second, third_begin, act_in, comp);
+
+    }
+
+    Iterator erster_merge_end = begin + ((third_begin - begin) - (extra_end - extra_begin));
+
+    //merge die beiden hinteren Viertellisten zur hinteren Halbliste
+    merge_reinhardt_swap(third_begin, fourth_begin, fourth_begin, end, erster_merge_end, comp);
+
+    Iterator zweiter_merge_end = end - (extra_end - extra_begin);
+    Iterator now_one = erster_merge_end - 1;
+    VecIterator now_one_later = extra_end - 1;
+    Iterator now_two = zweiter_merge_end - 1;
+    Iterator to = end - 1;
+    //merge die beiden Teillisten nach rechts, bis nicht mehr möglich
+    //in dieser While-Schleife, bis ExtraArray erreicht
+    while(now_two != erster_merge_end - 1 && now_one != begin - 1){
+
+        if (comp(*now_two, *now_one)) {
+            std::swap(*to, *now_one);
+            now_one--;
+        } else {
+            std::swap(*to, *now_two);
+            now_two --;
+        }
+        to --;
+    }
+    if(now_two == erster_merge_end - 1){
+        while(now_one != begin - 1){
+            std::swap(*to, *now_one);
+            to --;
+            now_one --;
+        }
+    }
+    while(to != now_two && now_two != erster_merge_end - 1){
+
+        if (comp(*now_two, *now_one_later)) {
+            std::swap(*to, *now_one_later);
+            now_one_later--;
+        } else {
+            std::swap(*to, *now_two);
+            now_two --;
+        }
+        to --;
+    }
+
+    if(now_two == erster_merge_end - 1){
+        //zurückkopieren der ersten Liste
+        while(now_one_later != extra_begin - 1){
+            std::swap(*to, *now_one_later);
+            to --;
+            now_one_later --;
+        }
+    }
+    else{
+        //merge nun von der anderen Seite (siehe Paper Fig. 2)
+        merge_reinhardt_swap(extra_begin, now_one_later + 1, erster_merge_end, now_two + 1, begin, comp);
+    }
+
+}
+
+template <typename Iterator,typename VecIterator, typename Compare>
+void merge_reinhardt_swap(VecIterator start_one, VecIterator end_one, Iterator start_two, Iterator end_two, Iterator start_merge, Compare comp){
+    while (start_one != end_one && start_two != end_two) {
+        if (comp(*start_two, *start_one)) {
+            std::swap(*start_merge, *start_two);
+            start_two++;
+        } else {
+            std::swap(*start_merge, *start_one);
+            start_one++;
+        }
+        start_merge++;
+    }
+
+    if (start_one != end_one) {
+        //Merge rest of block1 into vector
+        while (start_one != end_one) {
+            std::swap(*start_merge, *start_one);
+            start_one++;
+            start_merge++;
+        }
+    } else if (start_two != end_two) {
+        //Merge rest of block2 into vector
+        while (start_two != end_two) {
+            std::swap(*start_merge, *start_two);
+            start_two++;
+            start_merge++;
+        }
+    }
+}
