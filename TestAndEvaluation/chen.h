@@ -8,19 +8,19 @@
 
 
 //finds the minimum in range *s to *e-1
-template<typename Iterator>
-Iterator find_minimum(Iterator s, Iterator e) {
+template<typename Iterator, typename Compare>
+Iterator find_minimum(Iterator s, Iterator e, Compare compare) {
     Iterator min = s;
     for (Iterator it = s; it != e; it++){
-        if (*it < *min) {
+        if (compare(*it, *min)) {
             min = it;
         }
     }
     return min;
 }
 
-template<typename Iterator>
-Iterator findNextXBlock(Iterator x_0, Iterator z, Iterator y, int k, int f, Iterator b_1, Iterator b_2) {
+template<typename Iterator, typename Compare>
+Iterator findNextXBlock(Iterator x_0, Iterator z, Iterator y, int k, int f, Iterator b_1, Iterator b_2, Compare compare) {
     Iterator x; //return Iterator
     typename std::iterator_traits<Iterator>::value_type min_1, min_2;
     int t = ((z - x_0) - f)/k;
@@ -32,7 +32,7 @@ Iterator findNextXBlock(Iterator x_0, Iterator z, Iterator y, int k, int f, Iter
         if (i != b_1 && i != b_2) {
             if (i < b_1 && b_1 < i+k) j = m - 1; else j = i + (k - 1);
             // check if min1/2 are set. It should work just like infinity in pseudo-code
-            if (minNotSet || (!(min_1 < *i) && !(min_2 < *j))) {
+            if (minNotSet || (!compare(min_1, *i) && !compare(min_2, *j))) {
                 x = i; min_1 = *i; min_2 = *j;
                 minNotSet = false;
             }
@@ -43,12 +43,12 @@ Iterator findNextXBlock(Iterator x_0, Iterator z, Iterator y, int k, int f, Iter
 }
 
 
-template<typename Iterator>
-void mergeBandY(Iterator z, Iterator y, Iterator y_n) {
+template<typename Iterator, typename Compare>
+void mergeBandY(Iterator z, Iterator y, Iterator y_n, Compare compare) {
     Iterator j; typename std::iterator_traits<Iterator>::value_type t;
     while (z <= y && y < y_n) {
         j = find_minimum(z, y);
-        if (!(*y < *j)) {
+        if (!compare(*y, *j)) {
             t = *z; *z = *j; *j = t;
         } else {
             t = *z; *z = *y; *y = t;
@@ -56,14 +56,12 @@ void mergeBandY(Iterator z, Iterator y, Iterator y_n) {
         }
         z++;
     }
-    //TODO: mit rekursivem chen-aufruf statt heapsort experimentieren
-    //if (z < y) heapSort(z, y_n);
-    if (z < y) mergesort_chen(z, y_n);
+    if (z < y) mergesort_chen(z, y_n, compare);
 }
 
 
-template<typename Iterator>
-void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k, int recursionDepth) {
+template<typename Iterator, typename Compare>
+void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k, int recursionDepth, Compare compare) {
     // Initialization. (line 1-4 in pseudo-code)
     int f = (y_0 - x_0) % k;
     Iterator x;
@@ -74,11 +72,11 @@ void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k, int recursionDepth) 
     // line 5
     while (y - z > 2 * k) {
         // line 6 -14
-        if (!(*y < *x) || y_n == y) {
+        if (!compare(*y, *x) || y_n == y) {
             *z = *x; *x = *b_1; x++;
             if ((x - x_0) % k == f) {
                 if (z < x - k) b_2 = x-k;
-                x = findNextXBlock(x_0, z, y, k, f, b_1, b_2);
+                x = findNextXBlock(x_0, z, y, k, f, b_1, b_2, compare);
             }
         } else {
             *z = *y; *y = *b_1; y++;
@@ -95,44 +93,24 @@ void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k, int recursionDepth) 
     }
     //copy temp back, merge B and Y
     *z = t;
-    if(recursionDepth > 1) mergeBandY(z, y, y_n);
+    if(recursionDepth > 1) mergeBandY(z, y, y_n, compare);
     else {
-        //TODO: mit rekursivem chen-aufruf statt heapsort experimentieren
-        mergesort_chen(z, y);
-        //heapSort(z, y);
-        merge(z, y, y_n, static_cast<int>(std::sqrt(k)), recursionDepth + 1);
+        mergesort_chen(z, y, compare);
+        merge(z, y, y_n, static_cast<int>(std::sqrt(k)), recursionDepth + 1, compare);
     }
 }
 
 
-template<typename Iterator>
-void smallInsertionSort(Iterator s, Iterator e) {
-    typename std::iterator_traits<Iterator>::value_type temp;
-    for(auto it_i = s + 1; it_i != e; it_i++) {
-        temp = *it_i;
-        Iterator it_j;
-        for (it_j = it_i; it_j != s; it_j--) {
-            if (*(it_j - 1) > temp) {
-                *it_j = *(it_j - 1);
-            } else {
-                break;
-            }
-        }
-        *it_j = temp;
-    }
-}
-
-
-template<typename Iterator>
-void mergesort_chen(Iterator s, Iterator e) {
+template<typename Iterator, typename Compare>
+void mergesort_chen(Iterator s, Iterator e, Compare compare) {
     int size = e - s;
     int k = static_cast<int>(std::sqrt(size));
     int pivot = (size - 1) / 2;
     if(size > 50){
-        bufferMerge::mergesort(s, s+pivot, s+pivot);
-        mergesort_chen(s + pivot, e);
-        merge(s, s + pivot, e, k, 0);
+        bufferMerge::mergesort(s, s+pivot, s+pivot, compare);
+        mergesort_chen(s + pivot, e, compare);
+        merge(s, s + pivot, e, k, 0, compare);
     } else {
-        bufferMerge::small_insertion_sort(s, e, e);
+        bufferMerge::small_insertion_sort(s, e, e, compare);
     }
 }
