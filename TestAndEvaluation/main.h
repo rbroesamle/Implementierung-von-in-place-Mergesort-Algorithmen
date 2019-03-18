@@ -1,0 +1,67 @@
+//
+// Created by kai on 26.02.2019.
+//
+
+
+#include <array>
+#include <vector>
+
+#include "..\Reinhardt_Compare\inplace_mergesort_qsort.cpp"
+#include <iostream>
+#include <fstream>
+#include "wrapper.h"
+
+
+
+// enables debugging messeges and  logs stuff
+const bool DEBUGGING = true;
+
+std::ofstream debug;
+
+//number of repetitions done for every list length
+const int repetitions = 1;
+
+//control the length of list that are created and tested
+const unsigned long long MIN_ELEMENTS_TO_SORT = 1000;
+const unsigned long long MAX_ELEMENTS_TO_SORT = 1000000;
+
+unsigned long long current_elements_to_sort = MIN_ELEMENTS_TO_SORT;
+
+// factor used to compute the next tested length
+const int STEP_FACTOR = 10;
+
+//the range from which the random numbers are generated
+const int MIN_NUMBER = std::numeric_limits<int>::min();
+const int MAX_NUMBER = std::numeric_limits<int>::max();
+
+
+// 0 := stdSort; 1 := Chen; 2 := Reinhardt; 3 := weitererAlgo
+std::array<std::array<long long, repetitions>, 4> timings;
+std::array<std::array<long long, repetitions>, 4> comparisons;
+std::array<std::array<long long, repetitions>, 4> assignments;
+
+// output streams
+std::ofstream standard_out;
+std::ofstream chen_out;
+std::ofstream reinhardt_out;
+std::ofstream other_out;
+
+// Files the output is stored to
+std::string STANDARD_OUTPUTFILE = "results/standard.dat";
+std::string CHEN_OUTPUTFILE = "results/chen.dat";
+std::string REINHARDT_OUTPUTFILE = "results/reinhardt.dat";
+std::string OTHER_OUTPUTFILE = "results/other.dat";
+
+std::string DEBUG_LOG = "debug.log";
+
+
+template <class T>
+std::vector<BasetypeWrapper<T>> createList(unsigned long long size, time_t seed);
+
+void reset();
+
+void outputdata();
+
+template <class T>
+void check_sorted_list(std::array<BasetypeWrapper<T>, 4> lists);
+
