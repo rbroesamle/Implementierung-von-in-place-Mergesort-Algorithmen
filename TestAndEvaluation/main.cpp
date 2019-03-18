@@ -185,10 +185,19 @@ int main(){
         for(int i = 0; i < repetitions; i++) {
             //create int list
             std::array<std::vector<BasetypeWrapper<int>>, 4> lists;
-            lists[0] = createList<int>(current_elements_to_sort, seed_time);
+            lists[0] = createList<int>(current_elements_to_sort, seed_time + i);
+            if(MERGE_TEST){
+                std::sort(lists[0].begin(), lists[0].begin()+((lists[0].end()-lists[0].begin())/2), BasetypeWrapper<int>::compare);
+                std::sort(lists[0].begin()+((lists[0].end()-lists[0].begin())/2), lists[0].end(), BasetypeWrapper<int>::compare);
+            }
+
             // create deep copies of the list
             lists[1] = lists[0];
             lists[2] = lists[0];
+            if(MERGE_TEST){
+                lists[2].resize(lists[0].size() + lists[0].size() / 4 + 1);
+                std::rotate(lists[2].begin(), lists[2].begin() + lists[0].size(), lists[2].end());
+            }
             lists[3] = lists[0];
 
 
@@ -202,26 +211,49 @@ int main(){
 
                 switch(j){
                     case 1:
-                        t1 = std::chrono::high_resolution_clock::now();
-                        // TODO CHEN sort
-                        chen::mergesort_chen(lists[1].begin(), lists[1].end(), BasetypeWrapper<int>::compare);
+                        if(MERGE_TEST){
+                            t1 = std::chrono::high_resolution_clock::now();
+                            chen::merge(lists[j].begin(),lists[j].begin()+((lists[j].end()-lists[j].begin())/2), lists[j].end(),
+                                        static_cast<int>(std::sqrt(lists[j].end()-lists[j].begin())), 0, BasetypeWrapper<int>::compare);
+                        } else{
+                            t1 = std::chrono::high_resolution_clock::now();
+                            chen::mergesort_chen(lists[1].begin(), lists[1].end(), BasetypeWrapper<int>::compare);
+                        }
                         t2 = std::chrono::high_resolution_clock::now();
                         break;
                     case 2:
-                        t1 = std::chrono::high_resolution_clock::now();
-                        // TODO REINHARDT sort
-                        in_place_mergesort(lists[2].begin(), lists[2].end(), BasetypeWrapper<int>::compare);
+                        if(MERGE_TEST){
+                            t1 = std::chrono::high_resolution_clock::now();
+                            auto start_two = lists[2].begin() + lists[0].size() / 4 + 1;
+                            auto start_one = start_two + lists[0].size() / 2;
+                            sym_merge_gap_left(start_one, lists[2].end(), start_two, start_one, lists[2].begin(), BasetypeWrapper<int>::compare);
+                        } else{
+                            t1 = std::chrono::high_resolution_clock::now();
+                            in_place_mergesort(lists[2].begin(), lists[2].end(), BasetypeWrapper<int>::compare);
+                        }
                         t2 = std::chrono::high_resolution_clock::now();
+                        if(MERGE_TEST){
+                            lists[2].resize(lists[0].size());
+                        }
                         break;
                     case 3:
-                        t1 = std::chrono::high_resolution_clock::now();
-                        // TODO OTHER sort
-                        huang_langston_merge::mergesort(lists[3].begin(), lists[3].end(), BasetypeWrapper<int>::compare);
+                        if(MERGE_TEST){
+                            t1 = std::chrono::high_resolution_clock::now();
+                            huang_langston_merge::merge(lists[j].begin(),lists[j].begin()+((lists[j].end()-lists[j].begin())/2), lists[j].end(), BasetypeWrapper<int>::compare);
+                        } else{
+                            t1 = std::chrono::high_resolution_clock::now();
+                            huang_langston_merge::mergesort(lists[3].begin(), lists[3].end(), BasetypeWrapper<int>::compare);
+                        }
                         t2 = std::chrono::high_resolution_clock::now();
                         break;
                     default:
-                        t1 = std::chrono::high_resolution_clock::now();
-                        std::stable_sort(lists[j].begin(), lists[j].end(), BasetypeWrapper<int>::compare);
+                        if(MERGE_TEST){
+                            t1 = std::chrono::high_resolution_clock::now();
+                            std::inplace_merge(lists[j].begin(),lists[j].begin()+((lists[j].end()-lists[j].begin())/2), lists[j].end(), BasetypeWrapper<int>::compare);
+                        } else{
+                            t1 = std::chrono::high_resolution_clock::now();
+                            std::stable_sort(lists[j].begin(), lists[j].end(), BasetypeWrapper<int>::compare);
+                        }
                         t2 = std::chrono::high_resolution_clock::now();
 
                 }

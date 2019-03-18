@@ -16,16 +16,17 @@
 
 
 // enables debugging messeges and  logs stuff
-const bool DEBUGGING = false;
+const bool DEBUGGING = true;
+const bool MERGE_TEST = false;
 
 std::ofstream debug;
 
 //number of repetitions done for every list length
-const int repetitions = 10;
+const int repetitions = 50;
 
 //control the length of list that are created and tested
-const unsigned long long MIN_ELEMENTS_TO_SORT = 100000000;
-const unsigned long long MAX_ELEMENTS_TO_SORT = 100000000;
+const unsigned long long MIN_ELEMENTS_TO_SORT = 1000;
+const unsigned long long MAX_ELEMENTS_TO_SORT = 1000000;
 
 unsigned long long current_elements_to_sort = MIN_ELEMENTS_TO_SORT;
 
