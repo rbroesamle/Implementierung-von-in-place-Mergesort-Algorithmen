@@ -22,8 +22,14 @@ const bool MERGE_TEST = false;
 
 std::ofstream debug;
 
-//number of repetitions done for every list length
-const int repetitions = 100;
+//number of REPETITIONS done for every list length
+const int START_REPETITIONS = 100;
+int current_REPETITIONS = START_REPETITIONS;
+const unsigned int MIN_REPETITIONS = 1; // default 1 shouldn't be lower than 1, else undefined behavior
+// take the repetitions of times the factor
+const float REPETITION_FACTOR = 1.f; // default 1 doesn't change the number of repetitions
+// if you only want to make half as many steps in the next list length change it to 0.5f
+
 
 //control the length of list that are created and tested
 const unsigned long long MIN_ELEMENTS_TO_SORT = 1000;
@@ -43,9 +49,9 @@ typedef Big_Type<31, true, MIN_NUMBER, MAX_NUMBER> gen_type;
 //typedef int gen_type;
 
 // 0 := stdSort; 1 := Chen; 2 := Reinhardt; 3 := weitererAlgo
-std::array<std::array<long long, repetitions>, 4> timings;
-std::array<std::array<long long, repetitions>, 4> comparisons;
-std::array<std::array<long long, repetitions>, 4> assignments;
+std::array<std::vector<long long>, 4> timings;
+std::array<std::vector<long long>, 4> comparisons;
+std::array<std::vector<long long>, 4> assignments;
 
 // output streams
 std::ofstream standard_out;

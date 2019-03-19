@@ -26,9 +26,10 @@ std::vector<BasetypeWrapper<gen_type>> createList(unsigned long long size, time_
 // resets time, comparison and assignment arrays
 void reset(){
     for(int i = 0; i < 4; i++){
-        timings[i] = std::array<long long, repetitions>();
-        comparisons[i] = std::array<long long, repetitions>();
-        assignments[i] = std::array<long long, repetitions>();
+        //
+        timings[i] = std::vector<long long>();
+        comparisons[i] = std::vector<long long>();
+        assignments[i] = std::vector<long long>();
     }
 }
 
@@ -75,27 +76,41 @@ void clear_files(){
     }
 }
 
-std::array<unsigned long long, 3> compute_average(std::array<long long,  repetitions> timings,
-        std::array<long long,  repetitions> comparisons, std::array<long long,  repetitions> assignements){
+std::array<unsigned long long, 3> compute_average(std::vector<long long> timings,
+        std::vector<long long> comparisons, std::vector<long long> assignements){
     unsigned long long sum_t = 0L;
     unsigned long long sum_c = 0L;
     unsigned long long sum_a = 0L;
-    for(int i = 0; i < repetitions; i++){
+    if(DEBUGGING){
+        if(timings.size() != comparisons.size() || comparisons.size() != assignements.size()){
+            if(!debug.is_open()){
+                debug.open(DEBUG_LOG);
+            }
+            debug << "Error: the sizes in compute_average don't match" << std::endl;
+        } else if(timings.size() != current_REPETITIONS){
+            if(!debug.is_open()){
+                debug.open(DEBUG_LOG);
+            }
+            debug << "Error: seems like there is a problem with the value of current_REPETITIONS" << std::endl;
+        }
+    }
+
+    for(int i = 0; i < current_REPETITIONS; i++){
         // should be big enough but we'll see
         if(DEBUGGING){
-            if (sum_t + timings[i] < sum_t){
+            if (sum_t + timings.at(i) < sum_t){
                 if(!debug.is_open()){
                     debug.open(DEBUG_LOG);
                 }
                 debug << "Overflow detected: at time " << current_elements_to_sort << " Sum: " << sum_t << " + " << timings[i] << std::endl;
             }
-            if (sum_c + timings[i] < sum_c){
+            if (sum_c + timings.at(i) < sum_c){
                 if(!debug.is_open()){
                     debug.open(DEBUG_LOG);
                 }
                 debug << "Overflow detected: at comparisions " << current_elements_to_sort << " Sum: " << sum_t << " + " << timings[i] << std::endl;
             }
-            if (sum_a + timings[i] < sum_a){
+            if (sum_a + timings.at(i) < sum_a){
                 if(!debug.is_open()){
                     debug.open(DEBUG_LOG);
                 }
@@ -103,10 +118,14 @@ std::array<unsigned long long, 3> compute_average(std::array<long long,  repetit
             }
         }
 
-        sum_t += timings[i];
-        sum_c += comparisons[i];
-        sum_a += assignements[i];
+        sum_t += timings.at(i);
+        sum_c += comparisons.at(i);
+        sum_a += assignements.at(i);
     }
+    // after summing up divide by the number of current_REPETITIONS
+    sum_t /= current_REPETITIONS;
+    sum_c /= current_REPETITIONS;
+    sum_a /= current_REPETITIONS;
     return {sum_t, sum_c, sum_a};
 }
 
@@ -166,21 +185,26 @@ int main(){
     clear_files();
 
     for(;current_elements_to_sort <= MAX_ELEMENTS_TO_SORT; current_elements_to_sort *= STEP_FACTOR){
+        // compute the number of repetitions that should be made
+        current_REPETITIONS *= (current_REPETITIONS * REPETITION_FACTOR >= MIN_REPETITIONS)? REPETITION_FACTOR: 1.f;
+
         time_t seed_time;
         srand(time(&seed_time));
         if (DEBUGGING){
             std::string s = "\n Creating List of length " + std::to_string(current_elements_to_sort) + " (with seed: " +
                     std::to_string(seed_time) + ")\n";
+            std::string s2 = "\n with " + std::to_string(current_REPETITIONS) + " Repetitions to be made";
             if (!debug.is_open()) {
                 debug.open(DEBUG_LOG);
             }
-            debug << s << std::endl;
+            debug << s << s2 << std::endl;
+            std::cout << s << s2 << std::endl;
         }
 
 
 
 
-        for(int i = 0; i < repetitions; i++) {
+        for(int i = 0; i < current_REPETITIONS; i++) {
             //create int list
             std::array<std::vector<BasetypeWrapper<gen_type>>, 4> lists;
             lists[0] = createList(current_elements_to_sort, seed_time + i);
@@ -256,9 +280,9 @@ int main(){
 
                 }
 
-                comparisons[j][i] = BasetypeWrapper<gen_type>::get_c();
-                assignments[j][i] = BasetypeWrapper<gen_type>::get_m();
-                timings[j][i] = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+                comparisons[j].emplace_back(BasetypeWrapper<gen_type>::get_c());
+                assignments[j].emplace_back(BasetypeWrapper<gen_type>::get_m());
+                timings[j].emplace_back(std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count());
 
 
 
