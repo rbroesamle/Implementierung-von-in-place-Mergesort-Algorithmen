@@ -185,8 +185,6 @@ int main(){
     clear_files();
 
     for(;current_elements_to_sort <= MAX_ELEMENTS_TO_SORT; current_elements_to_sort *= STEP_FACTOR){
-        // compute the number of repetitions that should be made
-        current_REPETITIONS *= (current_REPETITIONS * REPETITION_FACTOR >= MIN_REPETITIONS)? REPETITION_FACTOR: 1.f;
 
         time_t seed_time;
         srand(time(&seed_time));
@@ -292,6 +290,9 @@ int main(){
 
             // testing resulting lists
             bool valid = check_sorted_list(lists);
+            if(!valid){
+                std::cout << "Wrong order for size " << current_elements_to_sort << std::endl;
+            }
         }
 
         std::array<unsigned long long, 3> standard = compute_average(timings[0], comparisons[0], assignments[0]);
@@ -301,6 +302,8 @@ int main(){
 
         outputdata(standard, chen, reinhardt, other);
 
+        // compute the number of repetitions that should be made
+        current_REPETITIONS *= (current_REPETITIONS * REPETITION_FACTOR >= MIN_REPETITIONS)? REPETITION_FACTOR: 1.f;
         reset();
     }
 

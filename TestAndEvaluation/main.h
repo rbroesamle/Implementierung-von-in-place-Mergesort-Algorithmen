@@ -17,17 +17,17 @@
 
 
 // enables debugging messeges and  logs stuff
-const bool DEBUGGING = true;
+const bool DEBUGGING = false;
 const bool MERGE_TEST = false;
 
 std::ofstream debug;
 
 //number of REPETITIONS done for every list length
-const int START_REPETITIONS = 100;
+const int START_REPETITIONS = 50;
 int current_REPETITIONS = START_REPETITIONS;
 const unsigned int MIN_REPETITIONS = 1; // default 1 shouldn't be lower than 1, else undefined behavior
 // take the repetitions of times the factor
-const float REPETITION_FACTOR = 1.f; // default 1 doesn't change the number of repetitions
+const float REPETITION_FACTOR = 0.5f; // default 1 doesn't change the number of repetitions
 // if you only want to make half as many steps in the next list length change it to 0.5f
 
 
