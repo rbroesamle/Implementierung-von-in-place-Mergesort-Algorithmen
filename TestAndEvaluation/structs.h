@@ -28,7 +28,7 @@ public:
     }
     Big_Type(const int& trash){
         auto rand = std::bind(std::uniform_int_distribution<int>(MIN_NUMBER,MAX_NUMBER), std::mt19937(trash + 1));
-        for(typename std::array<int, size>::iterator it = x.begin(); it != x.end();++it) {
+        for(auto it = x.begin(); it != x.end(); it++) {
             *it = rand();
         }
     }
@@ -55,11 +55,12 @@ public:
 
     bool operator!= (const Big_Type &y) const {
         if (!expensive_compare) return (this->x[0] != y.x[0]);
-        long sum_x, sum_y = 0;
+        long sum_x = 0;
+        long sum_y = 0;
         for(typename std::array<int, size>::const_iterator it = x.begin(); it != x.end();++it) {
             sum_x += *it;
         }
-        for(typename std::array<int, size>::const_iterator it = y.x.begin(); it != y.x.end();++it) {
+        for(auto it = y.x.begin(); it != y.x.end(); it++) {
             sum_y += *it;
         }
         sum_x /= size;
@@ -70,11 +71,12 @@ public:
     // < operator
     bool operator< (const Big_Type &y) const {
         if (!expensive_compare) return (this->x[0] < y.x[0]);
-        long sum_x, sum_y = 0;
-        for(typename std::array<int, size>::const_iterator it = x.begin(); it != x.end();++it) {
+        long sum_x = 0;
+        long sum_y = 0;
+        for(auto it = x.begin(); it != x.end(); it++) {
             sum_x += *it;
         }
-        for(typename std::array<int, size>::const_iterator it = y.x.begin(); it != y.x.end();++it) {
+        for(auto it = y.x.begin(); it != y.x.end(); it++) {
             sum_y += *it;
         }
         sum_x /= size;
