@@ -84,3 +84,52 @@ public:
         return (sum_x < sum_y);
     }
 };
+
+template<typename T>
+class Ptr_Type
+{
+private:
+    //Value
+    T *ptr;
+
+public:
+    //constructors
+    Ptr_Type() {}
+
+    //copy constructor
+    Ptr_Type(const Ptr_Type& orig) : ptr(orig.ptr) {
+    }
+
+    Ptr_Type(const int& trash){
+        ptr = new T(trash);
+    }
+
+    //destructor
+    ~Ptr_Type() {}
+
+    // copy operator
+    Ptr_Type& operator= (Ptr_Type const& other) {
+        if (this != &other) {
+            Ptr_Type tmp(other);
+            std::swap(ptr, tmp.ptr);
+        }
+        return *this;
+    }
+
+    // move operator
+    Ptr_Type& operator= (Ptr_Type&& other) {
+        if (this != &other) {
+            std::swap(ptr, other.ptr);
+        }
+        return *this;
+    }
+
+    bool operator!= (const Ptr_Type &y) const {
+        return *ptr != *(y.ptr);
+    }
+
+    // < operator
+    bool operator< (const Ptr_Type &y) const {
+        return *ptr < *(y.ptr);
+    }
+};
