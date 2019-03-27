@@ -1,4 +1,4 @@
-#include "reinhardt.h"
+#include "reinhardt_extrasort.h"
 
 //starte den rekursiven Mergesort
 template <typename Iterator>

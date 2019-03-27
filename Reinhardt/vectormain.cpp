@@ -1,11 +1,8 @@
 //
 // Created by Patrick on 29.11.2018.
 //
-#include "inplace_mergesort_without_ring.cpp"
-//#include "reinhardt.cpp"
-//#include "inplace_merge.cpp"
-//#include "reinhardt_swap.cpp"
-//#include "inplace_mergesort.cpp"
+//#include "inplace_mergesort_ring.cpp"
+#include "reinhardt_extrasort.cpp"
 #include <iostream>
 #include "wrapper.h"
 #include <time.h>
@@ -42,7 +39,7 @@ long testSort(std::vector<BasetypeWrapper<int>> test, int size, bool stdSort){
     BasetypeWrapper<int>::reset_m();
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
     //stdSort? std::stable_sort(test.begin(), test.end()): mergesort(test);
-    stdSort? std::stable_sort(test.begin(), test.end()): in_place_mergesort(test.begin(),test.end());
+    stdSort? std::stable_sort(test.begin(), test.end()): mergesort(test.begin(),test.end());
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
     unsigned long long c = BasetypeWrapper<int>::get_c();
     unsigned long long m = BasetypeWrapper<int>::get_m();

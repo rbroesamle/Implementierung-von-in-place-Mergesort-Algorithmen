@@ -2,12 +2,12 @@
 // Created by jonas on 02.01.2019.
 //
 
-#include "inplace_mergesort.h"
-#include "quicksort_step.cpp"
+#include "inplace_mergesort_qsel.h"
+#include "quickselect_step.cpp"
 #include "vector"
 #include "iterator"
 
-//TODO: hier angeben die wievielte Iteration den Quicksort-step verwenden soll ( >= 1 )
+//TODO: hier angeben die wievielte Iteration den Quickselect-step verwenden soll ( >= 1 )
 static const unsigned int qstep = 1;
 static unsigned int qstep_counter;
 template <typename Iterator>

@@ -1,7 +1,8 @@
 //
 // Created by jonas on 22.12.2018.
 //
-#include "inplace_merge.h"
+#include "iterator_ring.h"
+#include "reinhardt_merge_ring.h"
 #include<iterator>
 #include<math.h>
 /*
@@ -19,14 +20,14 @@ void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two
 
     //while beide Listen nichtleer und keine Kollision
     while (act_one != end_one && act_two != end_two && merge != act_two) {
-        temp = *merge;
-        if (*act_two < *act_one) {
-            *merge = *act_two;
-            *act_two = temp;
+        temp = RAI<Iterator>::star(merge);
+        if (*RAI<Iterator>::get(act_two) < RAI<Iterator>::star(act_one)) {
+            *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two);
+            *RAI<Iterator>::get(act_two) = temp;
             act_two++;
         } else {
-            *merge = *act_one;
-            *act_one = temp;
+            *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_one);
+            *RAI<Iterator>::get(act_one) = temp;
             act_one++;
         }
         merge++;
@@ -34,9 +35,9 @@ void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two
     //falls zweite Liste leer
     if (act_two == end_two) {
         while (act_one != end_one) {
-            temp = *merge;
-            *merge = *act_one;
-            *act_one = temp;
+            temp = RAI<Iterator>::star(merge);
+            *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_one);
+            *RAI<Iterator>::get(act_one) = temp;
             act_one++;
             merge++;
         }
@@ -44,9 +45,9 @@ void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two
     } else if (act_one == end_one) {
         if(merge != act_two) {
             while (act_two != end_two) {
-                temp = *merge;
-                *merge = *act_two;
-                *act_two = temp;
+                temp = RAI<Iterator>::star(merge);
+                *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two);
+                *RAI<Iterator>::get(act_two) = temp;
                 act_two++;
                 merge++;
             }
@@ -80,14 +81,14 @@ void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_tw
 
     //while beide Listen nichtleer und keine Kollision
     while (act_one != end_one && act_two != end_two && merge != act_two) {
-        temp = *merge;
-        if (*act_one < *act_two) {
-            *merge = *act_two;
-            *act_two = temp;
+        temp = RAI<Iterator>::star(merge);
+        if (RAI<Iterator>::star(act_one) < RAI<Iterator>::star(act_two)) {
+            *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two);
+            *RAI<Iterator>::get(act_two) = temp;
             act_two++;
         } else {
-            *merge = *act_one;
-            *act_one = temp;
+            *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_one);
+            *RAI<Iterator>::get(act_one) = temp;
             act_one++;
         }
         merge++;
@@ -95,9 +96,9 @@ void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_tw
     //falls zweite Liste leer
     if (act_two == end_two) {
         while (act_one != end_one) {
-            temp = *merge;
-            *merge = *act_one;
-            *act_one = temp;
+            temp = RAI<Iterator>::star(merge);
+            *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_one);
+            *RAI<Iterator>::get(act_one) = temp;
             act_one++;
             merge++;
         }
@@ -105,9 +106,9 @@ void sym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_tw
     } else if (act_one == end_one) {
         if(merge != act_two) {
             while (act_two != end_two) {
-                temp = *merge;
-                *merge = *act_two;
-                *act_two = temp;
+                temp = RAI<Iterator>::star(merge);
+                *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two);
+                *RAI<Iterator>::get(act_two) = temp;
                 act_two++;
                 merge++;
             }
@@ -185,9 +186,9 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
         if(pos == -1){
             // ganzer Block von two kopieren
             for(int i = 0; i <= k; i ++){
-                temp = *merge;
-               *merge = *(act_two + i);
-               *(act_two + i) = temp;
+                temp = RAI<Iterator>::star(merge);
+               *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two + i);
+               *RAI<Iterator>::get(act_two + i) = temp;
                merge ++;
             }
             act_two = act_two + (k + 1);
@@ -195,14 +196,14 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
         else{
             // act_one an passender Stelle "einfügen"
             for(int i = 0; i < pos; i++){
-                temp = *merge;
-                *merge = *(act_two + i);
-                *(act_two + i) = temp;
+                temp = RAI<Iterator>::star(merge);
+                *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two + i);
+                *RAI<Iterator>::get(act_two + i) = temp;
                 merge ++;
             }
-            temp = *merge;
-            *merge = *act_one;
-            *act_one = temp;
+            temp = RAI<Iterator>::star(merge);
+            *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_one);
+            *RAI<Iterator>::get(act_one) = temp;
             merge ++;
             act_one ++;
             act_two = act_two + pos;
@@ -212,9 +213,9 @@ void asym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_tw
     if (act_one == end_one) {
         if(merge != act_two) {
             while (act_two != end_two) {
-                temp = *merge;
-                *merge = *act_two;
-                *act_two = temp;
+                temp = RAI<Iterator>::star(merge);
+                *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two);
+                *RAI<Iterator>::get(act_two) = temp;
                 act_two++;
                 merge++;
             }
@@ -292,9 +293,9 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
         if(pos == -1){
             // ganzer Block von two kopieren
             for(int i = 0; i <= k; i ++){
-                temp = *merge;
-                *merge = *(act_two + i);
-                *(act_two + i) = temp;
+                temp = RAI<Iterator>::star(merge);
+                *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two + i);
+                *RAI<Iterator>::get(act_two + i) = temp;
                 merge ++;
             }
             act_two = act_two + (k + 1);
@@ -302,14 +303,14 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
         else{
             // act_one an passender Stelle "einfügen"
             for(int i = 0; i < pos; i++){
-                temp = *merge;
-                *merge = *(act_two + i);
-                *(act_two + i) = temp;
+                temp = RAI<Iterator>::star(merge);
+                *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two + i);
+                *RAI<Iterator>::get(act_two + i) = temp;
                 merge ++;
             }
-            temp = *merge;
-            *merge = *act_one;
-            *act_one = temp;
+            temp = RAI<Iterator>::star(merge);
+            *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_one);
+            *RAI<Iterator>::get(act_one) = temp;
             merge ++;
             act_one ++;
             act_two = act_two + pos;
@@ -319,9 +320,9 @@ void asym_merge_gap_right(Iterator start_one, Iterator end_one, Iterator start_t
     if (act_one == end_one) {
         if(merge != act_two) {
             while (act_two != end_two) {
-                temp = *merge;
-                *merge = *act_two;
-                *act_two = temp;
+                temp = RAI<Iterator>::star(merge);
+                *RAI<Iterator>::get(merge) = RAI<Iterator>::star(act_two);
+                *RAI<Iterator>::get(act_two) = temp;
                 act_two++;
                 merge++;
             }

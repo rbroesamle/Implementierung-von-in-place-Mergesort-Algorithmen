@@ -1,9 +1,9 @@
 //
 // Created by jonas on 02.01.2019.
 //
-#include "RAI_shift.h"
-#include "inplace_mergesort.h"
-#include "reinhardt_swap_shift.cpp"
+#include "iterator_ring.h"
+#include "inplace_mergesort_qsel.h"
+#include "reinhardt_gapsort_ring.cpp"
 
 template <typename Iterator>
 void in_place_mergesort(Iterator begin, Iterator fin){

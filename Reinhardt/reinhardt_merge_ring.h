@@ -1,7 +1,7 @@
 //
 // Created by jonas on 22.12.2018.
 //
-#include "RAI_shift.h"
+#include "iterator_ring.h"
 template <typename Iterator>
 void sym_merge_gap_left(Iterator start_one, Iterator end_one, Iterator start_two, Iterator end_two, Iterator merge);
 
