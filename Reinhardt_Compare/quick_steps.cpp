@@ -2,8 +2,8 @@
 // Created by jonas on 15.01.2019.
 //
 #include <iterator>
-#include "inplace_merge.cpp"
-#include "reinhardt_swap.cpp"
+#include "reinhardt_merge.cpp"
+#include "reinhardt_gapsort.cpp"
 /*
  * Performs a quickselect-step
  * returns the "new" start_gap

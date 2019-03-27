@@ -1,7 +1,7 @@
 //
 // Created by jonas on 22.12.2018.
 //
-#include "inplace_merge.h"
+#include "reinhardt_merge.h"
 #include<iterator>
 #include<math.h>
 /*
