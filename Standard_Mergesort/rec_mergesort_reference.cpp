@@ -2,7 +2,7 @@
 // Created by Patrick on 27.11.2018.
 //
 
-#include "vectormerge.h"
+#include "rec_mergesort_reference.h"
 
 //starte den rekursiven Mergesort
 template<typename T>
