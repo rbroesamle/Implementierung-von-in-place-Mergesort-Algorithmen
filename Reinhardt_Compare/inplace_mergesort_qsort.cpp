@@ -64,7 +64,7 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
     else{
         if(qstep <= qstep_counter && end_list - start_list > 16){
             qstep_counter = 1;
-            third_iteratorion_left_side(start_gap, start_list, end_list, comp);
+            qsort_iteration_left_side(start_gap, start_list, end_list, comp);
             return;
         }
         qstep_counter ++;
@@ -133,7 +133,7 @@ void rec_reinhardt_right_gap(Iterator start_gap, Iterator start_list, Iterator e
     else{
         if(qstep <= qstep_counter && end_list - start_list > 16){
             qstep_counter = 1;
-            third_iteratorion_right_side(start_gap, start_list, end_list, comp);
+            qsort_iteration_right_side(start_gap, start_list, end_list, comp);
             return;
         }
         qstep_counter ++;

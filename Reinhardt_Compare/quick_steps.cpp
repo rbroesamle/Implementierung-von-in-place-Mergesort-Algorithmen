@@ -9,7 +9,7 @@
  * returns the "new" start_gap
  */
 template<typename Iterator, typename Compare>
-Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
+Iterator qsel_iteration(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
     int size_unsorted = start_list - start_gap;
     int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
     Iterator start_new_list = start_gap + size_new_gap;
@@ -61,7 +61,7 @@ Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator en
  * Call this procedure if the gap is on the left side of the list
  */
 template<typename Iterator, typename Compare>
-void third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
+void qsort_iteration_left_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp){
 
     Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
     auto pivot_value = *pivot;
@@ -183,7 +183,7 @@ void third_iteratorion_left_side(Iterator start_gap, Iterator start_list, Iterat
  * It has the same effect as the procedure above
  */
 template<typename Iterator, typename Compare>
-void third_iteratorion_right_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp) {
+void qsort_iteration_right_side(Iterator start_gap, Iterator start_list, Iterator end_list, Compare comp) {
 
     Iterator pivot = start_list + (((end_list - start_list) - 1) / 2);
     auto pivot_value = *pivot;

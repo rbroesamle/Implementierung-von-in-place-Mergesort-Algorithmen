@@ -9,7 +9,7 @@
  * returns the "new" start_gap
  */
 template<typename Iterator>
-Iterator second_iteratorion(Iterator start_gap, Iterator start_list, Iterator end_list){
+Iterator qsel_iteration(Iterator start_gap, Iterator start_list, Iterator end_list){
     int size_unsorted = start_list - start_gap;
     int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
     Iterator start_new_list = start_gap + size_new_gap;

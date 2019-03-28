@@ -77,7 +77,7 @@ void rec_reinhardt_left_gap(Iterator start_gap, Iterator start_list, Iterator en
     else{
         if(qstep == qstep_counter){
             qstep_counter = 1;
-            Iterator new_start_gap = second_iteratorion(start_gap, start_list, end_list, comp);
+            Iterator new_start_gap = qsel_iteration(start_gap, start_list, end_list, comp);
             int size_unsorted = start_list - start_gap;
             int size_new_gap = size_unsorted - ((2* size_unsorted) / 3);
             rec_reinhardt_left_gap(new_start_gap, new_start_gap + size_new_gap, end_list, comp);
