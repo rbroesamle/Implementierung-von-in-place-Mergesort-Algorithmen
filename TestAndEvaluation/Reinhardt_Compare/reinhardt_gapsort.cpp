@@ -113,7 +113,7 @@ void recsort_swap(Iterator begin_v, Iterator fin_v, VecIterator begin_m, bool i,
             merge_swap(begin_v, fin_v, begin_v + pivot, begin_m, comp);
         }
     } else {
-        //small_sort_swap(begin_v, fin_v - 1, begin_m, i);
+        //small_sort_swap(begin_v, fin_v - 1, begin_m, i, comp);
         small_insertion_sort_swap(begin_v, fin_v, begin_m, i, comp);
     }
 }
@@ -191,7 +191,7 @@ void small_sort_swap (Iterator begin_v, Iterator fin_v, VecIterator begin_m, boo
                     *m = *fin_v;
                     *fin_v = temp;
                 } else {
-                    if (*begin_v > *m){
+                    if (comp(*m, *begin_v)){
                         // u+1 < u < o
                         auto temp = *begin_v;
                         *begin_v = *m;
