@@ -3,7 +3,6 @@
 //
 #include <cmath>
 #include <algorithm>
-#include "chen.h"
 
 namespace huang_langston_merge{
     template <typename Iterator>
