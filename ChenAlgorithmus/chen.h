@@ -74,7 +74,7 @@ void merge(Iterator x_0, Iterator y_0, Iterator y_n, int k, int recursionDepth) 
     // line 5
     while (y - z > 2 * k) {
         // line 6 -14
-        if (!(*y < *x) || y_n == y) {
+        if (y_n == y || !(*y < *x)) {
             *z = *x; *x = *b_1; x++;
             if ((x - x_0) % k == f) {
                 if (z < x - k) b_2 = x-k;

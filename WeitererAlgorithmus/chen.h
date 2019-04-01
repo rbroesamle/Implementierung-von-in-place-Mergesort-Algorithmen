@@ -86,7 +86,7 @@ namespace chen_sort {
         // line 5
         while (y - z > 2 * k) {
             // line 6 -14
-            if (!(*y < *x) || y_n == y) {
+            if (y_n == y || !(*y < *x)) {
                 *z = *x;
                 *x = *b_1;
                 x++;
