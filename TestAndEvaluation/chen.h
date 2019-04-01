@@ -86,7 +86,7 @@ namespace chen {
         // line 5
         while (y - z > 2 * k) {
             // line 6 -14
-            if (!compare(*y, *x) || y_n == y) {
+            if (y_n == y || !compare(*y, *x)) {
                 *z = *x;
                 *x = *b_1;
                 x++;
