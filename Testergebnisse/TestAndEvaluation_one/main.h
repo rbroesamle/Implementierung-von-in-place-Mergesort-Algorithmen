@@ -23,7 +23,7 @@ const bool MERGE_TEST = false;
 std::ofstream debug;
 
 //number of REPETITIONS done for every list length
-const int START_REPETITIONS = 10000;
+const int START_REPETITIONS = 100000;
 int current_REPETITIONS = START_REPETITIONS;
 const unsigned int MIN_REPETITIONS = 1; // default 1 shouldn't be lower than 1, else undefined behavior
 // take the repetitions of times the factor
@@ -45,7 +45,7 @@ const int MIN_NUMBER = std::numeric_limits<int>::min();
 const int MAX_NUMBER = std::numeric_limits<int>::max();
 
 // set the type to be tested
-//typedef Ptr_Type<Big_Type<30, true, MIN_NUMBER, MAX_NUMBER>> gen_type;
+//typedef Big_Type<31, true, MIN_NUMBER, MAX_NUMBER> gen_type;
 typedef int gen_type;
 
 // 0 := stdSort; 1 := Chen; 2 := Reinhardt; 3 := weitererAlgo

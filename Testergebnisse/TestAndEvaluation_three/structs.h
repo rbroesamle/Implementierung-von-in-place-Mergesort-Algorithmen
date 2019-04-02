@@ -105,9 +105,7 @@ public:
     }
 
     //destructor
-    ~Ptr_Type() {
-        //TODO: Pointer-Speicher freigeben/ Smartpointer verwenden (zeitintensiv)
-    }
+    ~Ptr_Type() {}
 
     // copy operator
     Ptr_Type& operator= (Ptr_Type const& other) {
