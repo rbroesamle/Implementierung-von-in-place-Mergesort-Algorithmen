@@ -61,4 +61,9 @@ add_executable(QuickXsort_master
         in_situ_merge.h++
         vectormergeIter.h++
         bottomupMerge.h++
-        reinhardt_sort.h++)
+        sort_reinhardt.h++
+        sort_chen.h++
+        sort_huang.h++
+        grailsort.h++
+        grailsort_const_buffer.h++
+        grailsort_dynamic_buffer.h++)
