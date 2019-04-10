@@ -1,4 +1,4 @@
-\documentclass[12pt,pdftex,a4paper]{article}
+\documentclass[12pt,pdftex,a4paper, twocolumn]{article}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{url}
@@ -22,24 +22,13 @@ Prüfer: Prof. Dr. Volker Diekert}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Literaturrecherche \"uber in-place Mergesort Algorithmen}
 
-Mergesort ist ein Sortieralgorithmus, der nach dem Prinzip ''Teile - und - Herrsche'' arbeitet. Beim ''Teile'' - Schritt wird die zu
-sortierende Liste in zwei kleinere Listen zerlegt. Beim ''Herrsche'' - Schritt werden zwei kleinere, bereits sortierte Listen,
-mittels paarweisen Vergleichen der Elemente zu einer sortierten Liste zusammengesetzt.
-Der gewöhnliche Algorithmus erreicht dabei die asymptotisch optimale Worst-Case-Laufzeit von $O(n \log n)$ und
-lässt sich mit externem Speicher auf verschiedenen Kernen gut parallelisieren und weiter beschleunigen.
-Will man die Liste ohne zusätzlichen Speicher (in-place) sortieren, hat neben der Anzahl der Vergleiche
-auch die Anzahl der Vertauschungen innerhalb der Liste einen sehr großen Einfluss auf die Laufzeit.
-Daher benötigt der ''klassische'' Algorithmus diverse Änderungen und Optimierungen, um ohne
-zusätzlichen Speicher und trotzdem weiterhin effizient zu sortieren. \\
-Es gibt verschiedene Ans\"atze die versuchen dies zu erreichen. Viele versuchen dabei einen normalen Mergesort mit einem in-place Mergesort zu kombinieren und somit eine schnellere Sortierung zu erreichen. Diese Algorithmen sind jedoch streng genommen keine in-place Mergesort Algorithmen, da der normale Mergesort logarithmischen Platz f\"ur seinen internen Stack ben\"otigt. Dieser quasi-linearer Extra-Speicher ist aber in den mei{\ss}ten F\"allen ausreichend. \\
-Im sp\"ateren Verlauf dieser Ausarbeitung werden wir vor allem auf den Algorithmus von Chen\cite{Chen06} und den Algorithmus von Reinhardt\cite{Reinhardt92} genauer eingehen. 
+Chen\cite{Chen06}. Reinhardt\cite{Reinhardt92}. Huang\cite{huang1988practical}. BottomUpHeapSort\cite{wegener1993bottom}.
 
 \section*{Beschreibung der Implementierungen}
 
 \section*{Detaillierte Vergleiche der Implementierungen mit bestehenden in-place Mergesort Algorithmen}
 
-\bibliographystyle{plain}	
-%	\section*{Literaturhinweise}
+\bibliographystyle{amsplain}
 \bibliography{sort}
 
 \end{document}
