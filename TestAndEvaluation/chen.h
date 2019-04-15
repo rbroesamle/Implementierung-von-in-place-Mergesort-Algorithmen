@@ -33,7 +33,7 @@ namespace chen {
         if (!(z < m)) m = m + k;
         Iterator i = m;
         Iterator j;
-        bool minNotSet = true; // is false, when  min_1/2 are set. maybe come up with a more elegant solution
+        bool minNotSet = true; // is false, when  min_1/2 are set
         while ((i + k) <= y) {
             if (i != b_1 && i != b_2) {
                 if (i < b_1 && b_1 < i + k) j = m - 1; else j = i + (k - 1);

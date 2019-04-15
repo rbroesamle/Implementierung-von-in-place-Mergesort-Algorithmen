@@ -45,7 +45,6 @@ namespace huang_langston_merge{
      */
     template <typename Iterator, typename Compare>
     Iterator find_series(Iterator s, Iterator e, int blockSize, Compare comp){
-        //int block_count = static_cast<int>(std::round(static_cast<float>((e-s)) / static_cast<float>(blockSize)));
         int block_count = (e-s) / blockSize;
         for (int i = 1; i < block_count; i++){
             int head_distance = i * blockSize;
@@ -61,7 +60,6 @@ namespace huang_langston_merge{
     template <typename Iterator, typename Compare>
     void sort_blocks(Iterator s, Iterator e, int blockSize, Compare comp){
         int tail_distance = blockSize - 1;
-        //int block_count = static_cast<int>(std::round(static_cast<float>((e-s)) / static_cast<float>(blockSize)));
         int block_count = (e-s) / blockSize;
         Iterator max_head = s + ((block_count - 1) * blockSize);
         for (Iterator current =  s; current != max_head; current += blockSize){
@@ -105,9 +103,6 @@ namespace huang_langston_merge{
             second_series = find_series(second_series, e, blockSize, comp);
         }
         std::rotate(first_series - blockSize, first_series,e);
-        //TODO: replace std::sort (possibly by recursive mergesort call)
-        //chen_sort::mergesort_chen(e-blockSize, e);
-        //std::sort(e - blockSize, e);
         huang_langston_merge::mergesort(e - blockSize, e, comp);
     }
 
@@ -219,12 +214,7 @@ namespace huang_langston_merge{
             basic_inplace_merge(s, e, blockSize, comp);
             return;
         }
-        //TODO merge b and c using the buffer instead
         mergeCandD(m - (s_1 + s_2), m - (s_1 + 1), e - (s_2 + d), e-(s_2+1), e, comp);
-        //swap_blocks(m - (s_1 + s_2), e - s_2, s_2);
-        //chen_sort::mergesort_chen(e - (s_2 + d), e);
-        //std::sort(e - (s_2 + d), e);
-        //huang_langston_merge::mergesort(e - (s_2 + d), e);
         int t_1 = (m - s) % blockSize;
         if (t_1 != 0) mergeFandG(s, s + t_1, m, m + blockSize, m - t_1, comp);
         swap_blocks(s + t_1, m - blockSize, blockSize, comp);
@@ -237,11 +227,9 @@ namespace huang_langston_merge{
                 std::rotate(block_e, e - blockSize, e);
                 basic_inplace_merge(s + t_1, block_e + blockSize, blockSize, comp);
                 block_merge_backward(s+t_1, block_e + blockSize, e, comp);
-                //std::sort(s, e);
             } else {
                 basic_inplace_merge(s+t_1, block_e, blockSize, comp);
                 block_merge_backward(s+t_1, block_e, e, comp);
-                //std::sort(s, e);
             }
         }
     }
@@ -257,7 +245,6 @@ template <typename Iterator, typename Compare>
             huang_langston_merge::merge(s, s + pivot, e, comp);
         } else {
             bufferMerge::small_insertion_sort(s, e, e, comp);
-            //chen_sort::mergesort_chen(s, e);
         }
     }
 }
