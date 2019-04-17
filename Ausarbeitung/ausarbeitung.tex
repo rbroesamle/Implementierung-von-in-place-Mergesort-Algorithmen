@@ -10,7 +10,7 @@
 \addto\captionsngerman{\renewcommand{\figurename}{Fig.}}
 \setlength{\abovecaptionskip}{-5mm} 
 \setlength{\belowcaptionskip}{-2mm} 
-\setlength{\dblfloatsep}{0mm} 
+\setlength{\dblfloatsep}{-2mm} 
 \begin{document}
 \title{Projekt-INF:\\
 Implementation of in-place mergesort algorithms}
@@ -129,7 +129,7 @@ Merges the first and second series, with the resulting list beginning at the fir
 
 \section*{Test results}
 In the following we will describe and analyse the results of the tests. Although it is not possible to compare all versions of the in-place merge sorts with all possible test conditions, we try to cover a broad range to show the main results. The raw data and further results are given in the \textit{“Test\_Diagramme”} file. \\
-For all the tests given here, we sorted equally distributed integer values or big types in multiple runs (of course more runs for smaller lists) on the server. We start by comparing our in-place merge sort implementations with each other. \\
+For all the tests given here, we sorted equally distributed integer values or big types, consisting of an integer array of length 30, in multiple runs (of course more runs for smaller lists) on the server. We start by comparing our in-place merge sort implementations with each other. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/ints-time.JPG} \\
 \caption{ $ \frac{Time(ns)}{n*log(n)} $ for different integer list sizes $ n $ } \label{fig:ints-time}
@@ -137,7 +137,7 @@ For all the tests given here, we sorted equally distributed integer values or bi
 Integers do not need much time to be assigned. Therefore the time in this test is mainly influenced by other statements like index computations. This can also be seen by a comparison with the following result. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/big-beidesTeuer.JPG} \\
-\caption{ $ \frac{Time(ns)}{n*log(n)} $ for different Bigtype list sizes $ n $ } \label{fig:big-beides-Teuer}
+\caption{ $ \frac{Time(ns)}{n*log(n)} $ for different Bigtype list sizes } \label{fig:big-beides-Teuer}
 \end{figure}
 The result from Fig.\ref{fig:big-beides-Teuer} is mainly influenced by the number of comparisons and assignments (see Fig.\ref{fig:ints-comp} / Fig.\ref{fig:ints-assign}). As one can see, the used algorithm or version of algorithm should be chosen depending on the type for better performance. For a universal measure, independent of type, compiler and operating system, the number of comparisons and assignments can be evaluated. \\
 \begin{figure}[H]
@@ -149,28 +149,28 @@ The result from Fig.\ref{fig:big-beides-Teuer} is mainly influenced by the numbe
 \caption{ $ \frac{Assignments}{n*log(n)} $ for different list sizes $ n $ } \label{fig:ints-assign}
 \end{figure}
 The standard merge sort does roughly one assignment after one comparison and has only a small additional number of assignments (see \textit{“Test\_Diagramme”}). One can see that all our in-place versions need roughly just two assignments per comparison. \\
-In most diagrams, we show the results divided by $ n*log(n) $. Therefore, time, comparisons and assignments should be nearly constant throughout different list sizes for all mergesort implementations. To conclude to other specific implications, another scale may be used. E.g. the following diagram can be used as proove that the number of comparisons does not exceed $ n*log(n) + O(n) $. If this number is not exceeded then the values do not increase for an increasing list size. \\
+In most diagrams, we show the results divided by $ n*log(n) $. Therefore, time, comparisons and assignments should be nearly constant throughout different list sizes for all mergesort implementations. To conclude to other specific implications, another scale may be used. E.g. the following diagram can be used as proof that the number of comparisons does not exceed $ n*log(n) + O(n) $. If this number is not exceeded then the values do not increase for an increasing list size. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/ints-time-otherNormalization.JPG} \\
 \caption{Comparisons with another normalisation ( $ \frac{Comparisons - n*log(n)}{n} $)} \label{fig:ints-time-otherNormalization}
 \end{figure}
-In the test from Fig. \ref{fig:ints-time-otherNormalization} we did not use the usual insertion sort for small sublists as its usage leads to a varying number of additional comparisons depending on how the list is partitioned. Therefore, we need less comparisons compared to the usual configurations. \\ %% Continue here...
-For a clearer comparison of Huang and Chen it is possible to just compare the merges because they can be substituted in the algorithm (results see extra file). But here it is important to mention that Reinhardt’s merge works completely differently because it merges to another range and though the std-inplace-merge merges to the same range, it needs additional memory to just make use of n-1 comparisons. \\
-The runtime of the merges reflects the bad result of Chen in the first test more powerful. But it is important to remind that the runtime also depends on compiler and device. For a usual laptop and another compiler we got the following time average for multiple runs with 10 Mio elements (in the same test!): \\
+In the test from Fig. \ref{fig:ints-time-otherNormalization} we did not use the usual insertion sort for small sublists as its usage leads to a varying number of additional comparisons depending on how the list is partitioned. Therefore, we need less comparisons compared to the usual configurations. \\
+For a clearer comparison of Huang and Chen it is possible to just compare the merges because they can be substituted in the algorithm. But here it is important to mention that Reinhardt’s merge works completely different because it merges to another range and although the std-inplace-merge merges to the same range, it needs additional memory to only use $ n-1 $ comparisons. \\
+The runtime of the merges reflects the bad result of Chen in the first test more clearly. But it is important to remind that the runtime also depends on compiler and device. For results of the server see \textit{“Test\_Diagramme”}. For a usual laptop and another compiler we got the following time average for multiple runs of the merges with 10 Mio. elements: \\
 \scriptsize
 \begin{tabular}{|c|c|c|c|} \hline
 Chen & Reinhardt & Huang & StdInpl-merge \\ \hline
 148 418 ns & 88 717 ns & 99 766 ns & 147 056 ns \\ \hline
 \end{tabular}
 \normalsize \\
-And if we make comparisons/assignments more relevant by use of lists with 1 million bigtype<30>, we get an entirely different relation of results for multiple runs on the laptop: \\
+And if we make comparisons/assignments more relevant by use of lists with 1 million bigtypes, we get an entirely different relation of results for multiple runs on the laptop: \\
 \scriptsize
 \begin{tabular}{|c|c|c|c|} \hline
 Chen & Reinhardt & Huang & StdInpl-merge \\ \hline
 317 783 ns & 309 832 ns & 485 642 ns & 247 364 ns \\ \hline
 \end{tabular}
 \normalsize \\
-In the above tests, we run the in-place algorithm of Reinhardt by using insertion sort in "reinhardt\_gapsort" for small cases and the asymmetric merge in "reinhardt\_merge". Furthermore we executed the quickselect step in every iteration. \\
+In the above tests (except Fig.\ref{fig:ints-time-otherNormalization}), we run the in-place algorithm of Reinhardt by using insertion sort in \textit{"reinhardt\_gapsort"} for small cases and the asymmetric merge in \textit{"reinhardt\_merge"}. Furthermore we utilised the quickselect step in every iteration. \\ %%Continue here...
 But if we make specific demands to the sort, e.g. a small number of comparisons, we can switch to a more suitable mode. In the following, we will compare the different Reinhardt modes between themselves. In all runs, we use integer as type to be sorted. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/diff-iterations-time.JPG} \\
