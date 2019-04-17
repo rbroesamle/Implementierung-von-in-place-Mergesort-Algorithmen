@@ -10,7 +10,7 @@ Ausarbeitung/*.bbl
 Ausarbeitung/*.blg
 Ausarbeitung/*.log
 Ausarbeitung/*.synctex.*
-**/cmake-build-debug
+**/cmake-build-debug/*
 Code/.vs
 Code/Debug
 Code/merge_test/Debug
