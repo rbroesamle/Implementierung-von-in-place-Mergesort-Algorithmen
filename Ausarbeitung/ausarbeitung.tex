@@ -132,12 +132,12 @@ In the following we will describe and analyse the results of the tests. Although
 For all the tests given here, we sorted equally distributed integer values or big types in multiple runs (of course more runs for smaller lists) on the server. We start by comparing our in-place merge sort implementations with each other. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/ints-time.JPG} \\
-\caption{ $ \frac{Time}{n*log(n)} $ for different integer list sizes $ n $ } \label{fig:ints-time}
+\caption{ $ \frac{Time(ns)}{n*log(n)} $ for different integer list sizes $ n $ } \label{fig:ints-time}
 \end{figure}
 Integers do not need much time to be assigned. Therefore the time in this test is mainly influenced by other statements like index computations. This can also be seen by a comparison with the following result. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/big-beidesTeuer.JPG} \\
-\caption{ $ \frac{Time}{n*log(n)} $ for different Bigtype list sizes $ n $ } \label{fig:big-beides-Teuer}
+\caption{ $ \frac{Time(ns)}{n*log(n)} $ for different Bigtype list sizes $ n $ } \label{fig:big-beides-Teuer}
 \end{figure}
 The result from Fig.\ref{fig:big-beides-Teuer} is mainly influenced by the number of comparisons and assignments (see Fig.\ref{fig:ints-comp} / Fig.\ref{fig:ints-assign}). As one can see, the used algorithm or version of algorithm should be chosen depending on the type for better performance. For a universal measure, independent of type, compiler and operating system, the number of comparisons and assignments can be evaluated. \\
 \begin{figure}[H]
@@ -174,7 +174,7 @@ In the above tests, we run the in-place algorithm of Reinhardt by using insertio
 But if we make specific demands to the sort, e.g. a small number of comparisons, we can switch to a more suitable mode. In the following, we will compare the different Reinhardt modes between themselves. In all runs, we use integer as type to be sorted. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/diff-iterations-time.JPG} \\
-\caption{ $ \frac{Time}{n*log(n)} $ different different Reinhardt itterations } \label{fig:diff-iterations-time}
+\caption{ $ \frac{Time(ns)}{n*log(n)} $ different different Reinhardt itterations } \label{fig:diff-iterations-time}
 \end{figure}
 We can see that Reinhardt’s algorithm is fastest for integers if we just execute quickselect or quicksort iterations. Though these iterations need a bit more comparions for the execution of quicksort or quickselect, the number of assignments is smaller. This clearly can also be seen in the two following diagrams. \\
 \includegraphics[width=\linewidth]{Diagramm-Bilder/diff-iterationsAndMerges-comparisons.JPG} \\
@@ -191,7 +191,7 @@ For a further reduction of comparisons and in the case of sorting bigtypes, it i
 The result is not surprising because merge sort needs less comparisons than insertion sort. But on the other side, insertion sort is used many times as sort for small cases because it is often executed faster for integers. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/time-diff-iter-and-smallsorts.JPG} \\
-\caption{Time for different Reinhardt smallsorts} \label{fig:time-diff-iter-and-smallsorts}
+\caption{ $ \frac{Time(ns)}{n*log(n)} $ for Reinhardt smallsorts} \label{fig:time-diff-iter-and-smallsorts}
 \end{figure}
 We also compared our implementations with some existing in-place merge sorts. \\
 \begin{figure}[H]
