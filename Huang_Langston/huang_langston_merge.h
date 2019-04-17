@@ -3,6 +3,7 @@
 //
 #include <cmath>
 #include <algorithm>
+#include "bufferMerge.h"
 
 namespace huang_langston_merge{
     template <typename Iterator>
