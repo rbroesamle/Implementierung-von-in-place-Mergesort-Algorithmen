@@ -8,8 +8,8 @@
 %\usepackage[pdftex]{graphicx}
 \include{sort}
 \addto\captionsngerman{\renewcommand{\figurename}{Fig.}}
-\setlength{\abovecaptionskip}{0mm} 
-\setlength{\belowcaptionskip}{0mm} 
+\setlength{\abovecaptionskip}{-5mm} 
+\setlength{\belowcaptionskip}{-2mm} 
 \setlength{\dblfloatsep}{0mm} 
 \begin{document}
 \title{Projekt-INF:\\
@@ -177,8 +177,8 @@ But if we make specific demands to the sort, e.g. a small number of comparisons,
 \caption{ $ \frac{Time}{n*log(n)} $ different different Reinhardt itterations } \label{fig:diff-iterations-time}
 \end{figure}
 We can see that Reinhardt’s algorithm is fastest for integers if we just execute quickselect or quicksort iterations. Though these iterations need a bit more comparions for the execution of quicksort or quickselect, the number of assignments is smaller. This clearly can also be seen in the two following diagrams. \\
-\begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/diff-iterationsAndMerges-comparisons.JPG} \\
+\begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/diff-iterationsAndMerges-assignments.JPG} \\
 \caption{Comparisons and Assignments for different Reinhardt merges} \label{fig:diff-iterationsAndMerges-assignAndComp}
 \end{figure}
