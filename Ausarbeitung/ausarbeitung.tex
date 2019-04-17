@@ -33,8 +33,12 @@ In this paper we will discuss a full in-place merge sort by Reinhardt\cite{Reinh
 We will describe our implementations giving special attention to parts where our implementation differs from the original algorithms, which applies especially to some versions of Reinhardt’s algorithm. \\
 Afterwards, we will give an overview on the various tests we ran, comparing our implementations both against one another and against existing in-place merge sort implementations. We focuse on measuring the performance in means of time, comparisons and assignments. The latter ones are well established measures of complexity for sorting algorithms as they are independent of the machine the algorithm is running on. \\
 
-\section*{Literaturrecherche \"uber in-place Mergesort Algorithmen}
-\textbf{A simple shuffle-based stable in-place merge algorithm\cite{dalkilic2011simple}}
+\section*{Literature research on in-place merge sort algorithms}
+Many different authors have proposed algorithms and strategies for in-place merging and merge sorting. Chen’s algorithm for example is itself a simplification of an in-place merging algorithm presented by geffert et al\cite{geffert2000asymptotically}. \\
+An early approach to in-place merging include the algorithm of Mannila and Ukkonen\cite{mannila1984simple} that makes use of partitioning the given lists into blocks, that are then rearranged to provide for easier merging. \\
+Huang and Langston later provided a much simpler approach also relying on the rearrangement of blocks. \\
+In the paper ''Practical in-place mergesort''\cite{dalkilic2011simple} another algorithm for merging two lists was pointed out. In this algorithm the unsorted list was split into two equally sized parts $ P $ and $ Q $. The second part was sorted using the first part as a buffer. Additionally the first part was again split into two equally sized parts, $ P_1 $ and $ P_2 $. $ P_1 $ was then sorted using $ P_2 $ as a buffer. At this point the list consists of first the sorted part $ P_1 $, then the unsorted part $ P_2 $ and finally the sorted part $ Q $. From there on the whole list was sorted using their „merge“ procedure. This procedure moved the unsorted part $ P_2 $ to the front of the list and merges the two arts $ P_1 $ and $ Q $. From this point onwards the unsorted part in the front can be split into two equally sized parts again and the merge procedure can be reapplied. Continuing this procedure one can sort the whole list. \\
+A more recent algorithm is presented by (..)\cite{dalkilic2011simple}, relying on an efficient in-place algorithm for shuffling two lists and the corresponding inverse operation. The shuffled lists can be efficiently sorted by consecutively inverse-shuffling parts that will afterwards be in correct order. 
 
 \section*{Description of implementations}
 \subsection*{Test environment and standard mergesort}
