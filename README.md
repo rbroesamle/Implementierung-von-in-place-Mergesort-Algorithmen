@@ -1,7 +1,7 @@
 ﻿# Projekt-INF--Uni-Stuttgart
 Projekt-INF an der Universität Stuttgart von Raphael Brösamle, Jonas Kittelberger, Patrick Spaney und Kai Ziegler.
 
-Literaturrecherche:
+Literatur:
 Algorithmus von Chen:
 https://www.sciencedirect.com/science/article/pii/S002001900500339X
 Algorithmus von Reinhardt:
