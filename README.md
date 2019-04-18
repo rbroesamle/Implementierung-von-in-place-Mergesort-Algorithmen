@@ -1,14 +1,6 @@
 ﻿# Projekt-INF--Uni-Stuttgart
 Projekt-INF an der Universität Stuttgart von Raphael Brösamle, Jonas Kittelberger, Patrick Spaney und Kai Ziegler.
 
-Literatur:
-Algorithmus von Chen:
-https://www.sciencedirect.com/science/article/pii/S002001900500339X
-Algorithmus von Reinhardt:
-https://link.springer.com/content/pdf/10.1007/3-540-56279-6_101.pdf
-
-Bottom Up Heapsort:
-https://www.sciencedirect.com/science/article/pii/030439759390364Y
-
-Algorithmus von Huang und Langston:
-https://www.researchgate.net/publication/237542225_Practical_In-Place_Merging
+Die verschiedenen Mergesort-Varianten sind in entsprechend benannten Ordnern strukturiert. Darin befindet sich auch jeweils eine simple main-Prozedur als Test mit Konsolenausgabe.
+Eine ausführliche Testumgebung, welche die Testergebnisse (Zeit/Vergleiche/Zuweisungen) in CSV-Dateien schreibt, befindet sich im `TestAndEvaluation`-Ordner.
+Dabei erfolgt der Aufruf der zu vergleichenden Sorts in der `main.cpp` File. In der `main.h` File lassen sich die Testbedingungen anpassen.
