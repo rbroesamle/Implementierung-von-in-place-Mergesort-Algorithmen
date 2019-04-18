@@ -31,7 +31,7 @@ Despite its desirable properties, one big downside of naive merge sort implement
 Therefore, many in-place variants of merge-sorts have been suggested by several authors, ranging from implementations for in-place merges that can then be easily integrated in a naive merge-sort algorithm by replacing the previous merging procedure to entirely modified sorting schemes. \\
 In this paper we will discuss a full in-place merge sort by Reinhardt\cite{Reinhardt92} and two in-place merging algorithms, one by Chen\cite{Chen06} and another by Huang and Langston\cite{huang1988practical}. We used the latter ones to implement simple top-down in-place merge sorts. \\
 We will describe our implementations giving special attention to parts where our implementation differs from the original algorithms, which applies especially to some versions of Reinhardt’s algorithm. \\
-Afterwards, we will give an overview on the various tests we ran, comparing our implementations both against one another and against existing in-place merge sort implementations. We focuse on measuring the performance in means of time, comparisons and assignments. The latter ones are well established measures of complexity for sorting algorithms as they are independent of the machine the algorithm is running on. \\
+Afterwards, we will give an overview on the various tests we ran, comparing our implementations both against one another and against existing in-place merge sort implementations. We focuse on measuring the performance in means of time, comparisons and assignments. The latter ones are well established measures of complexity for sorting algorithms as they are independent of the machine the algorithm is running on. 
 
 \section*{Literature research on in-place merge sort algorithms}
 Different authors have proposed algorithms and strategies for in-place merging and merge sorting. Chen’s algorithm for example is itself a simplification of an in-place merging algorithm presented by Geffert et al.\cite{geffert2000asymptotically}. \\
@@ -59,6 +59,7 @@ In the following, we give a more detailed description of the stated procedures. 
 $ $ \\
 \textbf{In-place mergesort basic routine \textit{(inplace\_mergesort\_[qsel / qsort])}} \\
 Firstly, we sort $\frac{4}{5}$ elements of the whole list by using $\frac{1}{5}$ as gap. This is possible in the first iteration because we do not need to consider the gap for step two. After that, we call the recursive procedure which executes the two steps mentioned above. We implemented an integer-flag where the user can choose the frequency of quicksort or quickselect iteration compared to the usual iteration. A quicksort step can leave the new gap on the right side, therefore we needed to implement an analogous second procedure for this case. As soon as the gap size undercuts a short number, we execute one parallel insertion sort step for the left block by use of binary search for efficiency reasons. \\
+$ $ \\
 $ $ \\
 \textbf{Step one \textit{(reinhardt\_gapsort)}} \\
 We sort the elements between the passed iterators by using $\frac{size}{4}$ elements as a gap on the left or on the right side. For this we firstly sort four quarters of the list with the usual recursive mergesort \textit{(rec\_mergesort\_iter)} and the gap as “extra storage”. Therefore, we permanently have to swap the gap elements instead of just assigning them to the extra memory. \\
@@ -132,7 +133,7 @@ Merges the first and second series, with the resulting list beginning at the fir
 
 \section*{Test results}
 In the following we will describe and analyse the results of the tests. Although it is not possible to compare all versions of the in-place merge sorts with all possible test conditions, we try to cover a broad range to show the main results. The raw data and further results are given in the \textit{“Test\_Diagramme”} file. \\
-For all the tests given here, we sorted equally distributed integer values or big types, consisting of an integer array of length 30, in multiple runs (of course more runs for smaller lists) on the server. We start by comparing our in-place merge sort implementations with each other. \\
+For all the tests given here, we sorted equally distributed integer values or big types, consisting of an integer array of length 30, in multiple runs (of course more runs for smaller lists) on the server. \newpage We start by comparing our in-place merge sort implementations with each other. \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/ints-time.JPG} \\
 \caption{ $ \frac{Time(ns)}{n*log(n)} $ for different integer list sizes $ n $ } \label{fig:ints-time}
@@ -159,13 +160,16 @@ In most diagrams, we show the results divided by $ n*log(n) $. Therefore, time, 
 \end{figure}
 In the test from Fig. \ref{fig:ints-time-otherNormalization} we did not use the usual insertion sort for small sublists as its usage leads to a varying number of additional comparisons depending on how the list is partitioned. \\
 For a clearer comparison of Huang and Chen it is possible to just compare the merges because they can be substituted in the algorithm. But here it is important to mention that Reinhardt’s merge works completely different because it merges to another range and although the std-inplace-merge merges to the same range, it needs additional memory to only use $ n-1 $ comparisons. \\
-The runtime of the merges reflects the bad result of Chen in the first test more clearly. But it is important to remind that the runtime also depends on compiler and device. For results of the server see \textit{“Test\_Diagramme”}. For a usual laptop and another compiler we got the following time average for multiple runs of the merges with 10 Mio. elements: \\
+The runtime of the merges reflects the bad result of Chen in the first test more clearly. But it is important to remind that the runtime also depends on compiler and device. For results of the server see \textit{“Test\_Diagramme”}. \\
+$ $ \\
+For a usual laptop and another compiler we got the following time average for multiple runs of the merges with 10 Mio. elements: \\
 \scriptsize
 \begin{tabular}{|c|c|c|c|} \hline
 Chen & Reinhardt & Huang & StdInpl-merge \\ \hline
 148 418 ns & 88 717 ns & 99 766 ns & 147 056 ns \\ \hline
 \end{tabular}
 \normalsize \\
+$ $ \\
 And if we make comparisons/assignments more relevant by use of lists with 1 million bigtypes, we get an entirely different relation of results for multiple runs on the laptop: \\
 \scriptsize
 \begin{tabular}{|c|c|c|c|} \hline
@@ -187,7 +191,7 @@ $ $ \\
 \caption{Comparisons and Assignments for different Reinhardt merges} \label{fig:diff-iterationsAndMerges-assignAndComp}
 \end{figure}
 Merging asymmetric is a big improvement for time and number of comparisons (obviously not for number of assignments) of the usual iteration because in the usual iteration, the short list is always merged with all other sorted elements. For the time of the quickselect iteration, the asymmetric merge is, especially for the runtime, no improvement in this test case. \\
-For a further reduction of comparisons and thus for sorting comparison-expensive types, it is also a good idea to replace insertion sort in the sort of the gap for small cases (here all along 50 elements) by aborting the recursive procedure later (3-smallsort). \\
+For a further reduction of comparisons and thus for sorting comparison-expensive types, it is also a good idea to replace insertion sort in the sort of the gap for small cases (here all along 50 elements) by aborting the recursive procedure later (3-smallsort).
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/comparisons-diff-iter-and-smallsorts.JPG} \\
 \caption{Comparisons for different Reinhardt smallsorts} \label{fig:comparisons-diff-iter-and-smallsorts}
@@ -196,14 +200,17 @@ The result is not surprising because merge sort needs less comparisons than inse
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/time-diff-iter-and-smallsorts.JPG} \\
 \caption{ $ \frac{Time(ns)}{n*log(n)} $ for Reinhardt smallsorts} \label{fig:time-diff-iter-and-smallsorts}
-\end{figure}
+\end{figure} 
+$ $ \\
 We also compared our implementations with some existing in-place merge sorts: \\
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{Diagramm-Bilder/time-other-inplace.JPG} \\
 \caption{Time comparison with other in-place merge sorts} \label{fig:time-other-inplace}
 \end{figure}
+$ $ \\
 In terms of comparisons and moves they are able to compete with the other algorithms. It must be said that some more sophisticated and specialized implementations can slightly outperform our implementations when it comes to the measured time.
 
+\newpage
 \nocite{wegener1993bottom}
 \nocite{edelkamp2019worst}
 \bibliographystyle{amsplain}
