@@ -1,4 +1,5 @@
 ﻿# Projekt-INF--Uni-Stuttgart
+ # Implementierung von in-place Mergesort Algorithmen
 Projekt-INF an der Universität Stuttgart von Raphael Brösamle, Jonas Kittelberger, Patrick Spaney und Kai Ziegler.
 
 Die verschiedenen Mergesort-Varianten sind in entsprechend benannten Ordnern strukturiert. Darin befindet sich auch jeweils eine simple main-Prozedur als Test mit Konsolenausgabe.
